@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Week 2 - 流程控制 | Python 程式設計</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Microsoft JhengHei', Arial, sans-serif;
+            background: linear-gradient(to bottom, #f5f7fa 0%, #c3cfe2 100%);
+            color: #2c3e50;
+            line-height: 1.7;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .nav {
+            background: white;
+            padding: 15px 25px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .nav a {
+            color: #3776ab;
+            text-decoration: none;
+            font-weight: 600;
+            padding: 8px 16px;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+
+        .nav a:hover {
+            background: #3776ab;
+            color: white;
+        }
+
+        header {
+            background: linear-gradient(135deg, #3776ab 0%, #ffd343 100%);
+            color: white;
+            padding: 50px 40px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        header .subtitle {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .content {
+            background: white;
+            border-radius: 8px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .content h2 {
+            color: #2c3e50;
+            font-size: 2em;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #3776ab;
+        }
+
+        .content h3 {
+            color: #34495e;
+            font-size: 1.5em;
+            margin: 30px 0 15px 0;
+        }
+
+        .content h4 {
+            color: #34495e;
+            font-size: 1.2em;
+            margin: 20px 0 10px 0;
+        }
+
+        pre[class*="language-"] {
+            margin: 20px 0;
+            border-radius: 8px;
+            border: 2px solid #3776ab;
+        }
+
+        code[class*="language-"] {
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            font-size: 0.95em;
+            line-height: 1.6;
+        }
+
+        .note-box {
+            background: #e8f4f8;
+            border-left: 4px solid #3776ab;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .warning-box {
+            background: #fff8e1;
+            border-left: 4px solid #ffa726;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .tip-box {
+            background: #e8f5e9;
+            border-left: 4px solid #66bb6a;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .exercise-section {
+            background: #f8f9fa;
+            border: 2px solid #3776ab;
+            padding: 30px;
+            margin: 30px 0;
+            border-radius: 8px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        table th,
+        table td {
+            padding: 12px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+
+        table th {
+            background: #3776ab;
+            color: white;
+            font-weight: 600;
+        }
+
+        table tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        ul, ol {
+            margin-left: 30px;
+            margin-top: 10px;
+        }
+
+        li {
+            margin: 8px 0;
+        }
+
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 40px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background: #3776ab;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            background: #2d5a8a;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        .btn-secondary {
+            background: #95a5a6;
+        }
+
+        .btn-secondary:hover {
+            background: #7f8c8d;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="nav">
+            <a href="python-week1.html">← Week 1</a>
+            <span style="color: #7f8c8d; font-weight: 600;">Week 2 / 16</span>
+            <a href="python-week3.html">Week 3 →</a>
+        </div>
+
+        <header>
+            <h1>Week 2 - 流程控制</h1>
+            <div class="subtitle">學習目標：掌握條件判斷與迴圈結構，實現程式邏輯控制</div>
+        </header>
+
+        <div class="content">
+            <h2>本週學習內容</h2>
+            <ul>
+                <li>條件判斷：if、elif、else</li>
+                <li>巢狀條件判斷</li>
+                <li>三元運算符</li>
+                <li>for 迴圈與 range()</li>
+                <li>while 迴圈</li>
+                <li>break 與 continue</li>
+                <li>pass 語句</li>
+                <li>巢狀迴圈</li>
+                <li>實用範例與應用</li>
+            </ul>
+        </div>
+
+        <div class="content">
+            <h2>1. 條件判斷：if 語句</h2>
+            
+            <h3>基本 if 語句</h3>
+            <pre><code class="language-python"># 基本 if 語句
+age = 20
+
+if age >= 18:
+    print("你已成年")
+
+# 輸出：你已成年
+</code></pre>
+
+            <h3>if-else 語句</h3>
+            <pre><code class="language-python"># if-else 雙向判斷
+temperature = 25
+
+if temperature > 30:
+    print("天氣很熱")
+else:
+    print("天氣還好")
+
+# 輸出：天氣還好
+</code></pre>
+
+            <h3>if-elif-else 多重判斷</h3>
+            <pre><code class="language-python"># 成績等級判定
+score = 85
+
+if score >= 90:
+    grade = "A"
+elif score >= 80:
+    grade = "B"
+elif score >= 70:
+    grade = "C"
+elif score >= 60:
+    grade = "D"
+else:
+    grade = "F"
+
+print(f"成績等級：{grade}")
+# 輸出：成績等級：B
+</code></pre>
+
+            <div class="note-box">
+                <strong>重點提醒：</strong>
+                <ul>
+                    <li>條件判斷後面必須加冒號 <code>:</code></li>
+                    <li>程式碼區塊必須縮排（建議 4 個空格）</li>
+                    <li>elif 可以有多個，else 最多一個且必須在最後</li>
+                    <li>條件由上而下依序判斷，符合就執行並跳出</li>
+                </ul>
+            </div>
+
+            <h3>複合條件判斷</h3>
+            <pre><code class="language-python"># 使用 and（且）
+age = 20
+has_license = True
+
+if age >= 18 and has_license:
+    print("可以開車")
+
+
+# 使用 or（或）
+is_weekend = True
+is_holiday = False
+
+if is_weekend or is_holiday:
+    print("可以休息")
+
+
+# 使用 not（非）
+is_raining = False
+
+if not is_raining:
+    print("可以出門運動")
+
+
+# 組合使用
+score = 75
+attendance = 90
+
+if (score >= 60 and attendance >= 80) or score >= 90:
+    print("通過考核")
+</code></pre>
+
+            <h3>巢狀條件判斷</h3>
+            <pre><code class="language-python"># 判斷是否符合申請資格
+age = 25
+income = 50000
+credit_score = 700
+
+if age >= 20:
+    print("年齡符合")
+    
+    if income >= 30000:
+        print("收入符合")
+        
+        if credit_score >= 650:
+            print("信用評分符合")
+            print("核准申請！")
+        else:
+            print("信用評分不足")
+    else:
+        print("收入不足")
+else:
+    print("年齡不符")
+</code></pre>
+
+            <div class="tip-box">
+                <strong>巢狀判斷建議：</strong>
+                <p>巢狀太深會降低可讀性，建議使用複合條件（and/or）簡化：</p>
+            </div>
+
+            <pre><code class="language-python"># 簡化版本（推薦）
+if age >= 20 and income >= 30000 and credit_score >= 650:
+    print("核准申請！")
+else:
+    print("申請條件不符")
+</code></pre>
+
+            <h3>三元運算符（條件表達式）</h3>
+            <pre><code class="language-python"># 傳統寫法
+age = 20
+if age >= 18:
+    status = "成年"
+else:
+    status = "未成年"
+
+
+# 三元運算符（簡化寫法）
+status = "成年" if age >= 18 else "未成年"
+
+
+# 實用範例
+score = 85
+result = "及格" if score >= 60 else "不及格"
+print(result)  # 輸出：及格
+
+
+# 搭配函數使用
+numbers = [1, 2, 3, 4, 5]
+max_num = max(numbers) if numbers else 0
+</code></pre>
+        </div>
+
+        <div class="content">
+            <h2>2. for 迴圈</h2>
+            
+            <h3>基本 for 迴圈</h3>
+            <pre><code class="language-python"># 遍歷串列
+fruits = ["蘋果", "香蕉", "橘子"]
+
+for fruit in fruits:
+    print(fruit)
+
+# 輸出：
+# 蘋果
+# 香蕉
+# 橘子
+
+
+# 遍歷字串
+text = "Python"
+
+for char in text:
+    print(char)
+
+# 輸出：P y t h o n（每個字元一行）
+</code></pre>
+
+            <h3>range() 函數</h3>
+            <pre><code class="language-python"># range(結束值) - 從 0 開始
+for i in range(5):
+    print(i)
+# 輸出：0 1 2 3 4
+
+
+# range(起始值, 結束值)
+for i in range(1, 6):
+    print(i)
+# 輸出：1 2 3 4 5
+
+
+# range(起始值, 結束值, 步進值)
+for i in range(0, 10, 2):
+    print(i)
+# 輸出：0 2 4 6 8
+
+
+# 倒數計數
+for i in range(5, 0, -1):
+    print(i)
+# 輸出：5 4 3 2 1
+</code></pre>
+
+            <h3>enumerate() 函數</h3>
+            <pre><code class="language-python"># 同時取得索引和值
+fruits = ["蘋果", "香蕉", "橘子"]
+
+for index, fruit in enumerate(fruits):
+    print(f"{index}: {fruit}")
+
+# 輸出：
+# 0: 蘋果
+# 1: 香蕉
+# 2: 橘子
+
+
+# 指定起始索引
+for index, fruit in enumerate(fruits, 1):
+    print(f"{index}. {fruit}")
+
+# 輸出：
+# 1. 蘋果
+# 2. 香蕉
+# 3. 橘子
+</code></pre>
+
+            <h3>遍歷字典</h3>
+            <pre><code class="language-python">student = {
+    "name": "Alice",
+    "age": 20,
+    "grade": "A"
+}
+
+# 遍歷鍵
+for key in student:
+    print(key)
+
+
+# 遍歷值
+for value in student.values():
+    print(value)
+
+
+# 同時遍歷鍵和值
+for key, value in student.items():
+    print(f"{key}: {value}")
+
+# 輸出：
+# name: Alice
+# age: 20
+# grade: A
+</code></pre>
+        </div>
+
+        <div class="content">
+            <h2>3. while 迴圈</h2>
+            
+            <h3>基本 while 迴圈</h3>
+            <pre><code class="language-python"># 基本計數
+count = 1
+
+while count <= 5:
+    print(f"計數：{count}")
+    count += 1
+
+# 輸出：
+# 計數：1
+# 計數：2
+# 計數：3
+# 計數：4
+# 計數：5
+</code></pre>
+
+            <h3>使用者輸入驗證</h3>
+            <pre><code class="language-python"># 持續要求輸入直到正確
+password = ""
+
+while password != "1234":
+    password = input("請輸入密碼：")
+    
+    if password != "1234":
+        print("密碼錯誤，請重新輸入")
+
+print("登入成功！")
+</code></pre>
+
+            <h3>限制嘗試次數</h3>
+            <pre><code class="language-python"># 最多嘗試 3 次
+attempts = 0
+max_attempts = 3
+correct_password = "1234"
+
+while attempts < max_attempts:
+    password = input("請輸入密碼：")
+    
+    if password == correct_password:
+        print("登入成功！")
+        break
+    else:
+        attempts += 1
+        remaining = max_attempts - attempts
+        print(f"密碼錯誤，還有 {remaining} 次機會")
+else:
+    print("嘗試次數已用完，帳號已鎖定")
+</code></pre>
+
+            <h3>無窮迴圈（配合 break）</h3>
+            <pre><code class="language-python"># 選單系統
+while True:
+    print("\n=== 選單 ===")
+    print("1. 查詢資料")
+    print("2. 新增資料")
+    print("3. 離開")
+    
+    choice = input("請選擇功能 (1-3)：")
+    
+    if choice == "1":
+        print("執行查詢...")
+    elif choice == "2":
+        print("執行新增...")
+    elif choice == "3":
+        print("感謝使用，再見！")
+        break
+    else:
+        print("無效的選擇，請重新輸入")
+</code></pre>
+
+            <div class="warning-box">
+                <strong>注意無窮迴圈：</strong>
+                <p>使用 <code>while True</code> 時，務必確保有適當的 <code>break</code> 條件，否則程式會無限執行。</p>
+            </div>
+        </div>
+
+        <div class="content">
+            <h2>4. break 與 continue</h2>
+            
+            <h3>break：跳出迴圈</h3>
+            <pre><code class="language-python"># 找到目標就停止
+numbers = [1, 3, 5, 7, 9, 11]
+target = 7
+
+for num in numbers:
+    if num == target:
+        print(f"找到目標：{num}")
+        break
+    print(f"檢查：{num}")
+
+# 輸出：
+# 檢查：1
+# 檢查：3
+# 檢查：5
+# 找到目標：7
+</code></pre>
+
+            <h3>continue：跳過本次迭代</h3>
+            <pre><code class="language-python"># 只印出奇數
+for i in range(1, 11):
+    if i % 2 == 0:
+        continue  # 跳過偶數
+    print(i)
+
+# 輸出：1 3 5 7 9
+
+
+# 過濾負數
+numbers = [10, -5, 8, -3, 15, -1]
+total = 0
+
+for num in numbers:
+    if num < 0:
+        continue  # 跳過負數
+    total += num
+
+print(f"正數總和：{total}")  # 33
+</code></pre>
+
+            <h3>else 子句</h3>
+            <pre><code class="language-python"># for-else：迴圈正常結束時執行
+numbers = [1, 3, 5, 7, 9]
+target = 6
+
+for num in numbers:
+    if num == target:
+        print("找到了！")
+        break
+else:
+    print("沒有找到目標")
+
+# 輸出：沒有找到目標
+</code></pre>
+
+            <div class="tip-box">
+                <strong>else 子句說明：</strong>
+                <ul>
+                    <li>只有在迴圈<strong>正常結束</strong>時才會執行</li>
+                    <li>如果透過 <code>break</code> 跳出，則 <code>else</code> 不會執行</li>
+                    <li>常用於搜尋操作，判斷是否找到目標</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="content">
+            <h2>5. 巢狀迴圈</h2>
+            
+            <h3>基本巢狀迴圈</h3>
+            <pre><code class="language-python"># 印出矩形圖案
+for i in range(3):
+    for j in range(5):
+        print("*", end="")
+    print()  # 換行
+
+# 輸出：
+# *****
+# *****
+# *****
+</code></pre>
+
+            <h3>九九乘法表</h3>
+            <pre><code class="language-python"># 完整九九乘法表
+print("九九乘法表")
+print("=" * 60)
+
+for i in range(1, 10):
+    for j in range(1, 10):
+        result = i * j
+        print(f"{i} × {j} = {result:2}", end="  ")
+    print()
+</code></pre>
+
+            <h3>三角形圖案</h3>
+            <pre><code class="language-python"># 直角三角形
+for i in range(1, 6):
+    for j in range(i):
+        print("*", end="")
+    print()
+
+# 輸出：
+# *
+# **
+# ***
+# ****
+# *****
+
+
+# 等腰三角形
+n = 5
+for i in range(1, n + 1):
+    # 印空格
+    for j in range(n - i):
+        print(" ", end="")
+    # 印星號
+    for j in range(2 * i - 1):
+        print("*", end="")
+    print()
+
+# 輸出：
+#     *
+#    ***
+#   *****
+#  *******
+# *********
+</code></pre>
+        </div>
+
+        <div class="content">
+            <h2>6. 實用範例</h2>
+            
+            <h3>範例一：猜數字遊戲</h3>
+            <pre><code class="language-python">import random
+
+# 產生 1-100 的隨機數字
+answer = random.randint(1, 100)
+attempts = 0
+max_attempts = 7
+
+print("=== 猜數字遊戲 ===")
+print(f"我想了一個 1-100 的數字，你有 {max_attempts} 次機會")
+
+while attempts < max_attempts:
+    guess = int(input(f"\n第 {attempts + 1} 次猜測，請輸入數字："))
+    attempts += 1
+    
+    if guess == answer:
+        print(f"恭喜你！猜對了！答案是 {answer}")
+        print(f"你總共猜了 {attempts} 次")
+        break
+    elif guess < answer:
+        print("太小了！")
+    else:
+        print("太大了！")
+    
+    remaining = max_attempts - attempts
+    if remaining > 0:
+        print(f"還有 {remaining} 次機會")
+else:
+    print(f"\n很遺憾，機會用完了！答案是 {answer}")
+</code></pre>
+
+            <h3>範例二：質數判斷</h3>
+            <pre><code class="language-python"># 判斷一個數是否為質數
+num = int(input("請輸入一個正整數："))
+
+if num <= 1:
+    print(f"{num} 不是質數")
+else:
+    is_prime = True
+    
+    for i in range(2, int(num ** 0.5) + 1):
+        if num % i == 0:
+            is_prime = False
+            break
+    
+    if is_prime:
+        print(f"{num} 是質數")
+    else:
+        print(f"{num} 不是質數")
+</code></pre>
+
+            <h3>範例三：階乘計算</h3>
+            <pre><code class="language-python"># 計算 n!
+n = int(input("請輸入一個正整數："))
+factorial = 1
+
+for i in range(1, n + 1):
+    factorial *= i
+
+print(f"{n}! = {factorial}")
+</code></pre>
+        </div>
+
+        <div class="content">
+            <div class="exercise-section">
+                <h3>本週練習題</h3>
+                
+                <h4>基礎練習（必做）</h4>
+                <ol>
+                    <li>
+                        <strong>成績等級判定</strong><br>
+                        輸入分數，根據標準輸出等級（90以上優秀、80-89良好等）
+                    </li>
+                    
+                    <li>
+                        <strong>印出星號三角形</strong><br>
+                        輸入行數 n，印出 n 行的直角三角形。
+                    </li>
+                    
+                    <li>
+                        <strong>計算總和與平均</strong><br>
+                        輸入 5 個數字，計算總和與平均值。
+                    </li>
+                </ol>
+
+                <h4>進階練習</h4>
+                <ol start="4">
+                    <li>
+                        <strong>九九乘法表（指定範圍）</strong><br>
+                        輸入起始數字和結束數字，印出該範圍的乘法表。
+                    </li>
+                    
+                    <li>
+                        <strong>判斷閏年</strong><br>
+                        輸入年份，判斷是否為閏年。
+                    </li>
+                    
+                    <li>
+                        <strong>費氏數列</strong><br>
+                        輸入 n，印出前 n 個費氏數列的數字。
+                    </li>
+                </ol>
+
+                <h4>挑戰練習</h4>
+                <ol start="7">
+                    <li>
+                        <strong>完全數判斷</strong><br>
+                        輸入一個數字，判斷是否為完全數。
+                    </li>
+                    
+                    <li>
+                        <strong>簡易 ATM 系統</strong><br>
+                        建立選單式程式，包含查詢餘額、存款、提款、離開功能。
+                    </li>
+                </ol>
+            </div>
+        </div>
+
+        <div class="content">
+            <h2>本週總結</h2>
+            
+            <h3>重點回顧</h3>
+            <ul>
+                <li>✅ 掌握 if-elif-else 條件判斷</li>
+                <li>✅ 理解 for 和 while 迴圈的使用時機</li>
+                <li>✅ 學會使用 range()、enumerate() 函數</li>
+                <li>✅ 了解 break、continue、pass 的作用</li>
+                <li>✅ 能夠運用巢狀迴圈解決問題</li>
+            </ul>
+
+            <h3>下週預告</h3>
+            <div class="note-box">
+                <h4>Week 3 - 資料結構基礎</h4>
+                <p>下週將學習 Python 的核心資料結構：</p>
+                <ul>
+                    <li>串列（List）：建立、存取、修改、切片</li>
+                    <li>元組（Tuple）：不可變序列</li>
+                    <li>字典（Dictionary）：鍵值對資料結構</li>
+                    <li>集合（Set）：唯一值集合</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="nav-buttons">
+            <a href="python-week1.html" class="btn btn-secondary">← Week 1</a>
+            <a href="python-week3.html" class="btn">Week 3：資料結構基礎 →</a>
+        </div>
+
+        <footer style="text-align: center; padding: 30px 0; color: #7f8c8d; margin-top: 50px; border-top: 1px solid #ddd;">
+            <p style="margin: 10px 0;">Python 程式設計 Week 2</p>
+            <p style="margin: 10px 0; font-size: 0.9em;">流程控制 · 條件判斷 · 迴圈結構</p>
+            <p style="margin: 10px 0; font-size: 0.85em; color: #95a5a6;">© 2025 All Rights Reserved</p>
+        </footer>
+    </div>
+</body>
+</html>

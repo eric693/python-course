@@ -1,0 +1,1409 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Week 8 Part 2 - 正規表達式進階與實戰 | Python 程式設計</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Microsoft JhengHei', Arial, sans-serif;
+            background: linear-gradient(to bottom, #f5f7fa 0%, #c3cfe2 100%);
+            color: #2c3e50;
+            line-height: 1.7;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .nav {
+            background: white;
+            padding: 15px 25px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .nav a {
+            color: #3776ab;
+            text-decoration: none;
+            font-weight: 600;
+            padding: 8px 16px;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+
+        .nav a:hover {
+            background: #3776ab;
+            color: white;
+        }
+
+        header {
+            background: linear-gradient(135deg, #3776ab 0%, #ffd343 100%);
+            color: white;
+            padding: 50px 40px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        header .subtitle {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .content {
+            background: white;
+            border-radius: 8px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .content h2 {
+            color: #2c3e50;
+            font-size: 2em;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #3776ab;
+        }
+
+        .content h3 {
+            color: #34495e;
+            font-size: 1.5em;
+            margin: 30px 0 15px 0;
+        }
+
+        .content h4 {
+            color: #34495e;
+            font-size: 1.2em;
+            margin: 20px 0 10px 0;
+        }
+
+        pre[class*="language-"] {
+            margin: 20px 0;
+            border-radius: 8px;
+            border: 2px solid #3776ab;
+        }
+
+        code[class*="language-"] {
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            font-size: 0.95em;
+            line-height: 1.6;
+        }
+
+        .note-box {
+            background: #e8f4f8;
+            border-left: 4px solid #3776ab;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .warning-box {
+            background: #fff8e1;
+            border-left: 4px solid #ffa726;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .tip-box {
+            background: #e8f5e9;
+            border-left: 4px solid #66bb6a;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .exercise-section {
+            background: #f8f9fa;
+            border: 2px solid #3776ab;
+            padding: 30px;
+            margin: 30px 0;
+            border-radius: 8px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        table th,
+        table td {
+            padding: 12px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+
+        table th {
+            background: #3776ab;
+            color: white;
+            font-weight: 600;
+        }
+
+        table tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        ul, ol {
+            margin-left: 30px;
+            margin-top: 10px;
+        }
+
+        li {
+            margin: 8px 0;
+        }
+
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 40px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background: #3776ab;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            background: #2d5a8a;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        .btn-secondary {
+            background: #95a5a6;
+        }
+
+        .btn-secondary:hover {
+            background: #7f8c8d;
+        }
+
+        .regex-box {
+            background: #fff3e0;
+            border-left: 4px solid #ff9800;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+            font-family: 'Consolas', 'Monaco', monospace;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="nav">
+            <a href="python-week8-part1.html">← Part 1</a>
+            <span style="color: #7f8c8d; font-weight: 600;">Week 8 Part 2 / 16</span>
+            <a href="python-week9.html">Week 9 →</a>
+        </div>
+
+        <header>
+            <h1>Week 8 Part 2 - 正規表達式進階與實戰</h1>
+            <div class="subtitle">學習目標：掌握進階正規表達式技巧與實際應用</div>
+        </header>
+
+        <div class="content">
+            <h2>Part 2 學習內容</h2>
+            <ul>
+                <li>常用正規表達式模式（email、電話、日期等）</li>
+                <li>群組與捕獲</li>
+                <li>命名群組</li>
+                <li>進階替換技巧</li>
+                <li>實用文字處理範例</li>
+                <li>網頁爬蟲入門</li>
+                <li>完整練習題</li>
+            </ul>
+        </div>
+
+        <div class="content">
+            <h2>1. 常用正規表達式模式</h2>
+            
+            <h3>驗證 Email</h3>
+            <pre><code class="language-python">import re
+
+def validate_email(email):
+    """
+    驗證 email 格式
+    規則：使用者名稱@網域名稱.頂級網域
+    """
+    # 基本模式
+    pattern = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
+    return re.match(pattern, email) is not None
+
+
+# 測試各種 email
+test_emails = [
+    ("user@example.com", True),
+    ("user.name@example.co.uk", True),
+    ("user+tag@example.com", True),
+    ("user123@sub.example.org", True),
+    ("invalid@", False),
+    ("@example.com", False),
+    ("user@.com", False),
+    ("user@example", False),
+    ("user @example.com", False),
+]
+
+print("Email 驗證結果：")
+for email, expected in test_emails:
+    result = validate_email(email)
+    status = "✓" if result == expected else "✗"
+    print(f"{status} {email:30} → {result}")
+</code></pre>
+
+            <h3>驗證手機號碼（台灣）</h3>
+            <pre><code class="language-python">import re
+
+def validate_taiwan_mobile(phone):
+    """驗證台灣手機號碼：09 開頭 + 8 位數字"""
+    pattern = r'^09\d{8}$'
+    return re.match(pattern, phone) is not None
+
+
+def validate_taiwan_phone(phone):
+    """驗證台灣電話（含市話）"""
+    # 手機：09開頭 + 8位數字
+    mobile_pattern = r'^09\d{8}$'
+    
+    # 市話：區碼(2-4碼) + 號碼(7-8碼)
+    # 格式：02-12345678, (02)12345678, 02 12345678
+    landline_pattern = r'^(\(?\d{2,4}\)?[-\s]?)?\d{7,8}$'
+    
+    return (re.match(mobile_pattern, phone) is not None or 
+            re.match(landline_pattern, phone) is not None)
+
+
+# 測試
+test_phones = [
+    "0912345678",      # ✓ 手機
+    "0987654321",      # ✓ 手機
+    "02-12345678",     # ✓ 市話
+    "(02)12345678",    # ✓ 市話
+    "04 12345678",     # ✓ 市話
+    "0812345678",      # ✗ 不是 09 開頭
+    "09123456789",     # ✗ 太長
+    "091234567",       # ✗ 太短
+]
+
+print("手機號碼驗證：")
+for phone in test_phones:
+    result = validate_taiwan_mobile(phone)
+    print(f"{'✓' if result else '✗'} {phone:20} → {result}")
+
+print("\n電話號碼驗證（含市話）：")
+for phone in test_phones:
+    result = validate_taiwan_phone(phone)
+    print(f"{'✓' if result else '✗'} {phone:20} → {result}")
+</code></pre>
+
+            <h3>驗證身分證字號（台灣）</h3>
+            <pre><code class="language-python">import re
+
+def validate_taiwan_id(id_number):
+    """
+    驗證台灣身分證字號
+    格式：第一個字為英文字母，第二個字為 1 或 2，後面 8 個數字
+    """
+    # 基本格式檢查
+    pattern = r'^[A-Z][12]\d{8}$'
+    
+    if not re.match(pattern, id_number):
+        return False
+    
+    # 進階驗證：檢查碼計算（簡化版）
+    # 完整驗證需要根據檢查碼算法
+    return True
+
+
+# 測試
+test_ids = [
+    "A123456789",   # ✓ 格式正確
+    "B212345678",   # ✓ 格式正確
+    "C312345678",   # ✗ 第二位必須是 1 或 2
+    "1A23456789",   # ✗ 第一位必須是英文
+    "A12345678",    # ✗ 太短
+]
+
+print("身分證字號驗證：")
+for id_num in test_ids:
+    result = validate_taiwan_id(id_num)
+    print(f"{'✓' if result else '✗'} {id_num:15} → {result}")
+</code></pre>
+
+            <h3>驗證日期格式</h3>
+            <pre><code class="language-python">import re
+
+def validate_date(date_string):
+    """
+    驗證日期格式：YYYY-MM-DD
+    簡單檢查月份 01-12，日期 01-31
+    """
+    pattern = r'^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$'
+    return re.match(pattern, date_string) is not None
+
+
+def validate_time(time_string):
+    """驗證時間格式：HH:MM:SS 或 HH:MM"""
+    # 24小時制
+    pattern = r'^([01]\d|2[0-3]):([0-5]\d)(:([0-5]\d))?$'
+    return re.match(pattern, time_string) is not None
+
+
+# 測試日期
+test_dates = [
+    "2025-11-23",   # ✓
+    "2025-01-01",   # ✓
+    "2025-12-31",   # ✓
+    "2025-13-01",   # ✗ 月份錯誤
+    "2025-11-32",   # ✗ 日期錯誤
+    "2025-1-1",     # ✗ 格式錯誤（缺少前導零）
+    "25-11-23",     # ✗ 年份格式錯誤
+]
+
+print("日期驗證（YYYY-MM-DD）：")
+for date in test_dates:
+    result = validate_date(date)
+    print(f"{'✓' if result else '✗'} {date:15} → {result}")
+
+
+# 測試時間
+test_times = [
+    "14:30:45",     # ✓
+    "09:00:00",     # ✓
+    "23:59:59",     # ✓
+    "14:30",        # ✓ （不含秒）
+    "24:00:00",     # ✗ （超過 23:59:59）
+    "14:60:00",     # ✗ （分鐘錯誤）
+    "14:30:60",     # ✗ （秒數錯誤）
+]
+
+print("\n時間驗證（HH:MM:SS）：")
+for time in test_times:
+    result = validate_time(time)
+    print(f"{'✓' if result else '✗'} {time:15} → {result}")
+</code></pre>
+
+            <h3>驗證密碼強度</h3>
+            <pre><code class="language-python">import re
+
+def validate_password(password):
+    """
+    驗證密碼強度：
+    - 至少 8 個字元
+    - 至少一個大寫字母
+    - 至少一個小寫字母
+    - 至少一個數字
+    - 至少一個特殊符號
+    """
+    if len(password) < 8:
+        return False, "密碼至少需要 8 個字元"
+    
+    if not re.search(r'[A-Z]', password):
+        return False, "密碼需要至少一個大寫字母"
+    
+    if not re.search(r'[a-z]', password):
+        return False, "密碼需要至少一個小寫字母"
+    
+    if not re.search(r'\d', password):
+        return False, "密碼需要至少一個數字"
+    
+    if not re.search(r'[!@#$%^&*(),.?":{}|<>]', password):
+        return False, "密碼需要至少一個特殊符號"
+    
+    return True, "密碼強度足夠"
+
+
+# 測試
+test_passwords = [
+    "Pass123!",         # ✓
+    "SecureP@ss1",      # ✓
+    "password",         # ✗ 缺少大寫、數字、符號
+    "PASSWORD123",      # ✗ 缺少小寫、符號
+    "Pass12",           # ✗ 太短、缺少符號
+    "Pass!",            # ✗ 太短、缺少數字
+]
+
+print("密碼強度驗證：")
+for pwd in test_passwords:
+    valid, message = validate_password(pwd)
+    status = "✓" if valid else "✗"
+    print(f"{status} {pwd:20} → {message}")
+</code></pre>
+
+            <h3>驗證 URL</h3>
+            <pre><code class="language-python">import re
+
+def validate_url(url):
+    """驗證 URL 格式"""
+    # 支援 http, https, ftp
+    pattern = r'^(https?|ftp)://[^\s/$.?#].[^\s]*$'
+    return re.match(pattern, url) is not None
+
+
+def extract_urls(text):
+    """從文字中提取所有 URL"""
+    pattern = r'https?://[^\s]+'
+    return re.findall(pattern, text)
+
+
+# 測試 URL 驗證
+test_urls = [
+    "https://www.example.com",          # ✓
+    "http://example.com/path/to/page",  # ✓
+    "ftp://ftp.example.com",            # ✓
+    "https://example.com?q=test",       # ✓
+    "example.com",                      # ✗ 缺少協定
+    "http://",                          # ✗ 不完整
+]
+
+print("URL 驗證：")
+for url in test_urls:
+    result = validate_url(url)
+    print(f"{'✓' if result else '✗'} {url}")
+
+
+# 測試 URL 提取
+text = """
+請訪問我們的網站：https://www.example.com
+也可以看看：http://blog.example.org/post/123
+更多資訊：https://docs.example.com/api
+"""
+
+print("\n從文字提取 URL：")
+urls = extract_urls(text)
+for url in urls:
+    print(f"  - {url}")
+</code></pre>
+
+            <h3>驗證 IP 位址</h3>
+            <pre><code class="language-python">import re
+
+def validate_ipv4(ip):
+    """驗證 IPv4 位址"""
+    # 0-255.0-255.0-255.0-255
+    pattern = r'^((25[0-5]|2[0-4]\d|1\d{2}|[1-9]?\d)\.){3}(25[0-5]|2[0-4]\d|1\d{2}|[1-9]?\d)$'
+    return re.match(pattern, ip) is not None
+
+
+# 測試
+test_ips = [
+    "192.168.1.1",      # ✓
+    "255.255.255.255",  # ✓
+    "0.0.0.0",          # ✓
+    "10.0.0.1",         # ✓
+    "256.1.1.1",        # ✗ 超過 255
+    "192.168.1",        # ✗ 不完整
+    "192.168.1.1.1",    # ✗ 太多段
+]
+
+print("IPv4 驗證：")
+for ip in test_ips:
+    result = validate_ipv4(ip)
+    print(f"{'✓' if result else '✗'} {ip:20} → {result}")
+</code></pre>
+        </div>
+
+        <div class="content">
+            <h2>2. 群組與捕獲</h2>
+            
+            <h3>基本群組</h3>
+            <pre><code class="language-python">import re
+
+# 使用 () 建立群組
+pattern = r'(\d{4})-(\d{2})-(\d{2})'
+text = "今天是 2025-11-23"
+
+match = re.search(pattern, text)
+if match:
+    print("完整匹配：", match.group(0))  # 2025-11-23
+    print("年份：", match.group(1))      # 2025
+    print("月份：", match.group(2))      # 11
+    print("日期：", match.group(3))      # 23
+    
+    # 或使用 groups() 取得所有群組
+    print("所有群組：", match.groups())  # ('2025', '11', '23')
+    
+    # 取得匹配位置
+    print("位置：", match.start(), "-", match.end())
+
+
+# 實用範例：解析 log 時間
+def parse_log_time(log_line):
+    """解析 log 時間：[2025-11-23 14:30:45]"""
+    pattern = r'\[(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2}):(\d{2})\]'
+    
+    match = re.search(pattern, log_line)
+    if match:
+        year, month, day, hour, minute, second = match.groups()
+        return {
+            'year': year,
+            'month': month,
+            'day': day,
+            'hour': hour,
+            'minute': minute,
+            'second': second
+        }
+    return None
+
+
+log = "[2025-11-23 14:30:45] INFO: User login successful"
+time_info = parse_log_time(log)
+print("\nLog 時間解析：")
+print(time_info)
+</code></pre>
+
+            <h3>命名群組</h3>
+            <pre><code class="language-python">import re
+
+# 使用 (?P<name>...) 建立命名群組
+pattern = r'(?P<year>\d{4})-(?P<month>\d{2})-(?P<day>\d{2})'
+text = "今天是 2025-11-23"
+
+match = re.search(pattern, text)
+if match:
+    # 使用名稱取得群組
+    print("年份：", match.group('year'))
+    print("月份：", match.group('month'))
+    print("日期：", match.group('day'))
+    
+    # 或使用 groupdict()
+    print("\n字典格式：", match.groupdict())
+    # {'year': '2025', 'month': '11', 'day': '23'}
+
+
+# 實用範例：解析完整的 log 格式
+def parse_log_entry(log_line):
+    """
+    解析 log 格式：
+    [2025-11-23 14:30:45] INFO: User login successful
+    """
+    pattern = r'\[(?P<date>\d{4}-\d{2}-\d{2}) (?P<time>\d{2}:\d{2}:\d{2})\] (?P<level>\w+): (?P<message>.*)'
+    
+    match = re.match(pattern, log_line)
+    if match:
+        return match.groupdict()
+    return None
+
+
+# 測試
+logs = [
+    "[2025-11-23 14:30:45] INFO: User login successful",
+    "[2025-11-23 14:31:02] ERROR: Connection timeout",
+    "[2025-11-23 14:31:15] WARNING: High memory usage"
+]
+
+print("\nLog 解析結果：")
+for log in logs:
+    result = parse_log_entry(log)
+    if result:
+        print(f"日期：{result['date']}, 時間：{result['time']}")
+        print(f"等級：{result['level']}, 訊息：{result['message']}")
+        print()
+</code></pre>
+
+            <h3>引用群組</h3>
+            <pre><code class="language-python">import re
+
+# 使用 \1, \2, \3 引用群組
+text = "2025-11-23"
+pattern = r'(\d{4})-(\d{2})-(\d{2})'
+
+# 轉換日期格式：YYYY-MM-DD → DD/MM/YYYY
+result = re.sub(pattern, r'\3/\2/\1', text)
+print(f"原格式：{text}")
+print(f"新格式：{result}")  # 23/11/2025
+
+
+# 查找重複的單字
+text = "This is is a test test"
+pattern = r'\b(\w+)\s+\1\b'  # \1 引用第一個群組
+
+duplicates = re.findall(pattern, text)
+print(f"\n重複的單字：{duplicates}")  # ['is', 'test']
+
+
+# 移除重複單字
+result = re.sub(pattern, r'\1', text)
+print(f"移除重複後：{result}")  # This is a test
+</code></pre>
+
+            <h3>使用函數進行複雜替換</h3>
+            <pre><code class="language-python">import re
+
+# 使用函數處理匹配結果
+def format_phone(match):
+    """格式化電話號碼"""
+    number = match.group(0)
+    return f"({number[:4]}) {number[4:7]}-{number[7:]}"
+
+
+text = "我的電話是 0912345678，他的電話是 0987654321"
+pattern = r'09\d{8}'
+
+result = re.sub(pattern, format_phone, text)
+print(result)
+# 我的電話是 (0912) 345-678，他的電話是 (0987) 654-321
+
+
+# 隱藏部分資料
+def mask_email(match):
+    """隱藏 email 的部分內容"""
+    email = match.group(0)
+    username, domain = email.split('@')
+    
+    if len(username) > 2:
+        masked = username[0] + '*' * (len(username) - 2) + username[-1]
+    else:
+        masked = '*' * len(username)
+    
+    return f"{masked}@{domain}"
+
+
+text = "聯絡我：alice123@example.com 或 bob@test.com"
+pattern = r'[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}'
+
+result = re.sub(pattern, mask_email, text)
+print(result)
+# 聯絡我：a*****3@example.com 或 b*b@test.com
+
+
+# 大寫轉換
+def capitalize_match(match):
+    """將匹配的文字轉為大寫"""
+    return match.group(0).upper()
+
+
+text = "python is great, java is okay"
+pattern = r'\b(python|java)\b'
+
+result = re.sub(pattern, capitalize_match, text, flags=re.IGNORECASE)
+print(result)
+# PYTHON is great, JAVA is okay
+</code></pre>
+
+            <h3>非捕獲群組</h3>
+            <pre><code class="language-python">import re
+
+# 一般群組（會捕獲）
+pattern = r'(https?://)([^/]+)'
+text = "訪問 https://www.example.com"
+
+match = re.search(pattern, text)
+print("一般群組：", match.groups())
+# ('https://', 'www.example.com')
+
+
+# 非捕獲群組 (?:...)（不會捕獲）
+pattern = r'(?:https?://)([^/]+)'
+text = "訪問 https://www.example.com"
+
+match = re.search(pattern, text)
+print("非捕獲群組：", match.groups())
+# ('www.example.com',)  # 只有第二個群組被捕獲
+
+
+# 使用情境：只關心部分內容
+def extract_domain(url):
+    """從 URL 提取域名"""
+    pattern = r'(?:https?://)([^/]+)'
+    match = re.search(pattern, url)
+    return match.group(1) if match else None
+
+
+urls = [
+    "https://www.example.com/page",
+    "http://blog.test.org",
+    "https://api.service.com/v1/users"
+]
+
+print("\n提取域名：")
+for url in urls:
+    domain = extract_domain(url)
+    print(f"{url} → {domain}")
+</code></pre>
+        </div>
+
+        <div class="content">
+            <h2>3. 實用文字處理範例</h2>
+            
+            <h3>清理 HTML 標籤</h3>
+            <pre><code class="language-python">import re
+
+def remove_html_tags(text):
+    """移除所有 HTML 標籤"""
+    pattern = r'<[^>]+>'
+    return re.sub(pattern, '', text)
+
+
+def extract_text_from_html(html):
+    """從 HTML 提取純文字（進階版）"""
+    # 移除 script 和 style 標籤及內容
+    html = re.sub(r'<script[^>]*>.*?</script>', '', html, flags=re.DOTALL | re.IGNORECASE)
+    html = re.sub(r'<style[^>]*>.*?</style>', '', html, flags=re.DOTALL | re.IGNORECASE)
+    
+    # 移除 HTML 標籤
+    text = remove_html_tags(html)
+    
+    # 移除多餘空白
+    text = re.sub(r'\s+', ' ', text)
+    
+    return text.strip()
+
+
+# 測試
+html = """
+<html>
+<head>
+    <title>測試頁面</title>
+    <style>body { color: blue; }</style>
+</head>
+<body>
+    <h1>標題</h1>
+    <p>這是一段<strong>重要</strong>的文字。</p>
+    <script>console.log('test');</script>
+</body>
+</html>
+"""
+
+clean_text = extract_text_from_html(html)
+print("清理後的文字：")
+print(clean_text)
+</code></pre>
+
+            <h3>提取並統計數字</h3>
+            <pre><code class="language-python">import re
+
+def extract_numbers(text):
+    """提取所有數字（包含小數和負數）"""
+    pattern = r'-?\d+\.?\d*'
+    numbers = re.findall(pattern, text)
+    return [float(n) if '.' in n else int(n) for n in numbers]
+
+
+def calculate_statistics(text):
+    """計算文字中數字的統計資訊"""
+    numbers = extract_numbers(text)
+    
+    if not numbers:
+        return None
+    
+    return {
+        'count': len(numbers),
+        'sum': sum(numbers),
+        'average': sum(numbers) / len(numbers),
+        'min': min(numbers),
+        'max': max(numbers)
+    }
+
+
+# 測試
+text = "溫度是 25.5 度，濕度 80%，價格 -15.99 元，數量 100 個"
+
+numbers = extract_numbers(text)
+print(f"提取的數字：{numbers}")
+
+stats = calculate_statistics(text)
+print("\n統計資訊：")
+for key, value in stats.items():
+    print(f"{key}: {value:.2f}" if isinstance(value, float) else f"{key}: {value}")
+</code></pre>
+
+            <h3>格式化信用卡號</h3>
+            <pre><code class="language-python">import re
+
+def format_credit_card(card_number):
+    """格式化信用卡號碼：每 4 位數字空格分隔"""
+    # 移除所有非數字字元
+    digits = re.sub(r'\D', '', card_number)
+    
+    # 檢查長度（13-19位）
+    if len(digits) < 13 or len(digits) > 19:
+        return None
+    
+    # 每 4 位數字用空格分隔
+    formatted = ' '.join([digits[i:i+4] for i in range(0, len(digits), 4)])
+    return formatted
+
+
+def mask_credit_card(card_number):
+    """遮罩信用卡號碼：只顯示最後 4 碼"""
+    formatted = format_credit_card(card_number)
+    if not formatted:
+        return None
+    
+    parts = formatted.split()
+    masked_parts = ['****'] * (len(parts) - 1) + [parts[-1]]
+    return ' '.join(masked_parts)
+
+
+# 測試
+test_cards = [
+    "1234567890123456",
+    "1234-5678-9012-3456",
+    "1234 5678 9012 3456",
+]
+
+print("格式化信用卡號：")
+for card in test_cards:
+    formatted = format_credit_card(card)
+    masked = mask_credit_card(card)
+    print(f"原始：{card}")
+    print(f"格式化：{formatted}")
+    print(f"遮罩：{masked}")
+    print()
+</code></pre>
+
+            <h3>計算單字頻率</h3>
+            <pre><code class="language-python">import re
+from collections import Counter
+
+def word_frequency(text, top_n=10):
+    """計算單字出現頻率"""
+    # 轉小寫並提取所有單字
+    words = re.findall(r'\b[a-z]+\b', text.lower())
+    
+    # 計算頻率
+    freq = Counter(words)
+    
+    return freq.most_common(top_n)
+
+
+# 測試
+text = """
+Python is a great programming language. 
+Python is easy to learn and Python is powerful.
+Many developers love Python because Python is versatile.
+"""
+
+freq = word_frequency(text, top_n=5)
+
+print("最常出現的 5 個單字：")
+for word, count in freq:
+    print(f"{word:15} {count} 次")
+</code></pre>
+
+            <h3>敏感資料遮罩</h3>
+            <pre><code class="language-python">import re
+
+def mask_sensitive_data(text):
+    """遮罩多種敏感資料"""
+    
+    # 遮罩身分證字號（台灣）
+    def mask_id(match):
+        id_num = match.group(0)
+        return id_num[:2] + '*' * 7 + id_num[-1]
+    
+    text = re.sub(r'[A-Z]\d{9}', mask_id, text)
+    
+    # 遮罩手機號碼
+    def mask_phone(match):
+        phone = match.group(0)
+        return phone[:4] + '****' + phone[-2:]
+    
+    text = re.sub(r'09\d{8}', mask_phone, text)
+    
+    # 遮罩 email
+    def mask_email(match):
+        email = match.group(0)
+        username, domain = email.split('@')
+        if len(username) > 2:
+            masked_username = username[0] + '*' * (len(username) - 2) + username[-1]
+        else:
+            masked_username = '*' * len(username)
+        return f"{masked_username}@{domain}"
+    
+    text = re.sub(r'[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}', mask_email, text)
+    
+    # 遮罩信用卡號
+    def mask_card(match):
+        card = match.group(0)
+        digits = re.sub(r'\D', '', card)
+        return '**** **** **** ' + digits[-4:]
+    
+    text = re.sub(r'\d{4}[-\s]?\d{4}[-\s]?\d{4}[-\s]?\d{4}', mask_card, text)
+    
+    return text
+
+
+# 測試
+text = """
+個人資料：
+身分證：A123456789
+電話：0912345678
+Email：user@example.com
+信用卡：1234-5678-9012-3456
+"""
+
+masked = mask_sensitive_data(text)
+print("遮罩後的資料：")
+print(masked)
+</code></pre>
+
+            <h3>提取中文字</h3>
+            <pre><code class="language-python">import re
+
+def extract_chinese(text):
+    """提取所有中文字元"""
+    pattern = r'[\u4e00-\u9fff]+'
+    return re.findall(pattern, text)
+
+
+def count_chinese_chars(text):
+    """統計中文字數"""
+    chinese = ''.join(extract_chinese(text))
+    return len(chinese)
+
+
+def remove_chinese(text):
+    """移除所有中文字元"""
+    pattern = r'[\u4e00-\u9fff]+'
+    return re.sub(pattern, '', text)
+
+
+# 測試
+text = "Hello 世界！Python 程式設計 123 is great!"
+
+chinese = extract_chinese(text)
+print(f"中文字串：{chinese}")
+
+count = count_chinese_chars(text)
+print(f"中文字數：{count}")
+
+no_chinese = remove_chinese(text)
+print(f"移除中文：{no_chinese}")
+</code></pre>
+        </div>
+
+        <div class="content">
+            <h2>4. 網頁爬蟲入門</h2>
+            
+            <h3>基本網頁抓取</h3>
+            <pre><code class="language-python">import requests
+import re
+
+def fetch_webpage(url):
+    """抓取網頁內容"""
+    try:
+        # 設定 User-Agent 避免被封鎖
+        headers = {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+        }
+        
+        response = requests.get(url, headers=headers, timeout=10)
+        response.raise_for_status()  # 檢查 HTTP 錯誤
+        
+        return response.text
+    
+    except requests.RequestException as e:
+        print(f"錯誤：{e}")
+        return None
+
+
+# 提取網頁標題
+def extract_title(html):
+    """從 HTML 提取標題"""
+    match = re.search(r'<title>(.*?)</title>', html, re.IGNORECASE)
+    if match:
+        return match.group(1).strip()
+    return None
+
+
+# 提取所有連結
+def extract_links(html):
+    """從 HTML 提取所有連結"""
+    pattern = r'<a[^>]+href=["\'](.*?)["\']'
+    links = re.findall(pattern, html, re.IGNORECASE)
+    return links
+
+
+# 提取所有圖片
+def extract_images(html):
+    """從 HTML 提取所有圖片 URL"""
+    pattern = r'<img[^>]+src=["\'](.*?)["\']'
+    images = re.findall(pattern, html, re.IGNORECASE)
+    return images
+
+
+# 範例使用（需要實際的 URL）
+"""
+url = "https://www.example.com"
+html = fetch_webpage(url)
+
+if html:
+    title = extract_title(html)
+    print(f"網頁標題：{title}")
+    
+    links = extract_links(html)
+    print(f"\\n找到 {len(links)} 個連結")
+    
+    images = extract_images(html)
+    print(f"找到 {len(images)} 張圖片")
+"""
+</code></pre>
+
+            <h3>使用 BeautifulSoup（推薦）</h3>
+            <pre><code class="language-python"># 需要安裝：pip install beautifulsoup4
+
+from bs4 import BeautifulSoup
+import requests
+
+def scrape_with_beautifulsoup(url):
+    """使用 BeautifulSoup 爬取網頁"""
+    try:
+        response = requests.get(url, timeout=10)
+        soup = BeautifulSoup(response.text, 'html.parser')
+        
+        # 提取標題
+        title = soup.find('title')
+        print(f"標題：{title.string if title else 'N/A'}")
+        
+        # 提取所有連結
+        links = soup.find_all('a')
+        print(f"\n找到 {len(links)} 個連結：")
+        for link in links[:5]:  # 只顯示前 5 個
+            href = link.get('href')
+            text = link.get_text().strip()
+            print(f"  {text}: {href}")
+        
+        # 提取所有圖片
+        images = soup.find_all('img')
+        print(f"\n找到 {len(images)} 張圖片")
+        
+        return soup
+    
+    except Exception as e:
+        print(f"錯誤：{e}")
+        return None
+
+
+# 簡單範例：解析 HTML 字串
+html = """
+<html>
+    <head><title>測試網頁</title></head>
+    <body>
+        <h1>新聞網站</h1>
+        <div class="article">
+            <h2><a href="/news/1">新聞標題一</a></h2>
+            <p>新聞內容...</p>
+        </div>
+        <div class="article">
+            <h2><a href="/news/2">新聞標題二</a></h2>
+            <p>新聞內容...</p>
+        </div>
+    </body>
+</html>
+"""
+
+soup = BeautifulSoup(html, 'html.parser')
+
+# 查找所有文章
+articles = soup.find_all('div', class_='article')
+print(f"找到 {len(articles)} 篇文章：\n")
+
+for i, article in enumerate(articles, 1):
+    # 提取標題
+    title_tag = article.find('h2').find('a')
+    title = title_tag.get_text()
+    link = title_tag.get('href')
+    
+    print(f"{i}. {title}")
+    print(f"   連結：{link}")
+    print()
+</code></pre>
+
+            <div class="warning-box">
+                <strong>網頁爬蟲注意事項：</strong>
+                <ul>
+                    <li><strong>遵守 robots.txt</strong>：尊重網站的爬蟲規則</li>
+                    <li><strong>設定請求間隔</strong>：避免對伺服器造成負擔（使用 time.sleep()）</li>
+                    <li><strong>設定 User-Agent</strong>：表明爬蟲身份</li>
+                    <li><strong>處理錯誤</strong>：網路連線、HTTP 錯誤、解析錯誤</li>
+                    <li><strong>尊重隱私</strong>：不要爬取個人隱私資料</li>
+                    <li><strong>遵守法律</strong>：確保爬蟲行為合法</li>
+                    <li><strong>優先使用 API</strong>：如果網站提供 API，優先使用</li>
+                </ul>
+            </div>
+
+            <h3>爬蟲最佳實踐範例</h3>
+            <pre><code class="language-python">import requests
+import time
+from bs4 import BeautifulSoup
+
+class PoliteWebScraper:
+    """有禮貌的網頁爬蟲"""
+    
+    def __init__(self, delay=1):
+        self.delay = delay  # 請求間隔（秒）
+        self.headers = {
+            'User-Agent': 'Mozilla/5.0 (Educational Purpose Bot)'
+        }
+    
+    def fetch(self, url):
+        """抓取網頁"""
+        try:
+            response = requests.get(
+                url, 
+                headers=self.headers, 
+                timeout=10
+            )
+            response.raise_for_status()
+            
+            # 等待一段時間再進行下次請求
+            time.sleep(self.delay)
+            
+            return response.text
+        
+        except requests.RequestException as e:
+            print(f"請求失敗：{e}")
+            return None
+    
+    def parse(self, html):
+        """解析 HTML"""
+        if html:
+            return BeautifulSoup(html, 'html.parser')
+        return None
+
+
+# 使用範例
+scraper = PoliteWebScraper(delay=2)  # 每次請求間隔 2 秒
+
+# html = scraper.fetch("https://example.com")
+# soup = scraper.parse(html)
+</code></pre>
+        </div>
+
+        <div class="content">
+            <div class="exercise-section">
+                <h3>本週練習題</h3>
+                
+                <h4>基礎練習（必做）</h4>
+                <ol>
+                    <li>
+                        <strong>輸入驗證器</strong><br>
+                        建立完整的驗證系統：
+                        <ul>
+                            <li>Email 格式驗證</li>
+                            <li>台灣手機號碼驗證</li>
+                            <li>郵遞區號驗證（3 或 5 碼）</li>
+                            <li>提供清楚的錯誤訊息</li>
+                        </ul>
+                    </li>
+                    
+                    <li>
+                        <strong>文字清理工具</strong><br>
+                        撰寫函數進行文字清理：
+                        <ul>
+                            <li>移除多餘空白（連續空白變單一空白）</li>
+                            <li>移除特殊符號（保留基本標點）</li>
+                            <li>統一英文大小寫</li>
+                            <li>移除 HTML 標籤</li>
+                        </ul>
+                    </li>
+                    
+                    <li>
+                        <strong>數字提取與計算</strong><br>
+                        從文字中提取數字並計算：
+                        <ul>
+                            <li>提取所有整數和小數</li>
+                            <li>計算總和、平均、最大、最小值</li>
+                            <li>處理負數</li>
+                            <li>格式化輸出結果</li>
+                        </ul>
+                    </li>
+                </ol>
+
+                <h4>進階練習</h4>
+                <ol start="4">
+                    <li>
+                        <strong>Log 分析工具</strong><br>
+                        解析並分析 log 檔案：
+                        <ul>
+                            <li>解析 log 格式（時間、等級、訊息）</li>
+                            <li>統計不同等級的 log 數量</li>
+                            <li>找出所有錯誤訊息</li>
+                            <li>按時間排序</li>
+                            <li>生成統計報告</li>
+                        </ul>
+                    </li>
+                    
+                    <li>
+                        <strong>URL 解析器</strong><br>
+                        完整解析 URL：
+                        <ul>
+                            <li>提取協定（http/https）</li>
+                            <li>提取域名</li>
+                            <li>提取路徑</li>
+                            <li>解析查詢參數</li>
+                            <li>驗證 URL 格式</li>
+                        </ul>
+                    </li>
+                    
+                    <li>
+                        <strong>Markdown 轉 HTML</strong><br>
+                        實作簡單的 Markdown 解析器：
+                        <ul>
+                            <li>標題（# ## ###）</li>
+                            <li>粗體（**text**）和斜體（*text*）</li>
+                            <li>連結（[text](url)）</li>
+                            <li>圖片（![alt](url)）</li>
+                            <li>程式碼區塊（```）</li>
+                        </ul>
+                    </li>
+                    
+                    <li>
+                        <strong>CSV 資料清理</strong><br>
+                        讀取並清理 CSV 資料：
+                        <ul>
+                            <li>移除重複資料</li>
+                            <li>統一日期格式</li>
+                            <li>驗證欄位格式（email、電話等）</li>
+                            <li>處理缺失值</li>
+                            <li>輸出清理後的 CSV</li>
+                        </ul>
+                    </li>
+                </ol>
+
+                <h4>挑戰練習</h4>
+                <ol start="8">
+                    <li>
+                        <strong>文章摘要生成器</strong><br>
+                        分析文章並生成摘要：
+                        <ul>
+                            <li>提取關鍵字（詞頻分析）</li>
+                            <li>識別重要句子</li>
+                            <li>生成摘要（取前 N 個重要句子）</li>
+                            <li>計算文章統計資訊（字數、句數等）</li>
+                        </ul>
+                    </li>
+                    
+                    <li>
+                        <strong>網頁資料爬取器</strong><br>
+                        爬取指定網站的資料：
+                        <ul>
+                            <li>提取文章標題和連結</li>
+                            <li>下載並儲存圖片</li>
+                            <li>儲存資料到檔案或資料庫</li>
+                            <li>處理分頁</li>
+                            <li>錯誤處理和重試機制</li>
+                        </ul>
+                    </li>
+                    
+                    <li>
+                        <strong>智慧表單驗證器</strong><br>
+                        完整的表單驗證系統：
+                        <ul>
+                            <li>多欄位驗證（姓名、email、電話、地址等）</li>
+                            <li>自訂驗證規則</li>
+                            <li>錯誤訊息管理（中英文）</li>
+                            <li>批次驗證資料</li>
+                            <li>生成驗證報告</li>
+                        </ul>
+                    </li>
+                </ol>
+
+                <div class="tip-box">
+                    <strong>練習提示：</strong>
+                    <ul>
+                        <li>先在線上工具測試正規表達式（如 regex101.com）</li>
+                        <li>從簡單模式開始，逐步增加複雜度</li>
+                        <li>注意處理邊界情況和錯誤</li>
+                        <li>使用 raw string（r"..."）避免轉義問題</li>
+                        <li>添加完整的測試案例</li>
+                        <li>撰寫清楚的文件和註解</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="content">
+            <h2>本週總結</h2>
+            
+            <h3>重點回顧</h3>
+            <ul>
+                <li>✅ 掌握常用驗證模式（email、電話、日期等）</li>
+                <li>✅ 熟悉群組與捕獲技巧</li>
+                <li>✅ 學會使用命名群組</li>
+                <li>✅ 掌握進階替換技巧</li>
+                <li>✅ 能夠處理複雜的文字問題</li>
+                <li>✅ 了解網頁爬蟲基本概念</li>
+                <li>✅ 能夠應用正規表達式解決實際問題</li>
+            </ul>
+
+            <h3>正規表達式速查表</h3>
+            <div class="regex-box">
+                <strong>常用驗證模式：</strong><br><br>
+                <strong>Email:</strong><br>
+                <code>r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'</code><br><br>
+                
+                <strong>手機（台灣）:</strong><br>
+                <code>r'^09\d{8}$'</code><br><br>
+                
+                <strong>日期（YYYY-MM-DD）:</strong><br>
+                <code>r'^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$'</code><br><br>
+                
+                <strong>URL:</strong><br>
+                <code>r'https?://[^\s]+'</code><br><br>
+                
+                <strong>IPv4:</strong><br>
+                <code>r'^((25[0-5]|2[0-4]\d|1\d{2}|[1-9]?\d)\.){3}(25[0-5]|2[0-4]\d|1\d{2}|[1-9]?\d)$'</code><br><br>
+                
+                <strong>中文字:</strong><br>
+                <code>r'[\u4e00-\u9fff]+'</code>
+            </div>
+
+            <h3>下週預告</h3>
+            <div class="note-box">
+                <h4>Week 9 - 資料庫操作與 SQL</h4>
+                <p>下週將學習資料庫的使用：</p>
+                <ul>
+                    <li>資料庫基本概念</li>
+                    <li>SQL 基礎語法（SELECT、INSERT、UPDATE、DELETE）</li>
+                    <li>SQLite 資料庫操作</li>
+                    <li>資料庫設計原則</li>
+                    <li>Python 與資料庫的互動</li>
+                    <li>ORM 簡介（SQLAlchemy）</li>
+                    <li>實用專案範例</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="nav-buttons">
+            <a href="python-week8-part1.html" class="btn btn-secondary">← Part 1</a>
+            <a href="python-week9.html" class="btn">Week 9：資料庫操作 →</a>
+        </div>
+
+        <footer style="text-align: center; padding: 30px 0; color: #7f8c8d; margin-top: 50px; border-top: 1px solid #ddd;">
+            <p style="margin: 10px 0;">Python 程式設計 Week 8 Part 2</p>
+            <p style="margin: 10px 0; font-size: 0.9em;">正規表達式進階 · 實戰應用 · 網頁爬蟲</p>
+            <p style="margin: 10px 0; font-size: 0.85em; color: #95a5a6;">© 2025 All Rights Reserved</p>
+        </footer>
+    </div>
+</body>
+</html>

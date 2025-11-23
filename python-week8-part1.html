@@ -1,0 +1,1117 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Week 8 Part 1 - 字串處理與正規表達式基礎 | Python 程式設計</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Microsoft JhengHei', Arial, sans-serif;
+            background: linear-gradient(to bottom, #f5f7fa 0%, #c3cfe2 100%);
+            color: #2c3e50;
+            line-height: 1.7;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .nav {
+            background: white;
+            padding: 15px 25px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .nav a {
+            color: #3776ab;
+            text-decoration: none;
+            font-weight: 600;
+            padding: 8px 16px;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+
+        .nav a:hover {
+            background: #3776ab;
+            color: white;
+        }
+
+        header {
+            background: linear-gradient(135deg, #3776ab 0%, #ffd343 100%);
+            color: white;
+            padding: 50px 40px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        header .subtitle {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .content {
+            background: white;
+            border-radius: 8px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .content h2 {
+            color: #2c3e50;
+            font-size: 2em;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #3776ab;
+        }
+
+        .content h3 {
+            color: #34495e;
+            font-size: 1.5em;
+            margin: 30px 0 15px 0;
+        }
+
+        .content h4 {
+            color: #34495e;
+            font-size: 1.2em;
+            margin: 20px 0 10px 0;
+        }
+
+        pre[class*="language-"] {
+            margin: 20px 0;
+            border-radius: 8px;
+            border: 2px solid #3776ab;
+        }
+
+        code[class*="language-"] {
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            font-size: 0.95em;
+            line-height: 1.6;
+        }
+
+        .note-box {
+            background: #e8f4f8;
+            border-left: 4px solid #3776ab;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .warning-box {
+            background: #fff8e1;
+            border-left: 4px solid #ffa726;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .tip-box {
+            background: #e8f5e9;
+            border-left: 4px solid #66bb6a;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        table th,
+        table td {
+            padding: 12px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+
+        table th {
+            background: #3776ab;
+            color: white;
+            font-weight: 600;
+        }
+
+        table tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        ul, ol {
+            margin-left: 30px;
+            margin-top: 10px;
+        }
+
+        li {
+            margin: 8px 0;
+        }
+
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 40px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background: #3776ab;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            background: #2d5a8a;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        .btn-secondary {
+            background: #95a5a6;
+        }
+
+        .btn-secondary:hover {
+            background: #7f8c8d;
+        }
+
+        .regex-box {
+            background: #fff3e0;
+            border-left: 4px solid #ff9800;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+            font-family: 'Consolas', 'Monaco', monospace;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="nav">
+            <a href="python-week7.html">← Week 7</a>
+            <span style="color: #7f8c8d; font-weight: 600;">Week 8 Part 1 / 16</span>
+            <a href="python-week8-part2.html">Part 2 →</a>
+        </div>
+
+        <header>
+            <h1>Week 8 Part 1 - 字串處理與正規表達式基礎</h1>
+            <div class="subtitle">學習目標：掌握字串進階操作與正規表達式基本語法</div>
+        </header>
+
+        <div class="content">
+            <h2>Part 1 學習內容</h2>
+            <ul>
+                <li>字串進階操作回顧</li>
+                <li>字串格式化技巧</li>
+                <li>字串編碼與解碼</li>
+                <li>正規表達式（Regular Expression）簡介</li>
+                <li>正規表達式基本語法</li>
+                <li>re 模組的基本使用</li>
+                <li>常用匹配模式</li>
+            </ul>
+        </div>
+
+        <div class="content">
+            <h2>1. 字串進階操作</h2>
+            
+            <h3>字串方法回顧與深入</h3>
+            <pre><code class="language-python"># === 大小寫轉換 ===
+text = "Hello World"
+print(text.upper())       # HELLO WORLD
+print(text.lower())       # hello world
+print(text.capitalize())  # Hello world（首字母大寫）
+print(text.title())       # Hello World（每個字首字母大寫）
+print(text.swapcase())    # hELLO wORLD（大小寫互換）
+
+
+# === 查找與檢查 ===
+text = "Python Programming"
+
+# find() vs index()
+print(text.find("Python"))      # 0（找到，返回索引）
+print(text.find("Java"))        # -1（找不到）
+print(text.index("Python"))     # 0（找到）
+# print(text.index("Java"))     # ValueError（找不到會報錯）
+
+# 開頭和結尾
+print(text.startswith("Python"))  # True
+print(text.endswith("ing"))       # True
+print(text.startswith("Py", 0, 2))  # True（可指定範圍）
+
+# 計數
+print(text.count("m"))            # 2
+print(text.count("o"))            # 1
+
+
+# === 替換 ===
+text = "I love Java, Java is great"
+
+# 替換所有
+new_text = text.replace("Java", "Python")
+print(new_text)  # I love Python, Python is great
+
+# 限制替換次數
+new_text = text.replace("Java", "Python", 1)
+print(new_text)  # I love Python, Java is great（只替換第一個）
+
+
+# === 分割與合併 ===
+text = "apple,banana,orange"
+
+# 分割
+fruits = text.split(",")
+print(fruits)  # ['apple', 'banana', 'orange']
+
+# 多字元分割
+text = "apple banana\torange\ngrape"
+words = text.split()  # 預設按空白字元分割
+print(words)  # ['apple', 'banana', 'orange', 'grape']
+
+# 限制分割次數
+text = "a-b-c-d-e"
+parts = text.split("-", 2)
+print(parts)  # ['a', 'b', 'c-d-e']
+
+# 從右邊分割
+text = "path/to/file.txt"
+parts = text.rsplit("/", 1)
+print(parts)  # ['path/to', 'file.txt']
+
+# 合併
+fruits = ['apple', 'banana', 'orange']
+result = ", ".join(fruits)
+print(result)  # apple, banana, orange
+
+# 合併數字（需轉字串）
+numbers = [1, 2, 3, 4, 5]
+result = "-".join(map(str, numbers))
+print(result)  # 1-2-3-4-5
+
+
+# === 去除空白 ===
+text = "  hello world  "
+print(f"'{text.strip()}'")   # 'hello world'（兩端）
+print(f"'{text.lstrip()}'")  # 'hello world  '（左端）
+print(f"'{text.rstrip()}'")  # '  hello world'（右端）
+
+# 去除指定字元
+text = "***Hello***"
+print(text.strip("*"))  # Hello
+
+text = "www.example.com"
+print(text.strip("cmowz."))  # example
+
+
+# === 填充與對齊 ===
+text = "Python"
+
+# 置中
+print(text.center(20, "*"))  # *******Python*******
+print(text.center(20))       #        Python       
+
+# 左對齊
+print(text.ljust(20, "-"))   # Python--------------
+
+# 右對齊
+print(text.rjust(20, "-"))   # --------------Python
+
+# 補零
+number = "42"
+print(number.zfill(5))       # 00042
+
+
+# === 檢查字串類型 ===
+text1 = "Hello"
+text2 = "12345"
+text3 = "Hello123"
+text4 = "   "
+
+print(text1.isalpha())      # True（全為字母）
+print(text2.isdigit())      # True（全為數字）
+print(text3.isalnum())      # True（字母或數字）
+print(text4.isspace())      # True（全為空白）
+
+print("HELLO".isupper())    # True
+print("hello".islower())    # True
+print("Hello".istitle())    # True
+
+
+# === 分行處理 ===
+text = """line1
+line2
+line3"""
+
+# 分割成行
+lines = text.splitlines()
+print(lines)  # ['line1', 'line2', 'line3']
+
+# 保留換行符
+lines = text.splitlines(keepends=True)
+print(lines)  # ['line1\n', 'line2\n', 'line3']
+</code></pre>
+
+            <h3>字串格式化進階</h3>
+            <pre><code class="language-python"># === f-string（Python 3.6+，推薦使用） ===
+name = "Alice"
+age = 25
+score = 95.5
+
+# 基本使用
+print(f"我是 {name}，今年 {age} 歲")
+
+# 運算式
+print(f"明年我就 {age + 1} 歲了")
+print(f"及格了嗎？{score >= 60}")
+
+# 呼叫方法
+text = "hello"
+print(f"大寫：{text.upper()}")
+
+
+# === 數字格式化 ===
+pi = 3.14159265359
+
+# 小數位數
+print(f"圓周率：{pi:.2f}")        # 3.14（2位小數）
+print(f"圓周率：{pi:.4f}")        # 3.1416（4位小數）
+print(f"圓周率：{pi:.6f}")        # 3.141593（6位小數）
+
+# 千分位分隔
+number = 1234567
+print(f"數字：{number:,}")        # 1,234,567
+print(f"數字：{number:_}")        # 1_234_567（底線分隔）
+
+# 百分比
+ratio = 0.755
+print(f"比例：{ratio:.1%}")       # 75.5%
+print(f"比例：{ratio:.2%}")       # 75.50%
+
+# 科學記號
+big_number = 123456789
+print(f"科學記號：{big_number:.2e}")  # 1.23e+08
+
+
+# === 對齊與填充 ===
+text = "Python"
+
+# 左對齊（預設）
+print(f"'{text:<20}'")         # 'Python              '
+
+# 右對齊
+print(f"'{text:>20}'")         # '              Python'
+
+# 置中
+print(f"'{text:^20}'")         # '       Python       '
+
+# 指定填充字元
+print(f"'{text:*<20}'")        # 'Python**************'
+print(f"'{text:*>20}'")        # '**************Python'
+print(f"'{text:*^20}'")        # '*******Python*******'
+
+
+# === 數字對齊 ===
+numbers = [1, 12, 123, 1234]
+
+print("數字列表：")
+for num in numbers:
+    print(f"{num:>5}")  # 右對齊，寬度5
+
+# 輸出：
+#     1
+#    12
+#   123
+#  1234
+
+
+# === 進位制轉換 ===
+number = 42
+
+print(f"十進位：{number:d}")      # 42
+print(f"二進位：{number:b}")      # 101010
+print(f"八進位：{number:o}")      # 52
+print(f"十六進位：{number:x}")    # 2a
+print(f"十六進位：{number:X}")    # 2A（大寫）
+
+# 帶前綴
+print(f"二進位：{number:#b}")     # 0b101010
+print(f"八進位：{number:#o}")     # 0o52
+print(f"十六進位：{number:#x}")   # 0x2a
+
+
+# === format() 方法 ===
+# 位置參數
+template = "我是 {}，今年 {} 歲"
+print(template.format("Bob", 30))
+
+# 指定位置
+template = "我是 {0}，今年 {1} 歲，{0} 很開心"
+print(template.format("Charlie", 28))
+
+# 使用名稱
+template = "我是 {name}，今年 {age} 歲"
+print(template.format(name="David", age=35))
+
+# 字典解包
+person = {"name": "Eve", "age": 22}
+template = "我是 {name}，今年 {age} 歲"
+print(template.format(**person))
+
+
+# === 舊式格式化（了解即可） ===
+print("我是 %s，今年 %d 歲" % ("Frank", 40))
+print("圓周率：%.2f" % 3.14159)
+</code></pre>
+
+            <h3>字串編碼與解碼</h3>
+            <pre><code class="language-python"># === 編碼與解碼 ===
+
+# 字串轉 bytes（編碼）
+text = "Hello 世界"
+bytes_utf8 = text.encode("utf-8")
+print(bytes_utf8)  # b'Hello \xe4\xb8\x96\xe7\x95\x8c'
+print(type(bytes_utf8))  # <class 'bytes'>
+
+# bytes 轉字串（解碼）
+decoded_text = bytes_utf8.decode("utf-8")
+print(decoded_text)  # Hello 世界
+print(type(decoded_text))  # <class 'str'>
+
+
+# === 不同編碼 ===
+text = "Hello 世界"
+
+# UTF-8（常用，支援所有字元）
+utf8 = text.encode("utf-8")
+print(f"UTF-8: {utf8}")
+
+# Big5（繁體中文）
+big5 = text.encode("big5")
+print(f"Big5: {big5}")
+
+# ASCII（只支援英文，中文會報錯）
+try:
+    ascii_bytes = text.encode("ascii")
+except UnicodeEncodeError as e:
+    print(f"ASCII 編碼錯誤：{e}")
+
+# 忽略錯誤
+ascii_bytes = text.encode("ascii", errors="ignore")
+print(f"ASCII (ignore): {ascii_bytes}")  # b'Hello '
+
+# 替換錯誤
+ascii_bytes = text.encode("ascii", errors="replace")
+print(f"ASCII (replace): {ascii_bytes}")  # b'Hello ??'
+
+
+# === Base64 編碼 ===
+import base64
+
+text = "Python Programming"
+
+# 編碼
+encoded = base64.b64encode(text.encode())
+print(f"Base64: {encoded}")  # b'UHl0aG9uIFByb2dyYW1taW5n'
+
+# 解碼
+decoded = base64.b64decode(encoded).decode()
+print(f"解碼: {decoded}")  # Python Programming
+
+
+# === 實用範例：URL 編碼 ===
+from urllib.parse import quote, unquote
+
+text = "Python 程式設計"
+
+# URL 編碼
+encoded = quote(text)
+print(f"URL 編碼: {encoded}")
+
+# URL 解碼
+decoded = unquote(encoded)
+print(f"URL 解碼: {decoded}")
+</code></pre>
+        </div>
+
+        <div class="content">
+            <h2>2. 正規表達式簡介</h2>
+            
+            <h3>什麼是正規表達式？</h3>
+            <p>正規表達式（Regular Expression，簡稱 Regex 或 RE）是一種強大的文字模式匹配工具，用於描述、匹配、搜尋和操作字串。</p>
+
+            <div class="regex-box">
+                <h4>正規表達式的主要用途：</h4>
+                <ul>
+                    <li><strong>驗證</strong>：檢查輸入格式是否正確（email、電話、身分證）</li>
+                    <li><strong>搜尋</strong>：在大量文字中找到特定模式</li>
+                    <li><strong>提取</strong>：從文字中提取所需資料（爬蟲）</li>
+                    <li><strong>替換</strong>：批次替換符合模式的文字</li>
+                    <li><strong>分割</strong>：按複雜規則分割字串</li>
+                </ul>
+            </div>
+
+            <div class="tip-box">
+                <strong>為什麼要學正規表達式？</strong>
+                <p>一行正規表達式可以完成數十行普通程式碼的工作！例如：</p>
+                <ul>
+                    <li>驗證 email：<code>if re.match(pattern, email)</code></li>
+                    <li>提取所有電話號碼：<code>phones = re.findall(pattern, text)</code></li>
+                    <li>清理 HTML 標籤：<code>clean = re.sub(r'&lt;[^&gt;]+&gt;', '', html)</code></li>
+                </ul>
+            </div>
+
+            <h3>第一個正規表達式</h3>
+            <pre><code class="language-python">import re
+
+# 範例 1：查找數字
+text = "我有 3 個蘋果和 5 個香蕉"
+pattern = r"\d+"  # \d 代表數字，+ 代表一個或多個
+
+numbers = re.findall(pattern, text)
+print(numbers)  # ['3', '5']
+
+
+# 範例 2：驗證 email（簡化版）
+email = "user@example.com"
+pattern = r".+@.+\..+"  # .+ 代表任意字元一個或多個
+
+if re.match(pattern, email):
+    print("email 格式正確")
+else:
+    print("email 格式錯誤")
+
+
+# 範例 3：替換文字
+text = "我的電話是 0912345678"
+pattern = r"09\d{8}"  # 09 開頭 + 8個數字
+
+result = re.sub(pattern, "09********", text)
+print(result)  # 我的電話是 09********
+</code></pre>
+
+            <div class="note-box">
+                <strong>Raw String（原始字串）：</strong>
+                <p>在 Python 中使用正規表達式時，建議使用 raw string（r"..."），這樣可以避免反斜線轉義問題。</p>
+                <pre><code class="language-python"># 不使用 raw string（需要雙重轉義）
+pattern = "\\d+"  # 需要寫兩個反斜線
+
+# 使用 raw string（推薦）
+pattern = r"\d+"  # 只需要一個反斜線
+</code></pre>
+            </div>
+        </div>
+
+        <div class="content">
+            <h2>3. 正規表達式基本語法</h2>
+            
+            <h3>字元匹配</h3>
+            <table>
+                <tr>
+                    <th>符號</th>
+                    <th>說明</th>
+                    <th>範例</th>
+                </tr>
+                <tr>
+                    <td>.</td>
+                    <td>匹配任意單一字元（換行除外）</td>
+                    <td>a.c 匹配 abc, adc, a1c</td>
+                </tr>
+                <tr>
+                    <td>\d</td>
+                    <td>匹配數字 [0-9]</td>
+                    <td>\d 匹配 0-9 任一數字</td>
+                </tr>
+                <tr>
+                    <td>\D</td>
+                    <td>匹配非數字</td>
+                    <td>\D 匹配任何非數字字元</td>
+                </tr>
+                <tr>
+                    <td>\w</td>
+                    <td>匹配字母、數字、底線 [a-zA-Z0-9_]</td>
+                    <td>\w 匹配單字字元</td>
+                </tr>
+                <tr>
+                    <td>\W</td>
+                    <td>匹配非字母、數字、底線</td>
+                    <td>\W 匹配特殊符號</td>
+                </tr>
+                <tr>
+                    <td>\s</td>
+                    <td>匹配空白字元（空格、tab、換行）</td>
+                    <td>\s 匹配任何空白</td>
+                </tr>
+                <tr>
+                    <td>\S</td>
+                    <td>匹配非空白字元</td>
+                    <td>\S 匹配非空白字元</td>
+                </tr>
+            </table>
+
+            <pre><code class="language-python">import re
+
+# . - 任意字元
+print(re.findall(r'a.c', 'abc adc a1c a c'))  # ['abc', 'adc', 'a1c', 'a c']
+
+# \d - 數字
+print(re.findall(r'\d', 'abc123xyz'))  # ['1', '2', '3']
+
+# \D - 非數字
+print(re.findall(r'\D', 'abc123xyz'))  # ['a', 'b', 'c', 'x', 'y', 'z']
+
+# \w - 單字字元
+print(re.findall(r'\w', 'hello_123!'))  # ['h', 'e', 'l', 'l', 'o', '_', '1', '2', '3']
+
+# \s - 空白字元
+print(re.findall(r'\s', 'hello world\t\n'))  # [' ', '\t', '\n']
+</code></pre>
+
+            <h3>重複次數</h3>
+            <table>
+                <tr>
+                    <th>符號</th>
+                    <th>說明</th>
+                    <th>範例</th>
+                </tr>
+                <tr>
+                    <td>*</td>
+                    <td>重複 0 次或多次</td>
+                    <td>ab*c 匹配 ac, abc, abbc, abbbc...</td>
+                </tr>
+                <tr>
+                    <td>+</td>
+                    <td>重複 1 次或多次</td>
+                    <td>ab+c 匹配 abc, abbc（不匹配 ac）</td>
+                </tr>
+                <tr>
+                    <td>?</td>
+                    <td>重複 0 次或 1 次</td>
+                    <td>ab?c 匹配 ac, abc</td>
+                </tr>
+                <tr>
+                    <td>{n}</td>
+                    <td>重複 n 次</td>
+                    <td>a{3} 匹配 aaa</td>
+                </tr>
+                <tr>
+                    <td>{n,}</td>
+                    <td>重複至少 n 次</td>
+                    <td>a{2,} 匹配 aa, aaa, aaaa...</td>
+                </tr>
+                <tr>
+                    <td>{n,m}</td>
+                    <td>重複 n 到 m 次</td>
+                    <td>a{2,4} 匹配 aa, aaa, aaaa</td>
+                </tr>
+            </table>
+
+            <pre><code class="language-python">import re
+
+# * - 0次或多次
+print(re.findall(r'ab*c', 'ac abc abbc abbbc'))  # ['ac', 'abc', 'abbc', 'abbbc']
+
+# + - 1次或多次
+print(re.findall(r'ab+c', 'ac abc abbc'))  # ['abc', 'abbc']（不包含 ac）
+
+# ? - 0次或1次
+print(re.findall(r'ab?c', 'ac abc abbc'))  # ['ac', 'abc']（不包含 abbc）
+
+# {n} - 恰好n次
+print(re.findall(r'a{3}', 'a aa aaa aaaa'))  # ['aaa', 'aaa']
+
+# {n,} - 至少n次
+print(re.findall(r'a{2,}', 'a aa aaa aaaa'))  # ['aa', 'aaa', 'aaaa']
+
+# {n,m} - n到m次
+print(re.findall(r'a{2,3}', 'a aa aaa aaaa'))  # ['aa', 'aaa', 'aaa']
+
+
+# 實用範例：匹配電話號碼
+text = "電話：0912345678，市話：02-12345678"
+# 手機：09 + 8位數字
+mobiles = re.findall(r'09\d{8}', text)
+print(f"手機：{mobiles}")  # ['0912345678']
+</code></pre>
+
+            <h3>位置匹配</h3>
+            <table>
+                <tr>
+                    <th>符號</th>
+                    <th>說明</th>
+                    <th>範例</th>
+                </tr>
+                <tr>
+                    <td>^</td>
+                    <td>字串開頭</td>
+                    <td>^hello 匹配以 hello 開頭的字串</td>
+                </tr>
+                <tr>
+                    <td>$</td>
+                    <td>字串結尾</td>
+                    <td>world$ 匹配以 world 結尾的字串</td>
+                </tr>
+                <tr>
+                    <td>\b</td>
+                    <td>單字邊界</td>
+                    <td>\bword\b 匹配獨立的 word</td>
+                </tr>
+                <tr>
+                    <td>\B</td>
+                    <td>非單字邊界</td>
+                    <td>\Bword\B 匹配 word 在字中間</td>
+                </tr>
+            </table>
+
+            <pre><code class="language-python">import re
+
+# ^ - 開頭
+print(re.match(r'^Hello', 'Hello World'))  # 匹配
+print(re.match(r'^Hello', 'World Hello'))  # 不匹配
+
+# $ - 結尾
+print(re.search(r'World$', 'Hello World'))  # 匹配
+print(re.search(r'World$', 'World Hello'))  # 不匹配
+
+# ^...$ - 完整匹配
+pattern = r'^\d{4}-\d{2}-\d{2}$'  # 完整日期格式
+print(re.match(pattern, '2025-11-23'))  # 匹配
+print(re.match(pattern, '2025-11-23 extra'))  # 不匹配
+
+
+# \b - 單字邊界
+text = "The cat is in the cathedral"
+# 匹配獨立的 cat
+print(re.findall(r'\bcat\b', text))  # ['cat']（不匹配 cathedral 中的 cat）
+
+# 不使用邊界
+print(re.findall(r'cat', text))  # ['cat', 'cat']（匹配 cathedral 中的 cat）
+</code></pre>
+
+            <h3>字元集合</h3>
+            <table>
+                <tr>
+                    <th>符號</th>
+                    <th>說明</th>
+                    <th>範例</th>
+                </tr>
+                <tr>
+                    <td>[abc]</td>
+                    <td>匹配 a、b 或 c</td>
+                    <td>[abc] 匹配這三個字元之一</td>
+                </tr>
+                <tr>
+                    <td>[a-z]</td>
+                    <td>匹配 a 到 z 的任一字母</td>
+                    <td>[a-z] 匹配小寫字母</td>
+                </tr>
+                <tr>
+                    <td>[A-Z]</td>
+                    <td>匹配 A 到 Z 的任一字母</td>
+                    <td>[A-Z] 匹配大寫字母</td>
+                </tr>
+                <tr>
+                    <td>[0-9]</td>
+                    <td>匹配 0 到 9 的任一數字</td>
+                    <td>[0-9] 等同於 \d</td>
+                </tr>
+                <tr>
+                    <td>[^abc]</td>
+                    <td>匹配除了 a、b、c 之外的字元</td>
+                    <td>[^0-9] 匹配非數字</td>
+                </tr>
+            </table>
+
+            <pre><code class="language-python">import re
+
+# [abc] - 字元集合
+print(re.findall(r'[aeiou]', 'hello world'))  # ['e', 'o', 'o']（母音）
+
+# [a-z] - 範圍
+print(re.findall(r'[a-z]+', 'Hello World 123'))  # ['ello', 'orld']
+
+# [A-Z] - 大寫
+print(re.findall(r'[A-Z]+', 'Hello World'))  # ['H', 'W']
+
+# [a-zA-Z] - 所有字母
+print(re.findall(r'[a-zA-Z]+', 'Hello123World'))  # ['Hello', 'World']
+
+# [0-9] - 數字
+print(re.findall(r'[0-9]+', 'abc123xyz456'))  # ['123', '456']
+
+# [^...] - 排除
+print(re.findall(r'[^0-9]+', 'abc123xyz'))  # ['abc', 'xyz']（非數字）
+
+
+# 複雜範例：匹配變數名稱（字母、數字、底線，不能以數字開頭）
+pattern = r'[a-zA-Z_][a-zA-Z0-9_]*'
+text = "var1 _var2 2var invalid-var valid_var"
+print(re.findall(pattern, text))  # ['var1', '_var2', 'var', 'invalid', 'var', 'valid_var']
+</code></pre>
+        </div>
+
+        <div class="content">
+            <h2>4. re 模組基本使用</h2>
+            
+            <h3>主要函數</h3>
+
+            <h4>match() - 從開頭匹配</h4>
+            <pre><code class="language-python">import re
+
+# match() 只從字串開頭匹配
+pattern = r"Hello"
+text1 = "Hello World"
+text2 = "World Hello"
+
+result1 = re.match(pattern, text1)
+result2 = re.match(pattern, text2)
+
+if result1:
+    print(f"text1 匹配成功：{result1.group()}")  # Hello
+else:
+    print("text1 匹配失敗")
+
+if result2:
+    print(f"text2 匹配成功：{result2.group()}")
+else:
+    print("text2 匹配失敗")  # 會印這個（因為不是從開頭開始）
+
+
+# 實用範例：驗證格式
+def validate_phone(phone):
+    """驗證手機號碼格式"""
+    pattern = r'^09\d{8}$'
+    return re.match(pattern, phone) is not None
+
+print(validate_phone("0912345678"))  # True
+print(validate_phone("0812345678"))  # False
+print(validate_phone("091234567"))   # False（太短）
+</code></pre>
+
+            <h4>search() - 搜尋整個字串</h4>
+            <pre><code class="language-python">import re
+
+# search() 搜尋整個字串，找到第一個匹配
+pattern = r"World"
+text = "Hello World, Beautiful World"
+
+result = re.search(pattern, text)
+if result:
+    print(f"找到：{result.group()}")  # World
+    print(f"位置：{result.start()}-{result.end()}")  # 6-11
+else:
+    print("找不到")
+
+
+# 實用範例：檢查是否包含
+def contains_email(text):
+    """檢查文字中是否包含 email"""
+    pattern = r'[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}'
+    return re.search(pattern, text) is not None
+
+text1 = "聯絡我：user@example.com"
+text2 = "沒有 email 在這裡"
+
+print(contains_email(text1))  # True
+print(contains_email(text2))  # False
+</code></pre>
+
+            <h4>findall() - 找出所有匹配</h4>
+            <pre><code class="language-python">import re
+
+# findall() 返回所有匹配的列表
+pattern = r"\d+"  # 一個或多個數字
+text = "我有 3 個蘋果、5 個香蕉和 10 個橘子"
+
+numbers = re.findall(pattern, text)
+print(numbers)  # ['3', '5', '10']
+
+# 轉換為整數並計算
+total = sum(int(n) for n in numbers)
+print(f"總共：{total} 個水果")  # 18
+
+
+# 實用範例：提取所有 email
+def extract_emails(text):
+    """從文字中提取所有 email"""
+    pattern = r'[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}'
+    return re.findall(pattern, text)
+
+text = """
+聯絡方式：
+客服：support@example.com
+業務：sales@example.com
+技術：tech@example.org
+"""
+
+emails = extract_emails(text)
+for email in emails:
+    print(email)
+</code></pre>
+
+            <h4>finditer() - 返回迭代器</h4>
+            <pre><code class="language-python">import re
+
+# finditer() 返回匹配物件的迭代器，可以獲取更多資訊
+pattern = r"\d+"
+text = "電話：0912345678，郵遞區號：100"
+
+for match in re.finditer(pattern, text):
+    print(f"找到：{match.group()}")
+    print(f"位置：{match.start()}-{match.end()}")
+    print()
+
+# 輸出：
+# 找到：0912345678
+# 位置：3-13
+#
+# 找到：100
+# 位置：19-22
+</code></pre>
+
+            <h4>sub() - 替換</h4>
+            <pre><code class="language-python">import re
+
+# sub() 替換所有匹配
+pattern = r"\d+"
+text = "我今年 25 歲，身高 175 公分"
+
+# 替換為固定文字
+result = re.sub(pattern, "XX", text)
+print(result)  # 我今年 XX 歲，身高 XX 公分
+
+# 限制替換次數
+result = re.sub(pattern, "XX", text, count=1)
+print(result)  # 我今年 XX 歲，身高 175 公分
+
+
+# 實用範例：隱藏電話號碼
+def mask_phone(text):
+    """隱藏電話號碼的部分數字"""
+    pattern = r'09\d{8}'
+    return re.sub(pattern, lambda m: m.group(0)[:4] + '****' + m.group(0)[-2:], text)
+
+text = "我的電話是 0912345678"
+print(mask_phone(text))  # 我的電話是 0912****78
+</code></pre>
+
+            <h4>split() - 分割</h4>
+            <pre><code class="language-python">import re
+
+# split() 按模式分割字串
+pattern = r"[,，]"  # 逗號或中文逗號
+text = "apple,banana，orange,grape"
+
+fruits = re.split(pattern, text)
+print(fruits)  # ['apple', 'banana', 'orange', 'grape']
+
+
+# 多種分隔符
+pattern = r"[,;|\t\n]"  # 逗號、分號、|、tab、換行
+text = "apple,banana;orange|grape\tmelon\nkiwi"
+
+parts = re.split(pattern, text)
+print(parts)  # ['apple', 'banana', 'orange', 'grape', 'melon', 'kiwi']
+
+
+# 限制分割次數
+pattern = r","
+text = "a,b,c,d,e"
+parts = re.split(pattern, text, maxsplit=2)
+print(parts)  # ['a', 'b', 'c,d,e']
+</code></pre>
+
+            <h3>編譯正規表達式</h3>
+            <pre><code class="language-python">import re
+
+# 如果要多次使用同一個模式，可以先編譯
+pattern = re.compile(r'\d+')
+
+text1 = "我有 3 個蘋果"
+text2 = "你有 5 個香蕉"
+
+# 使用編譯後的模式
+numbers1 = pattern.findall(text1)
+numbers2 = pattern.findall(text2)
+
+print(numbers1)  # ['3']
+print(numbers2)  # ['5']
+
+
+# 帶選項的編譯
+# re.IGNORECASE - 忽略大小寫
+pattern = re.compile(r'hello', re.IGNORECASE)
+print(pattern.findall('Hello HELLO hello'))  # ['Hello', 'HELLO', 'hello']
+
+# re.MULTILINE - 多行模式（^ 和 $ 匹配每行的開頭和結尾）
+pattern = re.compile(r'^Hello', re.MULTILINE)
+text = """Hello World
+Goodbye
+Hello Again"""
+print(pattern.findall(text))  # ['Hello', 'Hello']
+</code></pre>
+        </div>
+
+        <div class="content">
+            <h2>本週 Part 1 總結</h2>
+            
+            <h3>重點回顧</h3>
+            <ul>
+                <li>✅ 掌握字串進階操作方法</li>
+                <li>✅ 熟悉 f-string 格式化技巧</li>
+                <li>✅ 了解字串編碼與解碼</li>
+                <li>✅ 理解正規表達式的概念與用途</li>
+                <li>✅ 學會基本正規表達式語法</li>
+                <li>✅ 熟悉 re 模組的主要函數</li>
+                <li>✅ 能夠編寫簡單的匹配模式</li>
+            </ul>
+
+            <h3>下一部分預告</h3>
+            <div class="note-box">
+                <h4>Week 8 Part 2 - 正規表達式進階與實戰</h4>
+                <p>下一部分將學習：</p>
+                <ul>
+                    <li>常用正規表達式模式（email、電話、日期等）</li>
+                    <li>群組與捕獲</li>
+                    <li>進階替換技巧</li>
+                    <li>實用文字處理範例</li>
+                    <li>網頁爬蟲入門</li>
+                    <li>完整練習題</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="nav-buttons">
+            <a href="python-week7.html" class="btn btn-secondary">← Week 7</a>
+            <a href="python-week8-part2.html" class="btn">Part 2：正規表達式進階 →</a>
+        </div>
+
+        <footer style="text-align: center; padding: 30px 0; color: #7f8c8d; margin-top: 50px; border-top: 1px solid #ddd;">
+            <p style="margin: 10px 0;">Python 程式設計 Week 8 Part 1</p>
+            <p style="margin: 10px 0; font-size: 0.9em;">字串處理 · 正規表達式基礎 · re 模組</p>
+            <p style="margin: 10px 0; font-size: 0.85em; color: #95a5a6;">© 2025 All Rights Reserved</p>
+        </footer>
+    </div>
+</body>
+</html>

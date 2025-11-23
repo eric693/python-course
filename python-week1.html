@@ -1,0 +1,1195 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Week 1 - 開發環境與基礎語法 | Python 程式設計</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Microsoft JhengHei', Arial, sans-serif;
+            background: linear-gradient(to bottom, #f5f7fa 0%, #c3cfe2 100%);
+            color: #2c3e50;
+            line-height: 1.7;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .nav {
+            background: white;
+            padding: 15px 25px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .nav a {
+            color: #3776ab;
+            text-decoration: none;
+            font-weight: 600;
+            padding: 8px 16px;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+
+        .nav a:hover {
+            background: #3776ab;
+            color: white;
+        }
+
+        header {
+            background: linear-gradient(135deg, #3776ab 0%, #ffd343 100%);
+            color: white;
+            padding: 50px 40px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        header .subtitle {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .content {
+            background: white;
+            border-radius: 8px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .content h2 {
+            color: #2c3e50;
+            font-size: 2em;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #3776ab;
+        }
+
+        .content h3 {
+            color: #34495e;
+            font-size: 1.5em;
+            margin: 30px 0 15px 0;
+        }
+
+        .content h4 {
+            color: #34495e;
+            font-size: 1.2em;
+            margin: 20px 0 10px 0;
+        }
+
+        .code-block {
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 20px;
+            border-radius: 4px;
+            font-family: 'Consolas', 'Courier New', monospace;
+            font-size: 0.95em;
+            overflow-x: auto;
+            margin: 20px 0;
+            line-height: 1.8;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .note-box {
+            background: #e8f4f8;
+            border-left: 4px solid #3776ab;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .warning-box {
+            background: #fff8e1;
+            border-left: 4px solid #ffa726;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .tip-box {
+            background: #e8f5e9;
+            border-left: 4px solid #66bb6a;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .exercise-section {
+            background: #f8f9fa;
+            border: 2px solid #3776ab;
+            padding: 30px;
+            margin: 30px 0;
+            border-radius: 8px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        table th,
+        table td {
+            padding: 12px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+
+        table th {
+            background: #3776ab;
+            color: white;
+            font-weight: 600;
+        }
+
+        table tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        ul, ol {
+            margin-left: 30px;
+            margin-top: 10px;
+        }
+
+        li {
+            margin: 8px 0;
+        }
+
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 40px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background: #3776ab;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            background: #2d5a8a;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        .btn-secondary {
+            background: #95a5a6;
+        }
+
+        .btn-secondary:hover {
+            background: #7f8c8d;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="nav">
+            <a href="../python-index.html">← 回首頁</a>
+            <span style="color: #7f8c8d; font-weight: 600;">Week 1 / 16</span>
+            <a href="week2.html">Week 2 →</a>
+        </div>
+
+        <header>
+            <h1>Week 1 - 開發環境與基礎語法</h1>
+            <div class="subtitle">學習目標：安裝 Python、理解基本語法、掌握資料型態與基本運算</div>
+        </header>
+
+        <div class="content">
+            <h2>本週學習內容</h2>
+            <ul>
+                <li>Python 簡介與特色</li>
+                <li>開發環境安裝與設定</li>
+                <li>第一個 Python 程式</li>
+                <li>變數與資料型態</li>
+                <li>基本運算符</li>
+                <li>輸入輸出函數</li>
+                <li>註解與編碼風格</li>
+                <li>常見錯誤與除錯</li>
+            </ul>
+        </div>
+
+        <div class="content">
+            <h2>1. Python 簡介</h2>
+            
+            <h3>Python 的歷史</h3>
+            <p>Python 由 Guido van Rossum 於 1991 年創建，是一種高階、直譯式、物件導向的程式語言。Python 強調程式碼的可讀性，使用簡潔的語法，讓程式設計師可以用更少的程式碼表達想法。</p>
+
+            <h3>為什麼學習 Python？</h3>
+            <ul>
+                <li><strong>易於學習</strong>：語法簡潔明瞭，接近自然語言，適合初學者</li>
+                <li><strong>應用廣泛</strong>：Web 開發、資料科學、機器學習、自動化、遊戲開發等</li>
+                <li><strong>豐富的生態系</strong>：有超過 30 萬個第三方套件可以使用</li>
+                <li><strong>跨平台</strong>：可在 Windows、macOS、Linux 等系統上執行</li>
+                <li><strong>社群活躍</strong>：龐大的開發者社群，容易找到學習資源</li>
+                <li><strong>職涯發展</strong>：是目前最受歡迎的程式語言之一</li>
+            </ul>
+
+            <h3>Python 的應用領域</h3>
+            <table>
+                <tr>
+                    <th>領域</th>
+                    <th>應用</th>
+                    <th>常用套件</th>
+                </tr>
+                <tr>
+                    <td>Web 開發</td>
+                    <td>網站、API 開發</td>
+                    <td>Django, Flask, FastAPI</td>
+                </tr>
+                <tr>
+                    <td>資料科學</td>
+                    <td>資料分析、視覺化</td>
+                    <td>Pandas, NumPy, Matplotlib</td>
+                </tr>
+                <tr>
+                    <td>機器學習</td>
+                    <td>AI、深度學習</td>
+                    <td>TensorFlow, PyTorch, scikit-learn</td>
+                </tr>
+                <tr>
+                    <td>自動化</td>
+                    <td>腳本、爬蟲</td>
+                    <td>Selenium, Beautiful Soup, Requests</td>
+                </tr>
+                <tr>
+                    <td>遊戲開發</td>
+                    <td>2D 遊戲</td>
+                    <td>Pygame</td>
+                </tr>
+                <tr>
+                    <td>科學運算</td>
+                    <td>數值計算、模擬</td>
+                    <td>SciPy, SymPy</td>
+                </tr>
+            </table>
+
+            <h3>Python 的特點</h3>
+            <h4>優點：</h4>
+            <ul>
+                <li>語法簡潔優雅，易於閱讀和維護</li>
+                <li>開發速度快，提高生產力</li>
+                <li>豐富的標準函式庫和第三方套件</li>
+                <li>支援多種程式設計範式（物件導向、函數式等）</li>
+                <li>自動記憶體管理（垃圾回收機制）</li>
+                <li>強大的社群支援</li>
+            </ul>
+
+            <h4>需要注意：</h4>
+            <ul>
+                <li>執行速度相對較慢（相比 C/C++）</li>
+                <li>縮排是語法的一部分，需要特別注意</li>
+                <li>動態型態可能導致執行時錯誤</li>
+                <li>不適合開發手機應用程式</li>
+            </ul>
+        </div>
+
+        <div class="content">
+            <h2>2. 開發環境安裝</h2>
+
+            <h3>安裝 Python</h3>
+            
+            <h4>Windows 系統</h4>
+            <ol>
+                <li>前往 Python 官網：https://www.python.org/</li>
+                <li>點擊「Downloads」下載最新版本（建議 Python 3.8 以上）</li>
+                <li>執行安裝程式</li>
+                <li><strong>重要：勾選「Add Python to PATH」</strong></li>
+                <li>點擊「Install Now」</li>
+                <li>安裝完成後，開啟命令提示字元（cmd）</li>
+                <li>輸入 <code>python --version</code> 確認安裝成功</li>
+            </ol>
+
+            <div class="warning-box">
+                <strong>重要提醒：</strong>
+                <p>安裝時務必勾選「Add Python to PATH」，否則需要手動設定環境變數。</p>
+            </div>
+
+            <h4>macOS 系統</h4>
+            <div class="code-block"># 方法一：使用 Homebrew（推薦）
+# 先安裝 Homebrew（如果還沒安裝）
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+
+# 安裝 Python
+brew install python3
+
+# 驗證安裝
+python3 --version
+pip3 --version
+
+
+# 方法二：從官網下載安裝
+# 前往 python.org 下載 macOS 安裝程式
+# 執行 .pkg 檔案並按照指示安裝</div>
+
+            <h4>Linux 系統</h4>
+            <div class="code-block"># Ubuntu / Debian
+sudo apt update
+sudo apt install python3 python3-pip
+
+# Fedora
+sudo dnf install python3 python3-pip
+
+# Arch Linux
+sudo pacman -S python python-pip
+
+# 驗證安裝
+python3 --version
+pip3 --version</div>
+
+            <h3>選擇開發工具</h3>
+            
+            <h4>1. IDLE（Python 內建）</h4>
+            <ul>
+                <li>優點：隨 Python 一起安裝，無需額外設定</li>
+                <li>缺點：功能較陽春</li>
+                <li>適合：初學者快速上手</li>
+            </ul>
+
+            <h4>2. Visual Studio Code（推薦）</h4>
+            <ul>
+                <li>下載：https://code.visualstudio.com/</li>
+                <li>安裝 Python 擴充套件</li>
+                <li>優點：輕量、功能強大、免費</li>
+                <li>適合：各階段學習者</li>
+            </ul>
+
+            <h4>3. PyCharm</h4>
+            <ul>
+                <li>Community Edition（免費）</li>
+                <li>Professional Edition（付費，學生可免費）</li>
+                <li>優點：專業的 Python IDE，功能完整</li>
+                <li>適合：進階開發</li>
+            </ul>
+
+            <h4>4. Jupyter Notebook</h4>
+            <ul>
+                <li>安裝：<code>pip install jupyter</code></li>
+                <li>優點：互動式開發，適合資料分析</li>
+                <li>適合：資料科學、教學</li>
+            </ul>
+
+            <h3>驗證安裝</h3>
+            <div class="code-block"># 開啟終端機或命令提示字元
+
+# 檢查 Python 版本
+python --version
+# 或
+python3 --version
+
+# 檢查 pip 版本
+pip --version
+# 或
+pip3 --version
+
+# 進入 Python 互動模式
+python
+# 或
+python3
+
+# 在互動模式中測試
+>>> print("Hello, Python!")
+Hello, Python!
+
+# 離開互動模式
+>>> exit()</div>
+
+            <div class="tip-box">
+                <strong>Windows 使用者注意：</strong>
+                <p>在 Windows 上，通常使用 <code>python</code> 和 <code>pip</code>。<br>
+                在 macOS/Linux 上，可能需要使用 <code>python3</code> 和 <code>pip3</code>。</p>
+            </div>
+        </div>
+
+        <div class="content">
+            <h2>3. 第一個 Python 程式</h2>
+
+            <h3>Hello World</h3>
+            <div class="code-block">print("Hello, World!")</div>
+
+            <p>就這麼簡單！Python 的第一個程式只需要一行。</p>
+
+            <h3>執行 Python 程式的三種方式</h3>
+
+            <h4>方式一：互動模式（REPL）</h4>
+            <div class="code-block"># 開啟終端機，輸入 python 進入互動模式
+$ python
+
+>>> print("Hello, World!")
+Hello, World!
+
+>>> 2 + 3
+5
+
+>>> exit()  # 離開互動模式</div>
+
+            <h4>方式二：腳本檔案</h4>
+            <div class="code-block"># 1. 建立檔案 hello.py
+# 2. 在檔案中寫入：
+print("Hello, World!")
+
+# 3. 在終端機執行
+python hello.py
+
+# 輸出：
+Hello, World!</div>
+
+            <h4>方式三：使用 IDE</h4>
+            <ul>
+                <li>在 VS Code 或 PyCharm 中建立 .py 檔案</li>
+                <li>撰寫程式碼</li>
+                <li>按 F5 或點擊執行按鈕</li>
+            </ul>
+
+            <h3>Python 程式結構</h3>
+            <div class="code-block"># 這是註解，不會被執行
+
+# 匯入模組（如果需要）
+import math
+
+# 定義變數
+message = "Hello, Python!"
+
+# 執行運算
+result = 10 + 20
+
+# 輸出結果
+print(message)
+print("10 + 20 =", result)</div>
+
+            <div class="note-box">
+                <strong>Python 的特色：</strong>
+                <ul>
+                    <li>不需要宣告變數型態</li>
+                    <li>不需要分號結尾</li>
+                    <li>使用縮排表示程式碼區塊</li>
+                    <li>大小寫敏感（Hello 和 hello 是不同的）</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="content">
+            <h2>4. 變數與資料型態</h2>
+
+            <h3>變數宣告</h3>
+            <div class="code-block"># Python 變數不需要事先宣告型態
+name = "Alice"
+age = 25
+height = 165.5
+is_student = True
+
+# 可以同時賦值多個變數
+x, y, z = 1, 2, 3
+
+# 多個變數賦予相同的值
+a = b = c = 0
+
+# 變數命名規則
+user_name = "Bob"      # 使用底線分隔（推薦）
+userName = "Charlie"   # 駝峰式命名
+_private = "secret"    # 開頭底線表示私有變數
+MAX_SIZE = 100         # 常數使用全大寫</div>
+
+            <h3>基本資料型態</h3>
+            
+            <h4>數值型態</h4>
+            <div class="code-block"># 整數 (int)
+age = 25
+population = 1000000
+negative = -50
+
+# 浮點數 (float)
+pi = 3.14159
+price = 99.99
+scientific = 1.5e-4  # 科學記號：0.00015
+
+# 複數 (complex)
+complex_num = 3 + 4j
+
+# 查看型態
+print(type(age))        # <class 'int'>
+print(type(pi))         # <class 'float'>
+print(type(complex_num)) # <class 'complex'></div>
+
+            <h4>字串 (str)</h4>
+            <div class="code-block"># 單引號或雙引號都可以
+name1 = 'Alice'
+name2 = "Bob"
+
+# 多行字串使用三引號
+message = """這是一個
+多行字串
+可以跨越多行"""
+
+# 字串運算
+greeting = "Hello" + " " + "World"  # 連接
+repeat = "Ha" * 3                    # 重複：HaHaHa
+
+# 字串索引
+text = "Python"
+print(text[0])    # P（第一個字元）
+print(text[-1])   # n（最後一個字元）
+print(text[0:3])  # Pyt（切片）</div>
+
+            <h4>布林值 (bool)</h4>
+            <div class="code-block"># 只有 True 和 False 兩個值（注意大小寫）
+is_active = True
+is_completed = False
+
+# 比較運算會產生布林值
+result1 = 10 > 5      # True
+result2 = 3 == 3      # True
+result3 = "a" != "b"  # True</div>
+
+            <h4>None（空值）</h4>
+            <div class="code-block"># None 表示「沒有值」或「空值」
+result = None
+
+# 檢查是否為 None
+if result is None:
+    print("result 是空值")</div>
+
+            <h3>型態轉換</h3>
+            <div class="code-block"># 轉換成整數
+num1 = int("123")      # 字串轉整數：123
+num2 = int(45.8)       # 浮點數轉整數：45（無條件捨去）
+
+# 轉換成浮點數
+num3 = float("3.14")   # 字串轉浮點數：3.14
+num4 = float(10)       # 整數轉浮點數：10.0
+
+# 轉換成字串
+text1 = str(123)       # 整數轉字串："123"
+text2 = str(3.14)      # 浮點數轉字串："3.14"
+
+# 轉換成布林值
+bool1 = bool(1)        # True
+bool2 = bool(0)        # False
+bool3 = bool("")       # False（空字串）
+bool4 = bool("text")   # True（非空字串）</div>
+
+            <div class="warning-box">
+                <strong>型態轉換注意事項：</strong>
+                <ul>
+                    <li>不是所有字串都能轉換成數字，如 int("abc") 會產生錯誤</li>
+                    <li>浮點數轉整數會直接捨去小數部分，不會四捨五入</li>
+                    <li>數字 0、空字串、None 轉換成布林值都是 False</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="content">
+            <h2>5. 基本運算符</h2>
+
+            <h3>算術運算符</h3>
+            <div class="code-block"># 基本運算
+a = 10
+b = 3
+
+print(a + b)   # 加法：13
+print(a - b)   # 減法：7
+print(a * b)   # 乘法：30
+print(a / b)   # 除法：3.3333...（結果是浮點數）
+print(a // b)  # 整除：3（無條件捨去）
+print(a % b)   # 餘數：1
+print(a ** b)  # 次方：1000 (10的3次方)
+
+# 複合運算
+x = 10
+x += 5   # x = x + 5，結果：15
+x -= 3   # x = x - 3，結果：12
+x *= 2   # x = x * 2，結果：24
+x /= 4   # x = x / 4，結果：6.0
+x //= 2  # x = x // 2，結果：3.0
+x %= 2   # x = x % 2，結果：1.0
+x **= 3  # x = x ** 3，結果：1.0</div>
+
+            <h3>比較運算符</h3>
+            <div class="code-block">a = 10
+b = 5
+
+print(a == b)   # 等於：False
+print(a != b)   # 不等於：True
+print(a > b)    # 大於：True
+print(a < b)    # 小於：False
+print(a >= b)   # 大於等於：True
+print(a <= b)   # 小於等於：False
+
+# 字串比較
+print("apple" < "banana")  # True（按字母順序）
+print("10" > "2")          # False（字串比較，非數字比較）</div>
+
+            <h3>邏輯運算符</h3>
+            <div class="code-block"># and（且）：兩個都要為 True
+print(True and True)    # True
+print(True and False)   # False
+
+# or（或）：至少一個為 True
+print(True or False)    # True
+print(False or False)   # False
+
+# not（非）：反轉布林值
+print(not True)         # False
+print(not False)        # True
+
+# 實際應用
+age = 20
+has_license = True
+
+# 檢查是否可以開車：年齡 >= 18 且 有駕照
+can_drive = age >= 18 and has_license
+print(can_drive)  # True</div>
+
+            <h3>運算優先順序</h3>
+            <table>
+                <tr>
+                    <th>優先級</th>
+                    <th>運算符</th>
+                    <th>說明</th>
+                </tr>
+                <tr>
+                    <td>1（最高）</td>
+                    <td>**</td>
+                    <td>指數</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>*, /, //, %</td>
+                    <td>乘除餘</td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td>+, -</td>
+                    <td>加減</td>
+                </tr>
+                <tr>
+                    <td>4</td>
+                    <td>&lt;, &lt;=, &gt;, &gt;=, ==, !=</td>
+                    <td>比較運算符</td>
+                </tr>
+                <tr>
+                    <td>5</td>
+                    <td>not</td>
+                    <td>邏輯 NOT</td>
+                </tr>
+                <tr>
+                    <td>6</td>
+                    <td>and</td>
+                    <td>邏輯 AND</td>
+                </tr>
+                <tr>
+                    <td>7（最低）</td>
+                    <td>or</td>
+                    <td>邏輯 OR</td>
+                </tr>
+            </table>
+
+            <div class="code-block"># 運算優先級範例
+result = 2 + 3 * 4      # 14（先乘後加）
+result = (2 + 3) * 4    # 20（括號優先）
+result = 2 ** 3 ** 2    # 512（右結合：2 ** (3 ** 2) = 2 ** 9）
+result = 10 > 5 and 3 < 7  # True
+
+# 建議：不確定時使用括號
+result = (10 > 5) and (3 < 7)  # 更清楚</div>
+        </div>
+
+        <div class="content">
+            <h2>6. 輸入與輸出</h2>
+
+            <h3>輸出：print() 函數</h3>
+            <div class="code-block"># 基本輸出
+print("Hello, World!")
+
+# 輸出多個值
+print("我的名字是", "Alice", "年齡是", 25)
+
+# 指定分隔符
+print("Apple", "Banana", "Cherry", sep=", ")
+# 輸出：Apple, Banana, Cherry
+
+# 指定結尾符號（預設是換行）
+print("Hello", end=" ")
+print("World")
+# 輸出：Hello World
+
+# 格式化輸出
+name = "Bob"
+age = 30
+
+# 方法一：使用 f-string（推薦，Python 3.6+）
+print(f"我的名字是 {name}，年齡是 {age}")
+
+# 方法二：使用 format()
+print("我的名字是 {}，年齡是 {}".format(name, age))
+
+# 方法三：使用 % 格式化（舊式）
+print("我的名字是 %s，年齡是 %d" % (name, age))
+
+# 格式化數字
+pi = 3.14159
+print(f"圓周率約為 {pi:.2f}")  # 保留兩位小數：3.14
+print(f"百分比：{0.856:.1%}")   # 百分比：85.6%
+
+# 對齊輸出
+print(f"{'Name':<10} {'Age':>5}")  # 左對齊、右對齊
+print(f"{'Alice':<10} {25:>5}")
+print(f"{'Bob':<10} {30:>5}")</div>
+
+            <h3>輸入：input() 函數</h3>
+            <div class="code-block"># 基本輸入（返回字串）
+name = input("請輸入你的名字：")
+print("你好，" + name)
+
+# 輸入數字需要型態轉換
+age_str = input("請輸入你的年齡：")
+age = int(age_str)  # 轉換成整數
+print("明年你就", age + 1, "歲了")
+
+# 簡化寫法
+age = int(input("請輸入你的年齡："))
+
+# 輸入浮點數
+height = float(input("請輸入你的身高（公分）："))
+print(f"你的身高是 {height} 公分")
+
+# 輸入多個值
+data = input("請輸入三個數字（用空格分隔）：")
+a, b, c = data.split()  # 分割字串
+print(f"你輸入的數字是：{a}, {b}, {c}")</div>
+
+            <div class="warning-box">
+                <strong>input() 注意事項：</strong>
+                <ul>
+                    <li>input() 永遠返回字串型態</li>
+                    <li>如果需要數字，必須使用 int() 或 float() 轉換</li>
+                    <li>轉換時如果輸入格式錯誤會產生錯誤</li>
+                </ul>
+            </div>
+
+            <h3>完整範例</h3>
+            <div class="code-block"># 簡單的計算機程式
+print("=== 簡單計算機 ===")
+
+# 輸入兩個數字
+num1 = float(input("請輸入第一個數字："))
+num2 = float(input("請輸入第二個數字："))
+
+# 計算
+sum_result = num1 + num2
+diff_result = num1 - num2
+prod_result = num1 * num2
+div_result = num1 / num2 if num2 != 0 else "無法除以零"
+
+# 輸出結果
+print(f"\n計算結果：")
+print(f"{num1} + {num2} = {sum_result}")
+print(f"{num1} - {num2} = {diff_result}")
+print(f"{num1} × {num2} = {prod_result}")
+print(f"{num1} ÷ {num2} = {div_result}")</div>
+        </div>
+
+        <div class="content">
+            <h2>7. 註解與編碼風格</h2>
+
+            <h3>註解</h3>
+            <div class="code-block"># 這是單行註解
+# Python 使用 # 符號表示註解
+
+# 可以在程式碼後面加註解
+x = 10  # 設定 x 的值為 10
+
+"""
+這是多行註解
+可以跨越多行
+通常用於函數或模組的說明文件
+"""
+
+'''
+也可以使用單引號
+建立多行註解
+'''
+
+# 好的註解範例
+def calculate_bmi(weight, height):
+    """
+    計算 BMI 值
+    
+    參數:
+        weight: 體重（公斤）
+        height: 身高（公尺）
+    
+    返回:
+        BMI 值（浮點數）
+    """
+    return weight / (height ** 2)</div>
+
+            <h3>編碼風格（PEP 8）</h3>
+            
+            <h4>命名規則</h4>
+            <div class="code-block"># 變數和函數：使用小寫字母和底線
+user_name = "Alice"
+total_count = 100
+
+def calculate_total():
+    pass
+
+# 常數：全部大寫
+MAX_SIZE = 100
+PI = 3.14159
+
+# 類別：使用駝峰式命名（每個單字首字母大寫）
+class StudentManager:
+    pass
+
+# 私有變數：開頭使用底線
+_private_var = "secret"
+
+# 避免使用的名稱
+# l（小寫 L）、O（大寫 O）、I（大寫 i）容易混淆</div>
+
+            <h4>縮排</h4>
+            <div class="code-block"># Python 使用縮排表示程式碼區塊
+# 建議使用 4 個空格（不要使用 Tab）
+
+# 正確的縮排
+if True:
+    print("這是縮排的程式碼")
+    print("同一層級的程式碼")
+
+# 巢狀縮排
+if True:
+    print("第一層")
+    if True:
+        print("第二層")
+        if True:
+            print("第三層")</div>
+
+            <h4>空白</h4>
+            <div class="code-block"># 運算符兩側加空格
+x = 10 + 20  # 正確
+x=10+20      # 不推薦
+
+# 逗號後面加空格
+items = [1, 2, 3, 4]  # 正確
+items = [1,2,3,4]     # 不推薦
+
+# 函數參數
+def greet(name, age):  # 正確
+    pass
+
+# 不要在括號內加空格
+print("Hello")   # 正確
+print( "Hello" ) # 不推薦</div>
+
+            <h4>每行長度</h4>
+            <div class="code-block"># 每行不超過 79 個字元
+# 如果太長，可以使用反斜線或括號換行
+
+# 方法一：使用反斜線
+total = very_long_variable_name + \
+        another_long_variable_name + \
+        yet_another_variable
+
+# 方法二：使用括號
+total = (very_long_variable_name +
+         another_long_variable_name +
+         yet_another_variable)
+
+# 方法三：字串換行
+message = ("這是一個很長的訊息，"
+           "我們把它分成多行"
+           "讓程式碼更容易閱讀")</div>
+
+            <div class="tip-box">
+                <strong>良好的編碼習慣：</strong>
+                <ul>
+                    <li>使用有意義的變數名稱</li>
+                    <li>保持一致的縮排（建議 4 個空格）</li>
+                    <li>適當添加註解說明複雜邏輯</li>
+                    <li>每行不要太長（建議不超過 79 字元）</li>
+                    <li>函數之間空兩行，類別定義之間空兩行</li>
+                    <li>使用空行分隔邏輯區塊</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="content">
+            <h2>8. 常見錯誤與除錯</h2>
+
+            <h3>語法錯誤（SyntaxError）</h3>
+            <div class="code-block"># 錯誤：忘記冒號
+if x > 5
+    print("x 大於 5")
+
+# 正確
+if x > 5:
+    print("x 大於 5")
+
+
+# 錯誤：縮排不一致
+if True:
+    print("第一行")
+      print("第二行")  # 縮排不一致
+
+# 正確
+if True:
+    print("第一行")
+    print("第二行")
+
+
+# 錯誤：引號不匹配
+text = "Hello'
+
+# 正確
+text = "Hello"
+# 或
+text = 'Hello'</div>
+
+            <h3>名稱錯誤（NameError）</h3>
+            <div class="code-block"># 錯誤：使用未定義的變數
+print(message)  # NameError: name 'message' is not defined
+
+# 正確：先定義再使用
+message = "Hello"
+print(message)
+
+
+# 錯誤：變數名稱拼錯
+user_name = "Alice"
+print(username)  # NameError
+
+# 正確
+print(user_name)</div>
+
+            <h3>型態錯誤（TypeError）</h3>
+            <div class="code-block"># 錯誤：不同型態無法直接運算
+age = 25
+message = "我今年 " + age + " 歲"  # TypeError
+
+# 正確：轉換成字串
+message = "我今年 " + str(age) + " 歲"
+# 或使用 f-string
+message = f"我今年 {age} 歲"
+
+
+# 錯誤：對不可變型態進行修改
+text = "Hello"
+text[0] = "h"  # TypeError: 字串不可變
+
+# 正確：建立新字串
+text = "h" + text[1:]</div>
+
+            <h3>值錯誤（ValueError）</h3>
+            <div class="code-block"># 錯誤：型態轉換失敗
+number = int("abc")  # ValueError: invalid literal for int()
+
+# 正確：確保可以轉換
+text = "123"
+number = int(text)
+
+
+# 錯誤：分割數量不符
+a, b = "1 2 3".split()  # ValueError: too many values to unpack
+
+# 正確：數量要對應
+a, b, c = "1 2 3".split()</div>
+
+            <h3>除錯技巧</h3>
+            <div class="code-block"># 1. 使用 print() 除錯
+x = 10
+y = 20
+print(f"x = {x}, y = {y}")  # 檢查變數值
+
+# 2. 使用 type() 檢查型態
+data = "123"
+print(type(data))  # <class 'str'>
+
+# 3. 分段測試
+# 將程式分成小段落逐步測試
+
+# 4. 閱讀錯誤訊息
+# 錯誤訊息會指出錯誤位置和原因
+
+# 5. 使用 try-except 處理例外（後面會學到）
+try:
+    number = int(input("請輸入數字："))
+except ValueError:
+    print("輸入格式錯誤！")</div>
+
+            <div class="tip-box">
+                <strong>除錯建議：</strong>
+                <ul>
+                    <li>仔細閱讀錯誤訊息，它會告訴你問題在哪</li>
+                    <li>使用 print() 檢查變數的值和型態</li>
+                    <li>將程式分成小段落逐步測試</li>
+                    <li>檢查縮排是否正確</li>
+                    <li>確認變數名稱沒有拼錯</li>
+                    <li>注意大小寫（Python 區分大小寫）</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="content">
+            <div class="exercise-section">
+                <h3>本週練習題</h3>
+                
+                <h4>基礎練習（必做）</h4>
+                <ol>
+                    <li>
+                        <strong>個人資訊輸出</strong><br>
+                        撰寫程式，輸入你的姓名、年齡、身高、體重，然後格式化輸出。
+                        <div class="code-block"># 預期輸出格式
+姓名：王小明
+年齡：20 歲
+身高：175.5 公分
+體重：65.0 公斤</div>
+                    </li>
+                    
+                    <li>
+                        <strong>溫度轉換</strong><br>
+                        輸入攝氏溫度，轉換成華氏溫度並輸出。<br>
+                        公式：華氏 = 攝氏 × 9/5 + 32
+                    </li>
+                    
+                    <li>
+                        <strong>BMI 計算器</strong><br>
+                        輸入身高（公分）和體重（公斤），計算並輸出 BMI 值。<br>
+                        公式：BMI = 體重(kg) / (身高(m))²
+                    </li>
+                </ol>
+
+                <h4>進階練習</h4>
+                <ol start="4">
+                    <li>
+                        <strong>圓面積與周長</strong><br>
+                        輸入圓的半徑，計算並輸出面積和周長。<br>
+                        提示：可以使用 math.pi 或自訂 π = 3.14159
+                    </li>
+                    
+                    <li>
+                        <strong>時間換算</strong><br>
+                        輸入總秒數，轉換成「小時:分鐘:秒數」格式。<br>
+                        例如：3665 秒 → 1 小時 1 分鐘 5 秒
+                    </li>
+                    
+                    <li>
+                        <strong>購物結帳</strong><br>
+                        輸入商品單價、數量、折扣率（如 0.9 表示九折），計算：
+                        <ul>
+                            <li>小計金額</li>
+                            <li>折扣後金額</li>
+                            <li>輸入付款金額，計算找零</li>
+                        </ul>
+                    </li>
+                </ol>
+
+                <h4>挑戰練習</h4>
+                <ol start="7">
+                    <li>
+                        <strong>年齡計算機</strong><br>
+                        輸入出生年份，計算今年幾歲，並顯示：
+                        <ul>
+                            <li>實歲</li>
+                            <li>虛歲（實歲+1）</li>
+                            <li>距離下一個十年生日還有幾年</li>
+                        </ul>
+                    </li>
+                    
+                    <li>
+                        <strong>貨幣換算</strong><br>
+                        輸入台幣金額和匯率，計算可兌換的外幣金額。<br>
+                        同時計算手續費（例如收取 1% 手續費）。
+                    </li>
+                    
+                    <li>
+                        <strong>成績單</strong><br>
+                        輸入三科成績（國文、英文、數學），計算並輸出：
+                        <ul>
+                            <li>三科總分</li>
+                            <li>三科平均</li>
+                            <li>最高分科目</li>
+                            <li>最低分科目</li>
+                        </ul>
+                    </li>
+                </ol>
+
+                <div class="tip-box">
+                    <strong>練習提示：</strong>
+                    <ul>
+                        <li>先在紙上規劃輸入、處理、輸出的流程</li>
+                        <li>選擇適當的資料型態</li>
+                        <li>注意型態轉換</li>
+                        <li>使用有意義的變數名稱</li>
+                        <li>測試各種輸入情況</li>
+                        <li>適當添加註解</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="content">
+            <h2>本週總結</h2>
+            
+            <h3>重點回顧</h3>
+            <ul>
+                <li>成功安裝 Python 開發環境</li>
+                <li>理解 Python 的基本語法特色</li>
+                <li>掌握變數宣告與基本資料型態</li>
+                <li>學會使用各種運算符</li>
+                <li>能夠使用 print() 和 input() 進行互動</li>
+                <li>了解良好的編碼風格</li>
+                <li>知道如何除錯和解決常見錯誤</li>
+            </ul>
+
+            <h3>下週預告</h3>
+            <div class="note-box">
+                <h4>Week 2 - 流程控制</h4>
+                <p>下週將學習程式設計中最重要的流程控制：</p>
+                <ul>
+                    <li>條件判斷：if、elif、else</li>
+                    <li>迴圈結構：for、while</li>
+                    <li>break、continue、pass 控制語句</li>
+                    <li>巢狀結構</li>
+                    <li>實用範例：選單系統、九九乘法表等</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="nav-buttons">
+            <a href="../python-index.html" class="btn btn-secondary">← 回首頁</a>
+            <a href="week2.html" class="btn">Week 2：流程控制 →</a>
+        </div>
+
+        <footer style="text-align: center; padding: 30px 0; color: #7f8c8d; margin-top: 50px; border-top: 1px solid #ddd;">
+            <p style="margin: 10px 0;">Python 程式設計 Week 1</p>
+            <p style="margin: 10px 0; font-size: 0.9em;">開發環境 · 基礎語法 · 資料型態 · 運算符 · 輸入輸出</p>
+            <p style="margin: 10px 0; font-size: 0.85em; color: #95a5a6;">© 2025 All Rights Reserved</p>
+        </footer>
+    </div>
+</body>
+</html>

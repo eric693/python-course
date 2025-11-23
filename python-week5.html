@@ -1,0 +1,1315 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Week 5 - 檔案處理與例外處理 | Python 程式設計</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Microsoft JhengHei', Arial, sans-serif;
+            background: linear-gradient(to bottom, #f5f7fa 0%, #c3cfe2 100%);
+            color: #2c3e50;
+            line-height: 1.7;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .nav {
+            background: white;
+            padding: 15px 25px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .nav a {
+            color: #3776ab;
+            text-decoration: none;
+            font-weight: 600;
+            padding: 8px 16px;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+
+        .nav a:hover {
+            background: #3776ab;
+            color: white;
+        }
+
+        header {
+            background: linear-gradient(135deg, #3776ab 0%, #ffd343 100%);
+            color: white;
+            padding: 50px 40px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        header .subtitle {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .content {
+            background: white;
+            border-radius: 8px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .content h2 {
+            color: #2c3e50;
+            font-size: 2em;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #3776ab;
+        }
+
+        .content h3 {
+            color: #34495e;
+            font-size: 1.5em;
+            margin: 30px 0 15px 0;
+        }
+
+        .content h4 {
+            color: #34495e;
+            font-size: 1.2em;
+            margin: 20px 0 10px 0;
+        }
+
+        pre[class*="language-"] {
+            margin: 20px 0;
+            border-radius: 8px;
+            border: 2px solid #3776ab;
+        }
+
+        code[class*="language-"] {
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            font-size: 0.95em;
+            line-height: 1.6;
+        }
+
+        .note-box {
+            background: #e8f4f8;
+            border-left: 4px solid #3776ab;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .warning-box {
+            background: #fff8e1;
+            border-left: 4px solid #ffa726;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .tip-box {
+            background: #e8f5e9;
+            border-left: 4px solid #66bb6a;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .exercise-section {
+            background: #f8f9fa;
+            border: 2px solid #3776ab;
+            padding: 30px;
+            margin: 30px 0;
+            border-radius: 8px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        table th,
+        table td {
+            padding: 12px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+
+        table th {
+            background: #3776ab;
+            color: white;
+            font-weight: 600;
+        }
+
+        table tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        ul, ol {
+            margin-left: 30px;
+            margin-top: 10px;
+        }
+
+        li {
+            margin: 8px 0;
+        }
+
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 40px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background: #3776ab;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            background: #2d5a8a;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        .btn-secondary {
+            background: #95a5a6;
+        }
+
+        .btn-secondary:hover {
+            background: #7f8c8d;
+        }
+
+        .error-box {
+            background: #ffebee;
+            border-left: 4px solid #f44336;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="nav">
+            <a href="python-week4.html">← Week 4</a>
+            <span style="color: #7f8c8d; font-weight: 600;">Week 5 / 16</span>
+            <a href="python-week6.html">Week 6 →</a>
+        </div>
+
+        <header>
+            <h1>Week 5 - 檔案處理與例外處理</h1>
+            <div class="subtitle">學習目標：掌握檔案讀寫操作與錯誤處理機制，寫出更穩健的程式</div>
+        </header>
+
+        <div class="content">
+            <h2>本週學習內容</h2>
+            <ul>
+                <li>檔案的開啟、讀取、寫入</li>
+                <li>with 語句與上下文管理器</li>
+                <li>文字檔案與二進位檔案</li>
+                <li>CSV 檔案處理</li>
+                <li>JSON 檔案處理</li>
+                <li>例外處理：try-except-finally</li>
+                <li>常見例外類型</li>
+                <li>自訂例外</li>
+                <li>檔案路徑操作</li>
+            </ul>
+        </div>
+
+        <div class="content">
+            <h2>1. 檔案基礎操作</h2>
+            
+            <h3>開啟檔案</h3>
+            <pre><code class="language-python"># 基本語法：open(filename, mode, encoding)
+# mode 常用模式：
+# 'r'  - 讀取（預設）
+# 'w'  - 寫入（會覆蓋原檔案）
+# 'a'  - 附加（在檔案末尾添加內容）
+# 'r+' - 讀寫
+# 'b'  - 二進位模式（如 'rb', 'wb'）
+
+# 開啟檔案進行讀取
+file = open('example.txt', 'r', encoding='utf-8')
+content = file.read()
+print(content)
+file.close()  # 重要：使用完畢後要關閉檔案
+
+
+# 使用 with 語句（推薦，會自動關閉檔案）
+with open('example.txt', 'r', encoding='utf-8') as file:
+    content = file.read()
+    print(content)
+# 離開 with 區塊後，檔案會自動關閉
+</code></pre>
+
+            <div class="note-box">
+                <strong>為什麼使用 with 語句？</strong>
+                <ul>
+                    <li>自動關閉檔案，即使發生錯誤也會關閉</li>
+                    <li>程式碼更簡潔易讀</li>
+                    <li>避免資源洩漏</li>
+                    <li>這是 Python 的最佳實踐</li>
+                </ul>
+            </div>
+
+            <h3>讀取檔案</h3>
+            <pre><code class="language-python"># 方法一：read() - 讀取整個檔案
+with open('example.txt', 'r', encoding='utf-8') as file:
+    content = file.read()
+    print(content)
+
+
+# 方法二：readline() - 逐行讀取
+with open('example.txt', 'r', encoding='utf-8') as file:
+    line1 = file.readline()  # 讀取第一行
+    line2 = file.readline()  # 讀取第二行
+    print(line1)
+    print(line2)
+
+
+# 方法三：readlines() - 讀取所有行成串列
+with open('example.txt', 'r', encoding='utf-8') as file:
+    lines = file.readlines()  # 返回串列
+    for line in lines:
+        print(line.strip())  # strip() 移除換行符
+
+
+# 方法四：迴圈遍歷（推薦，記憶體效率高）
+with open('example.txt', 'r', encoding='utf-8') as file:
+    for line in file:
+        print(line.strip())
+
+
+# 讀取指定字元數
+with open('example.txt', 'r', encoding='utf-8') as file:
+    first_10_chars = file.read(10)  # 讀取前 10 個字元
+    print(first_10_chars)
+</code></pre>
+
+            <h3>寫入檔案</h3>
+            <pre><code class="language-python"># 模式 'w' - 覆寫檔案（會刪除原內容）
+with open('output.txt', 'w', encoding='utf-8') as file:
+    file.write("第一行\n")
+    file.write("第二行\n")
+    file.write("第三行\n")
+
+
+# 模式 'a' - 附加到檔案末尾
+with open('output.txt', 'a', encoding='utf-8') as file:
+    file.write("附加的內容\n")
+
+
+# 寫入多行（使用 writelines）
+lines = ["Line 1\n", "Line 2\n", "Line 3\n"]
+with open('output.txt', 'w', encoding='utf-8') as file:
+    file.writelines(lines)
+
+
+# 實用範例：寫入串列資料
+students = ["Alice", "Bob", "Charlie", "David"]
+with open('students.txt', 'w', encoding='utf-8') as file:
+    for student in students:
+        file.write(f"{student}\n")
+
+
+# 實用範例：從鍵盤輸入並寫入檔案
+with open('notes.txt', 'w', encoding='utf-8') as file:
+    print("請輸入筆記（輸入 'quit' 結束）：")
+    while True:
+        note = input(">>> ")
+        if note.lower() == 'quit':
+            break
+        file.write(f"{note}\n")
+</code></pre>
+
+            <h3>檔案指標位置</h3>
+            <pre><code class="language-python">with open('example.txt', 'r', encoding='utf-8') as file:
+    # 取得當前指標位置
+    pos = file.tell()
+    print(f"當前位置: {pos}")
+    
+    # 讀取內容
+    content = file.read(10)
+    print(f"讀取後位置: {file.tell()}")
+    
+    # 移動指標到開頭
+    file.seek(0)
+    print(f"回到開頭: {file.tell()}")
+    
+    # 再次讀取
+    content = file.read(10)
+    print(content)
+</code></pre>
+
+            <h3>檢查檔案是否存在</h3>
+            <pre><code class="language-python">import os
+
+# 方法一：使用 os.path
+if os.path.exists('example.txt'):
+    print("檔案存在")
+else:
+    print("檔案不存在")
+
+
+# 方法二：使用 try-except
+try:
+    with open('example.txt', 'r', encoding='utf-8') as file:
+        content = file.read()
+except FileNotFoundError:
+    print("檔案不存在")
+
+
+# 方法三：使用 pathlib（Python 3.4+）
+from pathlib import Path
+
+file_path = Path('example.txt')
+if file_path.exists():
+    print("檔案存在")
+if file_path.is_file():
+    print("這是一個檔案")
+if file_path.is_dir():
+    print("這是一個目錄")
+</code></pre>
+        </div>
+
+        <div class="content">
+            <h2>2. CSV 檔案處理</h2>
+            
+            <h3>讀取 CSV 檔案</h3>
+            <pre><code class="language-python">import csv
+
+# 基本讀取
+with open('data.csv', 'r', encoding='utf-8') as file:
+    csv_reader = csv.reader(file)
+    
+    # 讀取標題
+    headers = next(csv_reader)
+    print(f"標題: {headers}")
+    
+    # 讀取資料
+    for row in csv_reader:
+        print(row)
+
+
+# 使用 DictReader（以字典形式讀取，推薦）
+with open('data.csv', 'r', encoding='utf-8') as file:
+    csv_reader = csv.DictReader(file)
+    
+    for row in csv_reader:
+        print(row['name'], row['age'], row['city'])
+
+
+# 完整範例：讀取並處理 CSV
+# data.csv 內容：
+# name,age,score
+# Alice,20,85
+# Bob,22,92
+# Charlie,21,78
+
+with open('data.csv', 'r', encoding='utf-8') as file:
+    csv_reader = csv.DictReader(file)
+    
+    total_score = 0
+    count = 0
+    
+    for row in csv_reader:
+        name = row['name']
+        age = int(row['age'])
+        score = int(row['score'])
+        
+        print(f"{name} ({age}歲): {score}分")
+        total_score += score
+        count += 1
+    
+    average = total_score / count
+    print(f"\n平均分數: {average:.2f}")
+</code></pre>
+
+            <h3>寫入 CSV 檔案</h3>
+            <pre><code class="language-python">import csv
+
+# 基本寫入
+data = [
+    ['Name', 'Age', 'City'],
+    ['Alice', '25', 'Taipei'],
+    ['Bob', '30', 'Kaohsiung'],
+    ['Charlie', '28', 'Taichung']
+]
+
+with open('output.csv', 'w', newline='', encoding='utf-8') as file:
+    csv_writer = csv.writer(file)
+    csv_writer.writerows(data)
+
+
+# 使用 DictWriter（推薦）
+students = [
+    {'name': 'Alice', 'age': 20, 'score': 85},
+    {'name': 'Bob', 'age': 22, 'score': 92},
+    {'name': 'Charlie', 'age': 21, 'score': 78}
+]
+
+with open('students.csv', 'w', newline='', encoding='utf-8') as file:
+    fieldnames = ['name', 'age', 'score']
+    csv_writer = csv.DictWriter(file, fieldnames=fieldnames)
+    
+    # 寫入標題
+    csv_writer.writeheader()
+    
+    # 寫入資料
+    csv_writer.writerows(students)
+
+
+# 實用範例：從使用者輸入建立 CSV
+contacts = []
+
+print("聯絡人管理系統（輸入 'done' 結束）")
+while True:
+    name = input("姓名: ")
+    if name.lower() == 'done':
+        break
+    
+    phone = input("電話: ")
+    email = input("Email: ")
+    
+    contacts.append({
+        'name': name,
+        'phone': phone,
+        'email': email
+    })
+
+# 儲存到 CSV
+with open('contacts.csv', 'w', newline='', encoding='utf-8') as file:
+    fieldnames = ['name', 'phone', 'email']
+    writer = csv.DictWriter(file, fieldnames=fieldnames)
+    writer.writeheader()
+    writer.writerows(contacts)
+
+print(f"已儲存 {len(contacts)} 筆聯絡人")
+</code></pre>
+
+            <h3>處理不同分隔符</h3>
+            <pre><code class="language-python">import csv
+
+# 使用分號分隔
+with open('data.csv', 'r', encoding='utf-8') as file:
+    csv_reader = csv.reader(file, delimiter=';')
+    for row in csv_reader:
+        print(row)
+
+
+# 使用 Tab 分隔
+with open('data.tsv', 'r', encoding='utf-8') as file:
+    csv_reader = csv.reader(file, delimiter='\t')
+    for row in csv_reader:
+        print(row)
+
+
+# 自訂引號字元
+with open('data.csv', 'w', newline='', encoding='utf-8') as file:
+    writer = csv.writer(file, delimiter=',', quotechar='"', 
+                       quoting=csv.QUOTE_MINIMAL)
+    writer.writerow(['Name', 'Description'])
+    writer.writerow(['Product A', 'This is a "special" product'])
+</code></pre>
+        </div>
+
+        <div class="content">
+            <h2>3. JSON 檔案處理</h2>
+            
+            <h3>讀取 JSON 檔案</h3>
+            <pre><code class="language-python">import json
+
+# 基本讀取
+with open('data.json', 'r', encoding='utf-8') as file:
+    data = json.load(file)
+    print(data)
+
+
+# 範例 JSON 檔案內容：
+# {
+#     "name": "Alice",
+#     "age": 25,
+#     "city": "Taipei",
+#     "hobbies": ["reading", "travel", "music"]
+# }
+
+with open('user.json', 'r', encoding='utf-8') as file:
+    user = json.load(file)
+    
+    print(f"姓名: {user['name']}")
+    print(f"年齡: {user['age']}")
+    print(f"城市: {user['city']}")
+    print(f"興趣: {', '.join(user['hobbies'])}")
+
+
+# 讀取 JSON 陣列
+# students.json:
+# [
+#     {"name": "Alice", "score": 85},
+#     {"name": "Bob", "score": 92},
+#     {"name": "Charlie", "score": 78}
+# ]
+
+with open('students.json', 'r', encoding='utf-8') as file:
+    students = json.load(file)
+    
+    for student in students:
+        print(f"{student['name']}: {student['score']}分")
+
+
+# 處理巢狀 JSON
+# config.json:
+# {
+#     "database": {
+#         "host": "localhost",
+#         "port": 5432,
+#         "credentials": {
+#             "username": "admin",
+#             "password": "secret"
+#         }
+#     }
+# }
+
+with open('config.json', 'r', encoding='utf-8') as file:
+    config = json.load(file)
+    
+    db_host = config['database']['host']
+    db_user = config['database']['credentials']['username']
+    
+    print(f"Database: {db_host}")
+    print(f"User: {db_user}")
+</code></pre>
+
+            <h3>寫入 JSON 檔案</h3>
+            <pre><code class="language-python">import json
+
+# 基本寫入
+user_data = {
+    "name": "Alice",
+    "age": 25,
+    "city": "Taipei",
+    "is_active": True,
+    "hobbies": ["reading", "travel"]
+}
+
+with open('user.json', 'w', encoding='utf-8') as file:
+    json.dump(user_data, file, ensure_ascii=False, indent=2)
+
+
+# ensure_ascii=False：保留中文字元
+# indent=2：格式化輸出（易讀）
+
+
+# 寫入串列資料
+students = [
+    {"name": "Alice", "age": 20, "score": 85},
+    {"name": "Bob", "age": 22, "score": 92},
+    {"name": "Charlie", "age": 21, "score": 78}
+]
+
+with open('students.json', 'w', encoding='utf-8') as file:
+    json.dump(students, file, ensure_ascii=False, indent=2)
+
+
+# 實用範例：設定檔管理
+def save_settings(settings, filename='settings.json'):
+    """儲存設定"""
+    with open(filename, 'w', encoding='utf-8') as file:
+        json.dump(settings, file, ensure_ascii=False, indent=2)
+
+def load_settings(filename='settings.json'):
+    """載入設定"""
+    try:
+        with open(filename, 'r', encoding='utf-8') as file:
+            return json.load(file)
+    except FileNotFoundError:
+        # 返回預設設定
+        return {
+            "theme": "light",
+            "language": "zh-TW",
+            "auto_save": True
+        }
+
+# 使用範例
+settings = load_settings()
+settings['theme'] = 'dark'
+save_settings(settings)
+</code></pre>
+
+            <h3>JSON 字串與 Python 物件轉換</h3>
+            <pre><code class="language-python">import json
+
+# Python 物件轉 JSON 字串
+data = {"name": "Alice", "age": 25}
+json_string = json.dumps(data, ensure_ascii=False)
+print(json_string)  # {"name": "Alice", "age": 25}
+print(type(json_string))  # <class 'str'>
+
+
+# JSON 字串轉 Python 物件
+json_string = '{"name": "Bob", "age": 30}'
+data = json.loads(json_string)
+print(data)  # {'name': 'Bob', 'age': 30}
+print(type(data))  # <class 'dict'>
+
+
+# 格式化 JSON 字串
+data = {"name": "Alice", "scores": [85, 90, 78]}
+
+# 緊湊格式
+compact = json.dumps(data)
+print(compact)
+
+# 格式化（易讀）
+formatted = json.dumps(data, indent=2, ensure_ascii=False)
+print(formatted)
+
+
+# Python 與 JSON 型態對應
+# Python     -> JSON
+# dict       -> object
+# list/tuple -> array
+# str        -> string
+# int/float  -> number
+# True/False -> true/false
+# None       -> null
+</code></pre>
+
+            <div class="tip-box">
+                <strong>CSV vs JSON 選擇：</strong>
+                <ul>
+                    <li><strong>CSV</strong>：適合表格資料、Excel 相容、檔案小</li>
+                    <li><strong>JSON</strong>：適合巢狀資料、API 通訊、保留資料型態</li>
+                    <li>簡單表格 → CSV</li>
+                    <li>複雜結構、設定檔 → JSON</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="content">
+            <h2>4. 例外處理</h2>
+            
+            <h3>基本 try-except</h3>
+            <pre><code class="language-python"># 沒有例外處理（程式會中斷）
+# number = int(input("請輸入數字："))
+# 如果輸入 "abc"，程式會報錯並中斷
+
+
+# 使用 try-except（程式不會中斷）
+try:
+    number = int(input("請輸入數字："))
+    print(f"你輸入的數字是：{number}")
+except ValueError:
+    print("錯誤：請輸入有效的數字！")
+
+
+# 捕捉多種例外
+try:
+    numbers = [1, 2, 3]
+    index = int(input("請輸入索引："))
+    print(numbers[index])
+except ValueError:
+    print("錯誤：請輸入整數")
+except IndexError:
+    print("錯誤：索引超出範圍")
+
+
+# 使用單一 except 捕捉多種例外
+try:
+    result = 10 / int(input("請輸入除數："))
+except (ValueError, ZeroDivisionError):
+    print("錯誤：輸入無效或除數為零")
+
+
+# 捕捉所有例外（不推薦，除非必要）
+try:
+    # 某些操作
+    result = risky_operation()
+except Exception as e:
+    print(f"發生錯誤：{e}")
+</code></pre>
+
+            <h3>try-except-else-finally</h3>
+            <pre><code class="language-python"># else：沒有發生例外時執行
+try:
+    number = int(input("請輸入數字："))
+except ValueError:
+    print("輸入無效")
+else:
+    print(f"成功！數字是 {number}")
+    # 只有在沒有例外時才執行
+
+
+# finally：無論如何都會執行（常用於清理資源）
+try:
+    file = open('data.txt', 'r')
+    content = file.read()
+except FileNotFoundError:
+    print("檔案不存在")
+finally:
+    # 確保檔案被關閉
+    try:
+        file.close()
+    except:
+        pass
+
+
+# 完整範例
+def divide_numbers(a, b):
+    """安全的除法運算"""
+    try:
+        result = a / b
+    except ZeroDivisionError:
+        print("錯誤：除數不能為零")
+        return None
+    except TypeError:
+        print("錯誤：必須是數字")
+        return None
+    else:
+        print("計算成功")
+        return result
+    finally:
+        print("運算結束")
+
+print(divide_numbers(10, 2))   # 正常執行
+print(divide_numbers(10, 0))   # 除以零
+print(divide_numbers(10, "a")) # 型態錯誤
+</code></pre>
+
+            <h3>常見例外類型</h3>
+            <pre><code class="language-python"># ValueError：值錯誤
+try:
+    int("abc")
+except ValueError:
+    print("無法轉換成整數")
+
+
+# TypeError：型態錯誤
+try:
+    result = "10" + 5
+except TypeError:
+    print("型態不匹配")
+
+
+# IndexError：索引錯誤
+try:
+    my_list = [1, 2, 3]
+    print(my_list[10])
+except IndexError:
+    print("索引超出範圍")
+
+
+# KeyError：鍵錯誤
+try:
+    my_dict = {"name": "Alice"}
+    print(my_dict["age"])
+except KeyError:
+    print("鍵不存在")
+
+
+# FileNotFoundError：檔案不存在
+try:
+    with open('nonexistent.txt', 'r') as file:
+        content = file.read()
+except FileNotFoundError:
+    print("檔案不存在")
+
+
+# ZeroDivisionError：除以零
+try:
+    result = 10 / 0
+except ZeroDivisionError:
+    print("除數不能為零")
+
+
+# AttributeError：屬性錯誤
+try:
+    my_list = [1, 2, 3]
+    my_list.append
+except AttributeError:
+    print("物件沒有此屬性")
+
+
+# ImportError：匯入錯誤
+try:
+    import nonexistent_module
+except ImportError:
+    print("模組不存在")
+</code></pre>
+
+            <h3>取得例外資訊</h3>
+            <pre><code class="language-python"># 捕捉例外物件
+try:
+    result = 10 / 0
+except ZeroDivisionError as e:
+    print(f"錯誤類型: {type(e).__name__}")
+    print(f"錯誤訊息: {e}")
+    print(f"錯誤參數: {e.args}")
+
+
+# 完整錯誤追蹤
+import traceback
+
+try:
+    result = int("abc")
+except ValueError:
+    print("捕捉到錯誤：")
+    traceback.print_exc()
+
+
+# 實用範例：記錄錯誤到檔案
+import datetime
+
+def log_error(error):
+    """將錯誤記錄到檔案"""
+    timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    with open('error.log', 'a', encoding='utf-8') as file:
+        file.write(f"[{timestamp}] {type(error).__name__}: {error}\n")
+
+try:
+    result = 10 / 0
+except Exception as e:
+    log_error(e)
+    print("錯誤已記錄到 error.log")
+</code></pre>
+
+            <h3>拋出例外（raise）</h3>
+            <pre><code class="language-python"># 手動拋出例外
+def check_age(age):
+    """檢查年齡是否有效"""
+    if age < 0:
+        raise ValueError("年齡不能是負數")
+    if age > 150:
+        raise ValueError("年齡超出合理範圍")
+    return True
+
+try:
+    check_age(-5)
+except ValueError as e:
+    print(f"錯誤：{e}")
+
+
+# 重新拋出例外
+def process_data(data):
+    try:
+        result = risky_operation(data)
+    except ValueError as e:
+        print(f"處理失敗：{e}")
+        raise  # 重新拋出相同的例外
+
+
+# 拋出不同的例外
+def calculate_discount(price, discount):
+    """計算折扣"""
+    try:
+        if discount < 0 or discount > 100:
+            raise ValueError("折扣必須在 0-100 之間")
+        return price * (1 - discount / 100)
+    except ValueError:
+        raise RuntimeError("折扣計算失敗")
+</code></pre>
+
+            <h3>自訂例外</h3>
+            <pre><code class="language-python"># 建立自訂例外類別
+class InsufficientFundsError(Exception):
+    """餘額不足例外"""
+    pass
+
+class InvalidAccountError(Exception):
+    """無效帳戶例外"""
+    pass
+
+
+# 使用自訂例外
+class BankAccount:
+    def __init__(self, balance=0):
+        self.balance = balance
+    
+    def withdraw(self, amount):
+        """提款"""
+        if amount < 0:
+            raise ValueError("提款金額不能為負數")
+        if amount > self.balance:
+            raise InsufficientFundsError(
+                f"餘額不足。目前餘額：{self.balance}，欲提款：{amount}"
+            )
+        self.balance -= amount
+        return self.balance
+
+
+# 使用範例
+account = BankAccount(1000)
+
+try:
+    account.withdraw(500)
+    print("提款成功")
+    account.withdraw(800)  # 會失敗
+except InsufficientFundsError as e:
+    print(f"提款失敗：{e}")
+
+
+# 帶更多資訊的自訂例外
+class ValidationError(Exception):
+    """驗證錯誤"""
+    def __init__(self, field, message):
+        self.field = field
+        self.message = message
+        super().__init__(f"{field}: {message}")
+
+def validate_user(data):
+    """驗證使用者資料"""
+    if 'email' not in data:
+        raise ValidationError('email', '必須提供 email')
+    if '@' not in data['email']:
+        raise ValidationError('email', 'email 格式不正確')
+
+try:
+    validate_user({'name': 'Alice'})
+except ValidationError as e:
+    print(f"驗證失敗 - {e.field}: {e.message}")
+</code></pre>
+
+            <div class="warning-box">
+                <strong>例外處理最佳實踐：</strong>
+                <ul>
+                    <li>只捕捉你預期會發生的特定例外</li>
+                    <li>不要使用空的 except（會隱藏錯誤）</li>
+                    <li>在 finally 中清理資源（如關閉檔案）</li>
+                    <li>提供有用的錯誤訊息</li>
+                    <li>記錄錯誤到日誌檔案</li>
+                    <li>不要用例外來控制正常流程</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="content">
+            <h2>5. 檔案路徑操作</h2>
+            
+            <h3>os.path 模組</h3>
+            <pre><code class="language-python">import os
+
+# 取得當前工作目錄
+current_dir = os.getcwd()
+print(f"當前目錄: {current_dir}")
+
+# 列出目錄內容
+files = os.listdir('.')
+print(f"檔案列表: {files}")
+
+# 檢查路徑是否存在
+print(os.path.exists('example.txt'))
+
+# 檢查是檔案還是目錄
+print(os.path.isfile('example.txt'))
+print(os.path.isdir('my_folder'))
+
+# 取得絕對路徑
+abs_path = os.path.abspath('example.txt')
+print(f"絕對路徑: {abs_path}")
+
+# 分割路徑
+path = '/home/user/documents/file.txt'
+directory, filename = os.path.split(path)
+print(f"目錄: {directory}")
+print(f"檔名: {filename}")
+
+# 取得副檔名
+name, ext = os.path.splitext(filename)
+print(f"檔名: {name}, 副檔名: {ext}")
+
+# 組合路徑（跨平台）
+new_path = os.path.join('folder', 'subfolder', 'file.txt')
+print(new_path)
+
+# 取得檔案大小
+if os.path.exists('example.txt'):
+    size = os.path.getsize('example.txt')
+    print(f"檔案大小: {size} bytes")
+</code></pre>
+
+            <h3>pathlib 模組（推薦，Python 3.4+）</h3>
+            <pre><code class="language-python">from pathlib import Path
+
+# 建立 Path 物件
+file_path = Path('example.txt')
+folder_path = Path('my_folder')
+
+# 檢查是否存在
+print(file_path.exists())
+
+# 檢查類型
+print(file_path.is_file())
+print(folder_path.is_dir())
+
+# 取得絕對路徑
+abs_path = file_path.resolve()
+print(abs_path)
+
+# 取得各部分
+print(file_path.name)       # 檔名
+print(file_path.stem)       # 檔名（無副檔名）
+print(file_path.suffix)     # 副檔名
+print(file_path.parent)     # 父目錄
+
+# 組合路徑（使用 / 運算子）
+new_path = Path('folder') / 'subfolder' / 'file.txt'
+print(new_path)
+
+# 讀寫檔案
+content = file_path.read_text(encoding='utf-8')
+file_path.write_text('新內容', encoding='utf-8')
+
+# 遍歷目錄
+folder = Path('.')
+for item in folder.iterdir():
+    if item.is_file():
+        print(f"檔案: {item.name}")
+
+# 搜尋檔案（使用 glob）
+for txt_file in folder.glob('*.txt'):
+    print(txt_file)
+
+# 遞迴搜尋
+for py_file in folder.rglob('*.py'):
+    print(py_file)
+</code></pre>
+
+            <h3>建立和刪除目錄</h3>
+            <pre><code class="language-python">import os
+from pathlib import Path
+
+# 使用 os
+os.mkdir('new_folder')              # 建立單層目錄
+os.makedirs('path/to/folder')       # 建立多層目錄
+os.rmdir('new_folder')              # 刪除空目錄
+
+# 使用 pathlib
+folder = Path('new_folder')
+folder.mkdir(exist_ok=True)         # exist_ok=True 避免已存在錯誤
+folder.rmdir()                      # 刪除空目錄
+
+
+# 實用範例：確保目錄存在
+def ensure_directory(path):
+    """確保目錄存在，不存在則建立"""
+    Path(path).mkdir(parents=True, exist_ok=True)
+
+ensure_directory('logs/2025/11')
+
+
+# 刪除非空目錄（需要 shutil）
+import shutil
+
+# 刪除整個目錄樹
+shutil.rmtree('folder_to_delete')
+
+# 複製檔案
+shutil.copy('source.txt', 'destination.txt')
+
+# 複製目錄
+shutil.copytree('source_folder', 'dest_folder')
+
+# 移動/重新命名
+shutil.move('old_name.txt', 'new_name.txt')
+</code></pre>
+        </div>
+
+        <div class="content">
+            <div class="exercise-section">
+                <h3>本週練習題</h3>
+                
+                <h4>基礎練習（必做）</h4>
+                <ol>
+                    <li>
+                        <strong>文字檔案操作</strong><br>
+                        建立一個程式：
+                        <ul>
+                            <li>讓使用者輸入多行文字</li>
+                            <li>將文字儲存到檔案</li>
+                            <li>讀取並顯示檔案內容</li>
+                            <li>計算檔案的行數和字數</li>
+                        </ul>
+                    </li>
+                    
+                    <li>
+                        <strong>學生成績管理</strong><br>
+                        使用 CSV 檔案：
+                        <ul>
+                            <li>從 CSV 讀取學生成績</li>
+                            <li>計算每位學生的平均分</li>
+                            <li>找出最高分和最低分</li>
+                            <li>將結果寫入新的 CSV</li>
+                        </ul>
+                    </li>
+                    
+                    <li>
+                        <strong>安全的數字輸入</strong><br>
+                        撰寫函數 safe_input_number()：
+                        <ul>
+                            <li>持續要求使用者輸入數字</li>
+                            <li>使用例外處理驗證輸入</li>
+                            <li>輸入有效後返回數字</li>
+                        </ul>
+                    </li>
+                </ol>
+
+                <h4>進階練習</h4>
+                <ol start="4">
+                    <li>
+                        <strong>日記本程式</strong><br>
+                        建立一個日記程式：
+                        <ul>
+                            <li>每次執行時顯示選單（新增、查看、搜尋、離開）</li>
+                            <li>新增：輸入日期和內容，儲存到檔案</li>
+                            <li>查看：列出所有日記標題</li>
+                            <li>搜尋：根據關鍵字搜尋日記</li>
+                            <li>使用例外處理確保程式穩定</li>
+                        </ul>
+                    </li>
+                    
+                    <li>
+                        <strong>設定檔管理</strong><br>
+                        使用 JSON：
+                        <ul>
+                            <li>建立預設設定檔</li>
+                            <li>讀取使用者設定</li>
+                            <li>提供函數修改設定</li>
+                            <li>儲存設定到 JSON 檔案</li>
+                        </ul>
+                    </li>
+                    
+                    <li>
+                        <strong>檔案備份工具</strong><br>
+                        撰寫程式：
+                        <ul>
+                            <li>掃描指定目錄的所有 .txt 檔案</li>
+                            <li>建立 backup 資料夾</li>
+                            <li>複製檔案到 backup 並加上時間戳記</li>
+                            <li>使用例外處理處理各種錯誤</li>
+                        </ul>
+                    </li>
+                </ol>
+
+                <h4>挑戰練習</h4>
+                <ol start="7">
+                    <li>
+                        <strong>聯絡人管理系統</strong><br>
+                        完整的 CRUD 系統：
+                        <ul>
+                            <li>使用 JSON 儲存聯絡人資料</li>
+                            <li>新增、查詢、修改、刪除聯絡人</li>
+                            <li>支援按姓名或電話搜尋</li>
+                            <li>匯出聯絡人到 CSV</li>
+                            <li>完整的例外處理</li>
+                        </ul>
+                    </li>
+                    
+                    <li>
+                        <strong>日誌分析器</strong><br>
+                        分析網站日誌檔案：
+                        <ul>
+                            <li>讀取 log 檔案（每行一筆記錄）</li>
+                            <li>統計 IP 出現次數</li>
+                            <li>統計不同狀態碼的數量</li>
+                            <li>找出最常訪問的頁面</li>
+                            <li>將分析結果輸出到報告檔案</li>
+                        </ul>
+                    </li>
+                    
+                    <li>
+                        <strong>文字檔案合併工具</strong><br>
+                        建立工具：
+                        <ul>
+                            <li>讀取多個文字檔案</li>
+                            <li>合併成一個檔案</li>
+                            <li>可選擇是否保留原檔名作為標題</li>
+                            <li>處理不同編碼的檔案</li>
+                            <li>支援命令列參數</li>
+                        </ul>
+                    </li>
+                </ol>
+
+                <div class="tip-box">
+                    <strong>練習提示：</strong>
+                    <ul>
+                        <li>永遠使用 with 語句開啟檔案</li>
+                        <li>指定 encoding='utf-8' 處理中文</li>
+                        <li>用 try-except 處理檔案不存在等錯誤</li>
+                        <li>先測試小檔案，再處理大檔案</li>
+                        <li>適當添加錯誤訊息和使用者提示</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="content">
+            <h2>本週總結</h2>
+            
+            <h3>重點回顧</h3>
+            <ul>
+                <li>✅ 掌握檔案的開啟、讀取、寫入操作</li>
+                <li>✅ 理解 with 語句的重要性</li>
+                <li>✅ 能夠處理 CSV 和 JSON 檔案</li>
+                <li>✅ 熟悉 try-except-finally 例外處理</li>
+                <li>✅ 了解常見例外類型</li>
+                <li>✅ 能夠建立自訂例外</li>
+                <li>✅ 掌握檔案路徑操作</li>
+                <li>✅ 寫出更穩健的程式碼</li>
+            </ul>
+
+            <h3>下週預告</h3>
+            <div class="note-box">
+                <h4>Week 6 - 物件導向程式設計（上）</h4>
+                <p>下週將進入物件導向的世界：</p>
+                <ul>
+                    <li>物件導向基本概念</li>
+                    <li>類別與物件</li>
+                    <li>屬性與方法</li>
+                    <li>建構子與解構子</li>
+                    <li>封裝與私有屬性</li>
+                    <li>類別變數與實例變數</li>
+                    <li>實用範例與設計模式</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="nav-buttons">
+            <a href="python-week4.html" class="btn btn-secondary">← Week 4</a>
+            <a href="python-week6.html" class="btn">Week 6：物件導向（上）→</a>
+        </div>
+
+        <footer style="text-align: center; padding: 30px 0; color: #7f8c8d; margin-top: 50px; border-top: 1px solid #ddd;">
+            <p style="margin: 10px 0;">Python 程式設計 Week 5</p>
+            <p style="margin: 10px 0; font-size: 0.9em;">檔案處理 · CSV · JSON · 例外處理</p>
+            <p style="margin: 10px 0; font-size: 0.85em; color: #95a5a6;">© 2025 All Rights Reserved</p>
+        </footer>
+    </div>
+</body>
+</html>

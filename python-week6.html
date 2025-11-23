@@ -1,0 +1,1332 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Week 6 - 物件導向程式設計（上）| Python 程式設計</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Microsoft JhengHei', Arial, sans-serif;
+            background: linear-gradient(to bottom, #f5f7fa 0%, #c3cfe2 100%);
+            color: #2c3e50;
+            line-height: 1.7;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .nav {
+            background: white;
+            padding: 15px 25px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .nav a {
+            color: #3776ab;
+            text-decoration: none;
+            font-weight: 600;
+            padding: 8px 16px;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+
+        .nav a:hover {
+            background: #3776ab;
+            color: white;
+        }
+
+        header {
+            background: linear-gradient(135deg, #3776ab 0%, #ffd343 100%);
+            color: white;
+            padding: 50px 40px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        header .subtitle {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .content {
+            background: white;
+            border-radius: 8px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .content h2 {
+            color: #2c3e50;
+            font-size: 2em;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #3776ab;
+        }
+
+        .content h3 {
+            color: #34495e;
+            font-size: 1.5em;
+            margin: 30px 0 15px 0;
+        }
+
+        .content h4 {
+            color: #34495e;
+            font-size: 1.2em;
+            margin: 20px 0 10px 0;
+        }
+
+        pre[class*="language-"] {
+            margin: 20px 0;
+            border-radius: 8px;
+            border: 2px solid #3776ab;
+        }
+
+        code[class*="language-"] {
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            font-size: 0.95em;
+            line-height: 1.6;
+        }
+
+        .note-box {
+            background: #e8f4f8;
+            border-left: 4px solid #3776ab;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .warning-box {
+            background: #fff8e1;
+            border-left: 4px solid #ffa726;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .tip-box {
+            background: #e8f5e9;
+            border-left: 4px solid #66bb6a;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .exercise-section {
+            background: #f8f9fa;
+            border: 2px solid #3776ab;
+            padding: 30px;
+            margin: 30px 0;
+            border-radius: 8px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        table th,
+        table td {
+            padding: 12px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+
+        table th {
+            background: #3776ab;
+            color: white;
+            font-weight: 600;
+        }
+
+        table tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        ul, ol {
+            margin-left: 30px;
+            margin-top: 10px;
+        }
+
+        li {
+            margin: 8px 0;
+        }
+
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 40px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background: #3776ab;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            background: #2d5a8a;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        .btn-secondary {
+            background: #95a5a6;
+        }
+
+        .btn-secondary:hover {
+            background: #7f8c8d;
+        }
+
+        .concept-box {
+            background: #f3e5f5;
+            border-left: 4px solid #9c27b0;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="nav">
+            <a href="python-week5.html">← Week 5</a>
+            <span style="color: #7f8c8d; font-weight: 600;">Week 6 / 16</span>
+            <a href="python-week7.html">Week 7 →</a>
+        </div>
+
+        <header>
+            <h1>Week 6 - 物件導向程式設計（上）</h1>
+            <div class="subtitle">學習目標：理解物件導向的核心概念，掌握類別與物件的基本操作</div>
+        </header>
+
+        <div class="content">
+            <h2>本週學習內容</h2>
+            <ul>
+                <li>物件導向程式設計（OOP）基本概念</li>
+                <li>類別（Class）與物件（Object）</li>
+                <li>屬性（Attributes）與方法（Methods）</li>
+                <li>建構子（Constructor）與初始化</li>
+                <li>實例變數 vs 類別變數</li>
+                <li>實例方法、類別方法、靜態方法</li>
+                <li>封裝與私有屬性</li>
+                <li>特殊方法（Magic Methods）</li>
+                <li>實用範例與設計模式</li>
+            </ul>
+        </div>
+
+        <div class="content">
+            <h2>1. 物件導向基本概念</h2>
+            
+            <h3>什麼是物件導向程式設計（OOP）？</h3>
+            <p>物件導向程式設計是一種程式設計典範，將程式組織成「物件」的集合，每個物件包含資料（屬性）和操作資料的方法（方法）。</p>
+
+            <div class="concept-box">
+                <h4>OOP 的四大支柱：</h4>
+                <ol>
+                    <li><strong>封裝（Encapsulation）</strong>：將資料和方法包裝在一起，隱藏內部實作細節</li>
+                    <li><strong>繼承（Inheritance）</strong>：子類別可以繼承父類別的屬性和方法</li>
+                    <li><strong>多型（Polymorphism）</strong>：相同的介面可以有不同的實作</li>
+                    <li><strong>抽象（Abstraction）</strong>：隱藏複雜的實作，只暴露必要的介面</li>
+                </ol>
+            </div>
+
+            <h3>為什麼使用物件導向？</h3>
+            <ul>
+                <li><strong>模組化</strong>：將程式分解成獨立的物件，易於管理</li>
+                <li><strong>重用性</strong>：物件可以在不同專案中重複使用</li>
+                <li><strong>維護性</strong>：修改一個物件不影響其他物件</li>
+                <li><strong>擴展性</strong>：容易添加新功能</li>
+                <li><strong>易於理解</strong>：對應真實世界的概念</li>
+            </ul>
+
+            <h3>類別 vs 物件</h3>
+            <pre><code class="language-python"># 類別：物件的藍圖或模板
+# 物件：類別的實例
+
+# 比喻：
+# 類別 = 建築設計圖
+# 物件 = 根據設計圖蓋出來的房子
+
+# 範例：
+# 類別 = Dog（狗的概念）
+# 物件 = 我家的小黃、鄰居的阿福（具體的狗）
+</code></pre>
+        </div>
+
+        <div class="content">
+            <h2>2. 定義類別與建立物件</h2>
+            
+            <h3>基本類別定義</h3>
+            <pre><code class="language-python"># 定義一個簡單的類別
+class Dog:
+    """這是一個狗的類別"""
+    pass
+
+# 建立物件（實例化）
+my_dog = Dog()
+your_dog = Dog()
+
+print(type(my_dog))  # <class '__main__.Dog'>
+print(isinstance(my_dog, Dog))  # True
+</code></pre>
+
+            <h3>添加屬性</h3>
+            <pre><code class="language-python"># 方法一：直接添加屬性（不推薦）
+class Dog:
+    pass
+
+my_dog = Dog()
+my_dog.name = "小黃"
+my_dog.age = 3
+
+print(f"{my_dog.name} 今年 {my_dog.age} 歲")
+
+
+# 方法二：在類別中定義（類別變數）
+class Dog:
+    species = "Canis familiaris"  # 類別變數（所有實例共享）
+
+my_dog = Dog()
+your_dog = Dog()
+
+print(my_dog.species)   # Canis familiaris
+print(your_dog.species) # Canis familiaris
+</code></pre>
+
+            <h3>建構子（Constructor）__init__</h3>
+            <pre><code class="language-python"># 使用 __init__ 初始化物件
+class Dog:
+    def __init__(self, name, age):
+        """建構子：建立物件時自動執行"""
+        self.name = name  # 實例變數
+        self.age = age
+        print(f"建立了一隻叫 {name} 的狗")
+
+# 建立物件時傳入參數
+my_dog = Dog("小黃", 3)
+your_dog = Dog("阿福", 5)
+
+print(my_dog.name)   # 小黃
+print(your_dog.age)  # 5
+
+
+# 帶預設值的建構子
+class Dog:
+    def __init__(self, name, age=1, breed="混種"):
+        self.name = name
+        self.age = age
+        self.breed = breed
+
+dog1 = Dog("小黃")
+dog2 = Dog("阿福", 5, "黃金獵犬")
+
+print(f"{dog1.name}: {dog1.breed}")  # 小黃: 混種
+print(f"{dog2.name}: {dog2.breed}")  # 阿福: 黃金獵犬
+</code></pre>
+
+            <div class="note-box">
+                <strong>self 參數說明：</strong>
+                <ul>
+                    <li>self 代表物件本身（實例）</li>
+                    <li>在類別方法中，第一個參數必須是 self</li>
+                    <li>self 讓我們可以存取物件的屬性和方法</li>
+                    <li>呼叫方法時不需要傳入 self，Python 會自動傳入</li>
+                </ul>
+            </div>
+
+            <h3>添加方法</h3>
+            <pre><code class="language-python">class Dog:
+    def __init__(self, name, age):
+        self.name = name
+        self.age = age
+    
+    def bark(self):
+        """狗叫的方法"""
+        print(f"{self.name}: 汪汪汪！")
+    
+    def get_info(self):
+        """取得狗的資訊"""
+        return f"{self.name} 今年 {self.age} 歲"
+    
+    def birthday(self):
+        """過生日，年齡加一"""
+        self.age += 1
+        print(f"{self.name} 過生日了！現在 {self.age} 歲")
+
+# 使用物件的方法
+my_dog = Dog("小黃", 3)
+my_dog.bark()           # 小黃: 汪汪汪！
+print(my_dog.get_info())  # 小黃 今年 3 歲
+my_dog.birthday()       # 小黃 過生日了！現在 4 歲
+</code></pre>
+
+            <h3>完整範例：銀行帳戶</h3>
+            <pre><code class="language-python">class BankAccount:
+    """銀行帳戶類別"""
+    
+    def __init__(self, account_number, owner, balance=0):
+        """初始化帳戶"""
+        self.account_number = account_number
+        self.owner = owner
+        self.balance = balance
+        print(f"帳戶 {account_number} 已建立，戶名：{owner}")
+    
+    def deposit(self, amount):
+        """存款"""
+        if amount > 0:
+            self.balance += amount
+            print(f"存入 ${amount}，目前餘額：${self.balance}")
+        else:
+            print("存款金額必須大於 0")
+    
+    def withdraw(self, amount):
+        """提款"""
+        if amount <= 0:
+            print("提款金額必須大於 0")
+        elif amount > self.balance:
+            print(f"餘額不足！目前餘額：${self.balance}")
+        else:
+            self.balance -= amount
+            print(f"提領 ${amount}，目前餘額：${self.balance}")
+    
+    def get_balance(self):
+        """查詢餘額"""
+        return self.balance
+    
+    def __str__(self):
+        """字串表示"""
+        return f"帳號：{self.account_number}，戶名：{self.owner}，餘額：${self.balance}"
+
+
+# 使用範例
+account = BankAccount("123-456", "王小明", 1000)
+print(account)  # 帳號：123-456，戶名：王小明，餘額：$1000
+
+account.deposit(500)   # 存入 $500，目前餘額：$1500
+account.withdraw(300)  # 提領 $300，目前餘額：$1200
+account.withdraw(2000) # 餘額不足！目前餘額：$1200
+
+print(f"最終餘額：${account.get_balance()}")
+</code></pre>
+        </div>
+
+        <div class="content">
+            <h2>3. 實例變數 vs 類別變數</h2>
+            
+            <h3>實例變數（Instance Variables）</h3>
+            <pre><code class="language-python">class Dog:
+    def __init__(self, name, age):
+        # 實例變數：每個物件都有自己的副本
+        self.name = name
+        self.age = age
+
+dog1 = Dog("小黃", 3)
+dog2 = Dog("阿福", 5)
+
+print(dog1.name)  # 小黃
+print(dog2.name)  # 阿福
+
+# 修改 dog1 的名字不影響 dog2
+dog1.name = "大黃"
+print(dog1.name)  # 大黃
+print(dog2.name)  # 阿福（不變）
+</code></pre>
+
+            <h3>類別變數（Class Variables）</h3>
+            <pre><code class="language-python">class Dog:
+    # 類別變數：所有實例共享
+    species = "Canis familiaris"
+    count = 0  # 記錄建立了多少隻狗
+    
+    def __init__(self, name):
+        self.name = name  # 實例變數
+        Dog.count += 1    # 修改類別變數
+
+dog1 = Dog("小黃")
+dog2 = Dog("阿福")
+dog3 = Dog("大黑")
+
+print(f"物種：{Dog.species}")  # Canis familiaris
+print(f"總共建立了 {Dog.count} 隻狗")  # 3
+
+# 所有實例都能存取類別變數
+print(dog1.species)  # Canis familiaris
+print(dog2.count)    # 3
+</code></pre>
+
+            <h3>實例變數 vs 類別變數比較</h3>
+            <pre><code class="language-python">class Student:
+    school = "台北高中"  # 類別變數（所有學生共享）
+    
+    def __init__(self, name, grade):
+        self.name = name    # 實例變數（每個學生不同）
+        self.grade = grade  # 實例變數
+
+student1 = Student("Alice", 90)
+student2 = Student("Bob", 85)
+
+# 實例變數：每個物件不同
+print(student1.name)   # Alice
+print(student2.name)   # Bob
+
+# 類別變數：所有物件相同
+print(student1.school) # 台北高中
+print(student2.school) # 台北高中
+
+# 修改類別變數（影響所有實例）
+Student.school = "台中高中"
+print(student1.school) # 台中高中
+print(student2.school) # 台中高中
+
+# 注意：如果對實例設定同名屬性，會建立實例變數
+student1.school = "高雄高中"
+print(student1.school) # 高雄高中（實例變數）
+print(student2.school) # 台中高中（類別變數）
+print(Student.school)  # 台中高中（類別變數）
+</code></pre>
+
+            <div class="warning-box">
+                <strong>類別變數使用注意事項：</strong>
+                <ul>
+                    <li>類別變數適合儲存所有實例共享的資料</li>
+                    <li>不要用可變物件（如 list, dict）作為類別變數的預設值</li>
+                    <li>修改類別變數會影響所有實例</li>
+                    <li>如果對實例設定同名屬性，會建立新的實例變數</li>
+                </ul>
+            </div>
+
+            <h3>實用範例：計數器</h3>
+            <pre><code class="language-python">class User:
+    """使用者類別"""
+    total_users = 0  # 類別變數：記錄總使用者數
+    
+    def __init__(self, username, email):
+        self.username = username  # 實例變數
+        self.email = email        # 實例變數
+        User.total_users += 1     # 每建立一個使用者，計數器加 1
+        self.user_id = User.total_users  # 給予唯一 ID
+    
+    @classmethod
+    def get_total_users(cls):
+        """取得總使用者數"""
+        return cls.total_users
+    
+    def __str__(self):
+        return f"User#{self.user_id}: {self.username} ({self.email})"
+
+
+# 建立使用者
+user1 = User("alice", "alice@example.com")
+user2 = User("bob", "bob@example.com")
+user3 = User("charlie", "charlie@example.com")
+
+print(user1)  # User#1: alice (alice@example.com)
+print(user2)  # User#2: bob (bob@example.com)
+
+print(f"總共有 {User.get_total_users()} 位使用者")  # 3
+</code></pre>
+        </div>
+
+        <div class="content">
+            <h2>4. 方法類型</h2>
+            
+            <h3>實例方法（Instance Methods）</h3>
+            <pre><code class="language-python">class Circle:
+    def __init__(self, radius):
+        self.radius = radius
+    
+    def get_area(self):
+        """實例方法：可以存取實例變數"""
+        import math
+        return math.pi * self.radius ** 2
+    
+    def get_circumference(self):
+        """實例方法：可以存取實例變數"""
+        import math
+        return 2 * math.pi * self.radius
+
+circle = Circle(5)
+print(f"面積：{circle.get_area():.2f}")           # 78.54
+print(f"周長：{circle.get_circumference():.2f}")  # 31.42
+</code></pre>
+
+            <h3>類別方法（Class Methods）</h3>
+            <pre><code class="language-python">class Date:
+    def __init__(self, year, month, day):
+        self.year = year
+        self.month = month
+        self.day = day
+    
+    @classmethod
+    def from_string(cls, date_string):
+        """類別方法：從字串建立日期物件"""
+        year, month, day = map(int, date_string.split('-'))
+        return cls(year, month, day)
+    
+    @classmethod
+    def today(cls):
+        """類別方法：建立今天的日期"""
+        import datetime
+        now = datetime.date.today()
+        return cls(now.year, now.month, now.day)
+    
+    def __str__(self):
+        return f"{self.year}-{self.month:02d}-{self.day:02d}"
+
+
+# 使用建構子
+date1 = Date(2025, 11, 23)
+print(date1)  # 2025-11-23
+
+# 使用類別方法
+date2 = Date.from_string("2025-12-25")
+print(date2)  # 2025-12-25
+
+date3 = Date.today()
+print(date3)  # 今天的日期
+</code></pre>
+
+            <h3>靜態方法（Static Methods）</h3>
+            <pre><code class="language-python">class MathUtils:
+    """數學工具類別"""
+    
+    @staticmethod
+    def add(a, b):
+        """靜態方法：不需要存取類別或實例"""
+        return a + b
+    
+    @staticmethod
+    def is_even(num):
+        """靜態方法：判斷是否為偶數"""
+        return num % 2 == 0
+    
+    @staticmethod
+    def factorial(n):
+        """靜態方法：計算階乘"""
+        if n <= 1:
+            return 1
+        result = 1
+        for i in range(2, n + 1):
+            result *= i
+        return result
+
+
+# 不需要建立物件即可使用
+print(MathUtils.add(3, 5))        # 8
+print(MathUtils.is_even(10))      # True
+print(MathUtils.factorial(5))     # 120
+
+# 也可以透過實例使用（但不常見）
+utils = MathUtils()
+print(utils.add(10, 20))  # 30
+</code></pre>
+
+            <h3>方法類型比較</h3>
+            <table>
+                <tr>
+                    <th>方法類型</th>
+                    <th>裝飾器</th>
+                    <th>第一個參數</th>
+                    <th>存取</th>
+                    <th>使用時機</th>
+                </tr>
+                <tr>
+                    <td>實例方法</td>
+                    <td>無</td>
+                    <td>self</td>
+                    <td>可存取實例和類別</td>
+                    <td>需要操作物件資料</td>
+                </tr>
+                <tr>
+                    <td>類別方法</td>
+                    <td>@classmethod</td>
+                    <td>cls</td>
+                    <td>只能存取類別</td>
+                    <td>替代建構子、工廠方法</td>
+                </tr>
+                <tr>
+                    <td>靜態方法</td>
+                    <td>@staticmethod</td>
+                    <td>無</td>
+                    <td>不存取類別或實例</td>
+                    <td>工具函數、邏輯分組</td>
+                </tr>
+            </table>
+
+            <div class="tip-box">
+                <strong>選擇指南：</strong>
+                <ul>
+                    <li><strong>實例方法</strong>：需要存取或修改物件的屬性</li>
+                    <li><strong>類別方法</strong>：需要存取類別變數，或提供替代建構子</li>
+                    <li><strong>靜態方法</strong>：與類別相關的工具函數，但不需要存取類別或實例資料</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="content">
+            <h2>5. 封裝與私有屬性</h2>
+            
+            <h3>公開、保護、私有屬性</h3>
+            <pre><code class="language-python">class BankAccount:
+    def __init__(self, owner, balance):
+        self.owner = owner           # 公開屬性（public）
+        self._balance = balance      # 保護屬性（protected）- 單底線
+        self.__pin = "1234"          # 私有屬性（private）- 雙底線
+    
+    def get_balance(self):
+        """取得餘額"""
+        return self._balance
+    
+    def __validate_pin(self, pin):
+        """私有方法：驗證 PIN"""
+        return pin == self.__pin
+
+
+account = BankAccount("Alice", 1000)
+
+# 公開屬性：直接存取
+print(account.owner)  # Alice
+
+# 保護屬性：可以存取，但不建議（慣例）
+print(account._balance)  # 1000
+
+# 私有屬性：無法直接存取
+# print(account.__pin)  # AttributeError
+
+# 透過名稱改寫可以存取（不建議）
+print(account._BankAccount__pin)  # 1234
+</code></pre>
+
+            <h3>使用 Property 裝飾器</h3>
+            <pre><code class="language-python">class Temperature:
+    def __init__(self, celsius):
+        self._celsius = celsius
+    
+    @property
+    def celsius(self):
+        """取得攝氏溫度"""
+        return self._celsius
+    
+    @celsius.setter
+    def celsius(self, value):
+        """設定攝氏溫度"""
+        if value < -273.15:
+            raise ValueError("溫度不能低於絕對零度")
+        self._celsius = value
+    
+    @property
+    def fahrenheit(self):
+        """取得華氏溫度"""
+        return self._celsius * 9/5 + 32
+    
+    @fahrenheit.setter
+    def fahrenheit(self, value):
+        """設定華氏溫度"""
+        self.celsius = (value - 32) * 5/9
+
+
+# 使用 property 就像存取屬性一樣
+temp = Temperature(25)
+print(temp.celsius)     # 25
+print(temp.fahrenheit)  # 77.0
+
+# 設定攝氏溫度
+temp.celsius = 30
+print(temp.fahrenheit)  # 86.0
+
+# 設定華氏溫度
+temp.fahrenheit = 32
+print(temp.celsius)     # 0.0
+
+# 驗證會生效
+# temp.celsius = -300  # ValueError: 溫度不能低於絕對零度
+</code></pre>
+
+            <h3>實用範例：員工類別</h3>
+            <pre><code class="language-python">class Employee:
+    """員工類別"""
+    
+    def __init__(self, name, salary):
+        self._name = name
+        self._salary = salary
+        self._email = None
+    
+    @property
+    def name(self):
+        """取得姓名"""
+        return self._name
+    
+    @property
+    def salary(self):
+        """取得薪水"""
+        return self._salary
+    
+    @salary.setter
+    def salary(self, value):
+        """設定薪水（需驗證）"""
+        if value < 0:
+            raise ValueError("薪水不能是負數")
+        if value < self._salary:
+            print("警告：薪水減少了")
+        self._salary = value
+    
+    @property
+    def email(self):
+        """自動生成 email"""
+        if self._email:
+            return self._email
+        return f"{self._name.lower().replace(' ', '.')}@company.com"
+    
+    @email.setter
+    def email(self, value):
+        """設定自訂 email"""
+        if '@' not in value:
+            raise ValueError("email 格式錯誤")
+        self._email = value
+    
+    def give_raise(self, amount):
+        """加薪"""
+        self.salary += amount
+        print(f"{self.name} 加薪 ${amount}，新薪水：${self.salary}")
+
+
+# 使用範例
+emp = Employee("John Doe", 50000)
+print(f"姓名：{emp.name}")
+print(f"薪水：${emp.salary}")
+print(f"Email：{emp.email}")  # john.doe@company.com
+
+emp.give_raise(5000)  # John Doe 加薪 $5000，新薪水：$55000
+
+# 設定自訂 email
+emp.email = "john@gmail.com"
+print(f"Email：{emp.email}")  # john@gmail.com
+</code></pre>
+        </div>
+
+        <div class="content">
+            <h2>6. 特殊方法（Magic Methods）</h2>
+            
+            <h3>常用特殊方法</h3>
+            <pre><code class="language-python">class Book:
+    def __init__(self, title, author, pages):
+        """建構子"""
+        self.title = title
+        self.author = author
+        self.pages = pages
+    
+    def __str__(self):
+        """字串表示（給使用者看）"""
+        return f"《{self.title}》- {self.author}"
+    
+    def __repr__(self):
+        """字串表示（給開發者看）"""
+        return f"Book('{self.title}', '{self.author}', {self.pages})"
+    
+    def __len__(self):
+        """長度"""
+        return self.pages
+    
+    def __eq__(self, other):
+        """相等比較"""
+        if not isinstance(other, Book):
+            return False
+        return self.title == other.title and self.author == other.author
+    
+    def __lt__(self, other):
+        """小於比較（用於排序）"""
+        return self.pages < other.pages
+
+
+# 使用範例
+book1 = Book("Python 入門", "作者A", 300)
+book2 = Book("Python 進階", "作者B", 450)
+book3 = Book("Python 入門", "作者A", 300)
+
+# __str__
+print(book1)  # 《Python 入門》- 作者A
+
+# __repr__
+print(repr(book1))  # Book('Python 入門', '作者A', 300)
+
+# __len__
+print(len(book1))  # 300
+
+# __eq__
+print(book1 == book2)  # False
+print(book1 == book3)  # True
+
+# __lt__（排序）
+books = [book2, book1]
+books.sort()
+for book in books:
+    print(book)
+# 《Python 入門》- 作者A
+# 《Python 進階》- 作者B
+</code></pre>
+
+            <h3>運算符重載</h3>
+            <pre><code class="language-python">class Vector:
+    """二維向量"""
+    
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+    
+    def __str__(self):
+        return f"Vector({self.x}, {self.y})"
+    
+    def __add__(self, other):
+        """加法：v1 + v2"""
+        return Vector(self.x + other.x, self.y + other.y)
+    
+    def __sub__(self, other):
+        """減法：v1 - v2"""
+        return Vector(self.x - other.x, self.y - other.y)
+    
+    def __mul__(self, scalar):
+        """乘法：v * 數字"""
+        return Vector(self.x * scalar, self.y * scalar)
+    
+    def __abs__(self):
+        """絕對值（向量長度）"""
+        return (self.x ** 2 + self.y ** 2) ** 0.5
+    
+    def __eq__(self, other):
+        """相等比較"""
+        return self.x == other.x and self.y == other.y
+
+
+# 使用範例
+v1 = Vector(2, 3)
+v2 = Vector(1, 4)
+
+print(v1 + v2)    # Vector(3, 7)
+print(v1 - v2)    # Vector(1, -1)
+print(v1 * 3)     # Vector(6, 9)
+print(abs(v1))    # 3.605551275463989
+print(v1 == v2)   # False
+</code></pre>
+
+            <h3>常用特殊方法列表</h3>
+            <table>
+                <tr>
+                    <th>方法</th>
+                    <th>說明</th>
+                    <th>觸發時機</th>
+                </tr>
+                <tr>
+                    <td>__init__</td>
+                    <td>建構子</td>
+                    <td>建立物件時</td>
+                </tr>
+                <tr>
+                    <td>__str__</td>
+                    <td>字串表示（使用者）</td>
+                    <td>print(), str()</td>
+                </tr>
+                <tr>
+                    <td>__repr__</td>
+                    <td>字串表示（開發者）</td>
+                    <td>repr(), 互動模式</td>
+                </tr>
+                <tr>
+                    <td>__len__</td>
+                    <td>長度</td>
+                    <td>len()</td>
+                </tr>
+                <tr>
+                    <td>__eq__</td>
+                    <td>相等</td>
+                    <td>==</td>
+                </tr>
+                <tr>
+                    <td>__lt__</td>
+                    <td>小於</td>
+                    <td>&lt;</td>
+                </tr>
+                <tr>
+                    <td>__add__</td>
+                    <td>加法</td>
+                    <td>+</td>
+                </tr>
+                <tr>
+                    <td>__sub__</td>
+                    <td>減法</td>
+                    <td>-</td>
+                </tr>
+                <tr>
+                    <td>__mul__</td>
+                    <td>乘法</td>
+                    <td>*</td>
+                </tr>
+                <tr>
+                    <td>__getitem__</td>
+                    <td>索引存取</td>
+                    <td>obj[key]</td>
+                </tr>
+                <tr>
+                    <td>__setitem__</td>
+                    <td>索引設定</td>
+                    <td>obj[key] = value</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="content">
+            <h2>7. 實用範例</h2>
+            
+            <h3>範例一：購物車系統</h3>
+            <pre><code class="language-python">class Product:
+    """商品類別"""
+    
+    def __init__(self, name, price, quantity=1):
+        self.name = name
+        self.price = price
+        self.quantity = quantity
+    
+    def get_total(self):
+        """取得小計"""
+        return self.price * self.quantity
+    
+    def __str__(self):
+        return f"{self.name} x{self.quantity} = ${self.get_total()}"
+
+
+class ShoppingCart:
+    """購物車類別"""
+    
+    def __init__(self):
+        self.items = []
+    
+    def add_item(self, product):
+        """加入商品"""
+        # 檢查商品是否已存在
+        for item in self.items:
+            if item.name == product.name:
+                item.quantity += product.quantity
+                print(f"已將 {product.name} 的數量增加為 {item.quantity}")
+                return
+        
+        self.items.append(product)
+        print(f"已加入 {product.name}")
+    
+    def remove_item(self, product_name):
+        """移除商品"""
+        for item in self.items:
+            if item.name == product_name:
+                self.items.remove(item)
+                print(f"已移除 {product_name}")
+                return
+        print(f"找不到商品：{product_name}")
+    
+    def get_total(self):
+        """計算總金額"""
+        return sum(item.get_total() for item in self.items)
+    
+    def show_cart(self):
+        """顯示購物車內容"""
+        if not self.items:
+            print("購物車是空的")
+            return
+        
+        print("\n=== 購物車 ===")
+        for item in self.items:
+            print(item)
+        print(f"總計：${self.get_total()}")
+        print("=" * 20)
+
+
+# 使用範例
+cart = ShoppingCart()
+
+# 加入商品
+cart.add_item(Product("蘋果", 30, 3))
+cart.add_item(Product("香蕉", 20, 5))
+cart.add_item(Product("橘子", 25, 2))
+
+# 再加入相同商品
+cart.add_item(Product("蘋果", 30, 2))
+
+# 顯示購物車
+cart.show_cart()
+
+# 移除商品
+cart.remove_item("香蕉")
+cart.show_cart()
+</code></pre>
+
+            <h3>範例二：學生管理系統</h3>
+            <pre><code class="language-python">class Student:
+    """學生類別"""
+    
+    student_count = 0  # 類別變數
+    
+    def __init__(self, name, student_id):
+        self.name = name
+        self.student_id = student_id
+        self.scores = {}  # 科目成績
+        Student.student_count += 1
+    
+    def add_score(self, subject, score):
+        """新增成績"""
+        if 0 <= score <= 100:
+            self.scores[subject] = score
+            print(f"已記錄 {self.name} 的{subject}成績：{score}分")
+        else:
+            print("成績必須在 0-100 之間")
+    
+    def get_average(self):
+        """計算平均分"""
+        if not self.scores:
+            return 0
+        return sum(self.scores.values()) / len(self.scores)
+    
+    def get_grade(self):
+        """取得等第"""
+        avg = self.get_average()
+        if avg >= 90:
+            return "A"
+        elif avg >= 80:
+            return "B"
+        elif avg >= 70:
+            return "C"
+        elif avg >= 60:
+            return "D"
+        else:
+            return "F"
+    
+    def show_report(self):
+        """顯示成績單"""
+        print(f"\n=== {self.name} 的成績單 ===")
+        print(f"學號：{self.student_id}")
+        
+        for subject, score in self.scores.items():
+            print(f"{subject}：{score}分")
+        
+        print(f"平均：{self.get_average():.2f}分")
+        print(f"等第：{self.get_grade()}")
+        print("=" * 30)
+    
+    @classmethod
+    def get_student_count(cls):
+        """取得學生總數"""
+        return cls.student_count
+    
+    def __str__(self):
+        return f"{self.name} ({self.student_id})"
+
+
+# 使用範例
+student1 = Student("Alice", "S001")
+student1.add_score("數學", 85)
+student1.add_score("英文", 90)
+student1.add_score("物理", 88)
+student1.show_report()
+
+student2 = Student("Bob", "S002")
+student2.add_score("數學", 92)
+student2.add_score("英文", 87)
+student2.add_score("物理", 95)
+student2.show_report()
+
+print(f"\n總共有 {Student.get_student_count()} 位學生")
+</code></pre>
+        </div>
+
+        <div class="content">
+            <div class="exercise-section">
+                <h3>本週練習題</h3>
+                
+                <h4>基礎練習（必做）</h4>
+                <ol>
+                    <li>
+                        <strong>矩形類別</strong><br>
+                        建立 Rectangle 類別：
+                        <ul>
+                            <li>屬性：width（寬）、height（高）</li>
+                            <li>方法：get_area()（面積）、get_perimeter()（周長）</li>
+                            <li>特殊方法：__str__（字串表示）</li>
+                        </ul>
+                    </li>
+                    
+                    <li>
+                        <strong>圖書類別</strong><br>
+                        建立 Book 類別：
+                        <ul>
+                            <li>屬性：title、author、isbn、is_borrowed</li>
+                            <li>方法：borrow()（借書）、return_book()（還書）</li>
+                            <li>確保已借出的書不能再借</li>
+                        </ul>
+                    </li>
+                    
+                    <li>
+                        <strong>計數器類別</strong><br>
+                        建立 Counter 類別：
+                        <ul>
+                            <li>屬性：count（計數值）</li>
+                            <li>方法：increment()、decrement()、reset()、get_count()</li>
+                            <li>類別變數：記錄建立了多少個計數器</li>
+                        </ul>
+                    </li>
+                </ol>
+
+                <h4>進階練習</h4>
+                <ol start="4">
+                    <li>
+                        <strong>銀行帳戶系統</strong><br>
+                        擴展銀行帳戶類別：
+                        <ul>
+                            <li>加入交易記錄（每次存提款都記錄）</li>
+                            <li>提供查詢交易記錄的方法</li>
+                            <li>計算利息的方法（年利率 1.5%）</li>
+                            <li>使用 property 保護餘額</li>
+                        </ul>
+                    </li>
+                    
+                    <li>
+                        <strong>電影票系統</strong><br>
+                        建立 Movie 和 Ticket 類別：
+                        <ul>
+                            <li>Movie：電影名稱、時長、票價</li>
+                            <li>Ticket：座位號、電影、是否已售出</li>
+                            <li>實作售票、退票功能</li>
+                            <li>統計已售票數和收入</li>
+                        </ul>
+                    </li>
+                    
+                    <li>
+                        <strong>時間類別</strong><br>
+                        建立 Time 類別：
+                        <ul>
+                            <li>屬性：hour、minute、second</li>
+                            <li>方法：add_seconds()、to_string()（HH:MM:SS）</li>
+                            <li>運算符重載：支援兩個時間相加</li>
+                            <li>驗證時間合法性</li>
+                        </ul>
+                    </li>
+                </ol>
+
+                <h4>挑戰練習</h4>
+                <ol start="7">
+                    <li>
+                        <strong>撲克牌遊戲</strong><br>
+                        建立完整的撲克牌系統：
+                        <ul>
+                            <li>Card 類別：花色、點數</li>
+                            <li>Deck 類別：一副牌、洗牌、發牌</li>
+                            <li>Hand 類別：玩家手牌、計算點數</li>
+                            <li>實作簡單的 21 點遊戲</li>
+                        </ul>
+                    </li>
+                    
+                    <li>
+                        <strong>圖書館管理系統</strong><br>
+                        建立完整系統：
+                        <ul>
+                            <li>Book 類別：書籍資訊</li>
+                            <li>Member 類別：會員資訊、借閱記錄</li>
+                            <li>Library 類別：管理書籍和會員</li>
+                            <li>借書、還書、查詢、逾期罰款功能</li>
+                        </ul>
+                    </li>
+                    
+                    <li>
+                        <strong>餐廳點餐系統</strong><br>
+                        建立完整的點餐系統：
+                        <ul>
+                            <li>MenuItem 類別：菜單項目</li>
+                            <li>Order 類別：訂單、計算總額、折扣</li>
+                            <li>Restaurant 類別：管理菜單和訂單</li>
+                            <li>支援會員折扣、套餐優惠</li>
+                        </ul>
+                    </li>
+                </ol>
+
+                <div class="tip-box">
+                    <strong>練習提示：</strong>
+                    <ul>
+                        <li>先設計類別結構（屬性和方法）</li>
+                        <li>使用有意義的類別名稱和方法名稱</li>
+                        <li>適當使用 property 保護屬性</li>
+                        <li>添加輸入驗證</li>
+                        <li>實作 __str__ 方法便於除錯</li>
+                        <li>考慮類別之間的關係</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="content">
+            <h2>本週總結</h2>
+            
+            <h3>重點回顧</h3>
+            <ul>
+                <li>✅ 理解物件導向的基本概念</li>
+                <li>✅ 掌握類別定義與物件建立</li>
+                <li>✅ 熟悉建構子與初始化</li>
+                <li>✅ 理解實例變數與類別變數的差異</li>
+                <li>✅ 學會三種方法類型的使用</li>
+                <li>✅ 掌握封裝與 property</li>
+                <li>✅ 了解特殊方法的用途</li>
+                <li>✅ 能夠設計簡單的類別系統</li>
+            </ul>
+
+            <h3>下週預告</h3>
+            <div class="note-box">
+                <h4>Week 7 - 物件導向程式設計（下）</h4>
+                <p>下週將深入學習物件導向的進階概念：</p>
+                <ul>
+                    <li>繼承（Inheritance）</li>
+                    <li>方法覆寫（Method Overriding）</li>
+                    <li>多重繼承</li>
+                    <li>多型（Polymorphism）</li>
+                    <li>抽象類別與介面</li>
+                    <li>組合 vs 繼承</li>
+                    <li>設計模式入門</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="nav-buttons">
+            <a href="python-week5.html" class="btn btn-secondary">← Week 5</a>
+            <a href="python-week7.html" class="btn">Week 7：物件導向（下）→</a>
+        </div>
+
+        <footer style="text-align: center; padding: 30px 0; color: #7f8c8d; margin-top: 50px; border-top: 1px solid #ddd;">
+            <p style="margin: 10px 0;">Python 程式設計 Week 6</p>
+            <p style="margin: 10px 0; font-size: 0.9em;">物件導向 · 類別 · 封裝 · 特殊方法</p>
+            <p style="margin: 10px 0; font-size: 0.85em; color: #95a5a6;">© 2025 All Rights Reserved</p>
+        </footer>
+    </div>
+</body>
+</html>

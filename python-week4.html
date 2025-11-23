@@ -1,0 +1,1406 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Week 4 - 函數與模組 | Python 程式設計</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Microsoft JhengHei', Arial, sans-serif;
+            background: linear-gradient(to bottom, #f5f7fa 0%, #c3cfe2 100%);
+            color: #2c3e50;
+            line-height: 1.7;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .nav {
+            background: white;
+            padding: 15px 25px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .nav a {
+            color: #3776ab;
+            text-decoration: none;
+            font-weight: 600;
+            padding: 8px 16px;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+
+        .nav a:hover {
+            background: #3776ab;
+            color: white;
+        }
+
+        header {
+            background: linear-gradient(135deg, #3776ab 0%, #ffd343 100%);
+            color: white;
+            padding: 50px 40px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        header .subtitle {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .content {
+            background: white;
+            border-radius: 8px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .content h2 {
+            color: #2c3e50;
+            font-size: 2em;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #3776ab;
+        }
+
+        .content h3 {
+            color: #34495e;
+            font-size: 1.5em;
+            margin: 30px 0 15px 0;
+        }
+
+        .content h4 {
+            color: #34495e;
+            font-size: 1.2em;
+            margin: 20px 0 10px 0;
+        }
+
+        pre[class*="language-"] {
+            margin: 20px 0;
+            border-radius: 8px;
+            border: 2px solid #3776ab;
+        }
+
+        code[class*="language-"] {
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            font-size: 0.95em;
+            line-height: 1.6;
+        }
+
+        .note-box {
+            background: #e8f4f8;
+            border-left: 4px solid #3776ab;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .warning-box {
+            background: #fff8e1;
+            border-left: 4px solid #ffa726;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .tip-box {
+            background: #e8f5e9;
+            border-left: 4px solid #66bb6a;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .exercise-section {
+            background: #f8f9fa;
+            border: 2px solid #3776ab;
+            padding: 30px;
+            margin: 30px 0;
+            border-radius: 8px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        table th,
+        table td {
+            padding: 12px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+
+        table th {
+            background: #3776ab;
+            color: white;
+            font-weight: 600;
+        }
+
+        table tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        ul, ol {
+            margin-left: 30px;
+            margin-top: 10px;
+        }
+
+        li {
+            margin: 8px 0;
+        }
+
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 40px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background: #3776ab;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            background: #2d5a8a;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        .btn-secondary {
+            background: #95a5a6;
+        }
+
+        .btn-secondary:hover {
+            background: #7f8c8d;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="nav">
+            <a href="python-week3.html">← Week 3</a>
+            <span style="color: #7f8c8d; font-weight: 600;">Week 4 / 16</span>
+            <a href="python-week5.html">Week 5 →</a>
+        </div>
+
+        <header>
+            <h1>Week 4 - 函數與模組</h1>
+            <div class="subtitle">學習目標：掌握函數定義、參數傳遞、作用域，並學會使用模組組織程式碼</div>
+        </header>
+
+        <div class="content">
+            <h2>本週學習內容</h2>
+            <ul>
+                <li>函數的定義與呼叫</li>
+                <li>參數傳遞：位置參數、關鍵字參數、預設值</li>
+                <li>可變參數：*args 和 **kwargs</li>
+                <li>返回值與多重返回值</li>
+                <li>變數作用域（Local、Global）</li>
+                <li>Lambda 函數</li>
+                <li>遞迴函數</li>
+                <li>模組的匯入與使用</li>
+                <li>常用內建模組</li>
+            </ul>
+        </div>
+
+        <div class="content">
+            <h2>1. 函數基礎</h2>
+            
+            <h3>為什麼需要函數？</h3>
+            <ul>
+                <li><strong>程式碼重用</strong>：避免重複撰寫相同的程式碼</li>
+                <li><strong>模組化</strong>：將複雜問題分解成小單元</li>
+                <li><strong>易於維護</strong>：修改函數即可更新所有呼叫處</li>
+                <li><strong>提高可讀性</strong>：使用有意義的函數名稱</li>
+                <li><strong>測試簡單</strong>：可以單獨測試每個函數</li>
+            </ul>
+
+            <h3>定義函數</h3>
+            <pre><code class="language-python"># 基本函數定義
+def greet():
+    """這是一個簡單的問候函數"""
+    print("Hello, World!")
+
+# 呼叫函數
+greet()  # 輸出：Hello, World!
+
+
+# 帶參數的函數
+def greet_person(name):
+    """問候指定的人"""
+    print(f"Hello, {name}!")
+
+greet_person("Alice")  # 輸出：Hello, Alice!
+greet_person("Bob")    # 輸出：Hello, Bob!
+
+
+# 帶返回值的函數
+def add(a, b):
+    """計算兩數之和"""
+    return a + b
+
+result = add(3, 5)
+print(result)  # 8
+
+
+# 文件字串（Docstring）
+def calculate_area(radius):
+    """
+    計算圓的面積
+    
+    參數:
+        radius (float): 圓的半徑
+    
+    返回:
+        float: 圓的面積
+    """
+    import math
+    return math.pi * radius ** 2
+
+# 查看文件字串
+print(calculate_area.__doc__)
+</code></pre>
+
+            <div class="note-box">
+                <strong>函數命名規則：</strong>
+                <ul>
+                    <li>使用小寫字母和底線（snake_case）</li>
+                    <li>名稱要有意義，描述函數功能</li>
+                    <li>動詞開頭：calculate_total, get_user, validate_input</li>
+                    <li>避免使用 Python 關鍵字</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="content">
+            <h2>2. 參數傳遞</h2>
+            
+            <h3>位置參數（Positional Arguments）</h3>
+            <pre><code class="language-python"># 按順序傳遞參數
+def introduce(name, age, city):
+    print(f"我是 {name}，今年 {age} 歲，住在 {city}")
+
+introduce("Alice", 25, "Taipei")
+# 輸出：我是 Alice，今年 25 歲，住在 Taipei
+
+# 順序錯誤會導致問題
+introduce(25, "Alice", "Taipei")
+# 輸出：我是 25，今年 Alice 歲，住在 Taipei（錯誤！）
+</code></pre>
+
+            <h3>關鍵字參數（Keyword Arguments）</h3>
+            <pre><code class="language-python"># 使用參數名稱傳遞
+def introduce(name, age, city):
+    print(f"我是 {name}，今年 {age} 歲，住在 {city}")
+
+# 可以不按順序
+introduce(age=25, city="Taipei", name="Alice")
+# 輸出：我是 Alice，今年 25 歲，住在 Taipei
+
+# 混合使用（位置參數必須在前）
+introduce("Bob", city="Kaohsiung", age=30)
+# 輸出：我是 Bob，今年 30 歲，住在 Kaohsiung
+</code></pre>
+
+            <h3>預設參數值（Default Arguments）</h3>
+            <pre><code class="language-python"># 設定預設值
+def greet(name, greeting="Hello"):
+    print(f"{greeting}, {name}!")
+
+greet("Alice")              # Hello, Alice!
+greet("Bob", "Hi")          # Hi, Bob!
+greet("Charlie", greeting="Hey")  # Hey, Charlie!
+
+
+# 多個預設值
+def create_user(name, age=18, city="Taipei", active=True):
+    return {
+        "name": name,
+        "age": age,
+        "city": city,
+        "active": active
+    }
+
+user1 = create_user("Alice")
+print(user1)  # {'name': 'Alice', 'age': 18, 'city': 'Taipei', 'active': True}
+
+user2 = create_user("Bob", age=25, city="Tainan")
+print(user2)  # {'name': 'Bob', 'age': 25, 'city': 'Tainan', 'active': True}
+</code></pre>
+
+            <div class="warning-box">
+                <strong>預設值陷阱：</strong>
+                <pre><code class="language-python"># 錯誤示範：使用可變物件作為預設值
+def add_item(item, items=[]):  # 危險！
+    items.append(item)
+    return items
+
+print(add_item("apple"))   # ['apple']
+print(add_item("banana"))  # ['apple', 'banana']（意外！）
+
+
+# 正確做法
+def add_item(item, items=None):
+    if items is None:
+        items = []
+    items.append(item)
+    return items
+
+print(add_item("apple"))   # ['apple']
+print(add_item("banana"))  # ['banana']（正確！）
+</code></pre>
+            </div>
+
+            <h3>可變參數：*args</h3>
+            <pre><code class="language-python"># *args 接收任意數量的位置參數（tuple）
+def sum_all(*args):
+    """計算所有參數的總和"""
+    total = 0
+    for num in args:
+        total += num
+    return total
+
+print(sum_all(1, 2, 3))           # 6
+print(sum_all(1, 2, 3, 4, 5))     # 15
+print(sum_all())                  # 0
+
+
+# 混合使用
+def greet_all(greeting, *names):
+    """問候所有人"""
+    for name in names:
+        print(f"{greeting}, {name}!")
+
+greet_all("Hello", "Alice", "Bob", "Charlie")
+# 輸出：
+# Hello, Alice!
+# Hello, Bob!
+# Hello, Charlie!
+
+
+# 實用範例：找出最大值
+def find_max(*numbers):
+    """找出所有數字中的最大值"""
+    if not numbers:
+        return None
+    
+    max_num = numbers[0]
+    for num in numbers:
+        if num > max_num:
+            max_num = num
+    return max_num
+
+print(find_max(3, 7, 2, 9, 1))  # 9
+</code></pre>
+
+            <h3>可變參數：**kwargs</h3>
+            <pre><code class="language-python"># **kwargs 接收任意數量的關鍵字參數（dict）
+def print_info(**kwargs):
+    """印出所有關鍵字參數"""
+    for key, value in kwargs.items():
+        print(f"{key}: {value}")
+
+print_info(name="Alice", age=25, city="Taipei")
+# 輸出：
+# name: Alice
+# age: 25
+# city: Taipei
+
+
+# 組合使用
+def create_profile(name, *hobbies, **details):
+    """建立個人檔案"""
+    print(f"姓名: {name}")
+    
+    if hobbies:
+        print(f"興趣: {', '.join(hobbies)}")
+    
+    for key, value in details.items():
+        print(f"{key}: {value}")
+
+create_profile(
+    "Alice",
+    "閱讀", "旅遊", "攝影",
+    age=25,
+    city="Taipei",
+    email="<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="accdc0c5cfc9ecc9d4cdc1dcc0c982cfc3c1">[email&#160;protected]</a>"
+)
+# 輸出：
+# 姓名: Alice
+# 興趣: 閱讀, 旅遊, 攝影
+# age: 25
+# city: Taipei
+# email: <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="c4a5a8ada7a184a1bca5a9b4a8a1eaa7aba9">[email&#160;protected]</a>
+
+
+# 實用範例：建立靈活的設定函數
+def configure(required_param, *args, **kwargs):
+    """靈活的設定函數"""
+    config = {
+        "required": required_param,
+        "options": args,
+        "settings": kwargs
+    }
+    return config
+
+result = configure(
+    "必要參數",
+    "選項1", "選項2",
+    debug=True,
+    timeout=30,
+    retry=3
+)
+print(result)
+</code></pre>
+
+            <h3>參數順序規則</h3>
+            <pre><code class="language-python"># 正確的參數順序：
+# 1. 位置參數
+# 2. *args
+# 3. 關鍵字參數（帶預設值）
+# 4. **kwargs
+
+def complete_example(pos1, pos2, *args, kw1="default", kw2="default", **kwargs):
+    print(f"位置參數: {pos1}, {pos2}")
+    print(f"args: {args}")
+    print(f"關鍵字參數: kw1={kw1}, kw2={kw2}")
+    print(f"kwargs: {kwargs}")
+
+complete_example(
+    "A", "B",           # 位置參數
+    "C", "D",           # 進入 args
+    kw1="X",            # 關鍵字參數
+    extra1="Y",         # 進入 kwargs
+    extra2="Z"          # 進入 kwargs
+)
+</code></pre>
+        </div>
+
+        <div class="content">
+            <h2>3. 返回值</h2>
+            
+            <h3>基本返回</h3>
+            <pre><code class="language-python"># 返回單一值
+def square(x):
+    return x ** 2
+
+result = square(5)
+print(result)  # 25
+
+
+# 沒有 return 語句，預設返回 None
+def print_message(msg):
+    print(msg)
+
+result = print_message("Hello")
+print(result)  # None
+
+
+# 提前返回
+def check_positive(num):
+    """檢查數字是否為正數"""
+    if num <= 0:
+        return False
+    return True
+
+print(check_positive(5))   # True
+print(check_positive(-3))  # False
+</code></pre>
+
+            <h3>多重返回值</h3>
+            <pre><code class="language-python"># 返回多個值（實際上是返回元組）
+def calculate(a, b):
+    """計算加減乘除"""
+    add_result = a + b
+    sub_result = a - b
+    mul_result = a * b
+    div_result = a / b if b != 0 else None
+    return add_result, sub_result, mul_result, div_result
+
+# 接收所有返回值
+results = calculate(10, 5)
+print(results)  # (15, 5, 50, 2.0)
+
+# 解包返回值
+add, sub, mul, div = calculate(10, 5)
+print(f"加: {add}, 減: {sub}, 乘: {mul}, 除: {div}")
+
+
+# 返回字典（更清楚）
+def get_user_info(user_id):
+    """取得使用者資訊"""
+    return {
+        "id": user_id,
+        "name": "Alice",
+        "age": 25,
+        "email": "<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="2e4f42474d4b6e4b564f435e424b004d4143">[email&#160;protected]</a>"
+    }
+
+user = get_user_info(1)
+print(user["name"])  # Alice
+
+
+# 實用範例：統計資料
+def analyze_numbers(numbers):
+    """分析數字串列"""
+    if not numbers:
+        return None, None, None, None
+    
+    total = sum(numbers)
+    avg = total / len(numbers)
+    min_val = min(numbers)
+    max_val = max(numbers)
+    
+    return total, avg, min_val, max_val
+
+data = [10, 20, 30, 40, 50]
+total, average, minimum, maximum = analyze_numbers(data)
+print(f"總和: {total}, 平均: {average}, 最小: {minimum}, 最大: {maximum}")
+</code></pre>
+
+            <h3>條件返回</h3>
+            <pre><code class="language-python"># 根據條件返回不同值
+def grade_to_score(grade):
+    """成績等級轉換為分數"""
+    if grade == "A":
+        return 90
+    elif grade == "B":
+        return 80
+    elif grade == "C":
+        return 70
+    elif grade == "D":
+        return 60
+    else:
+        return 0
+
+print(grade_to_score("A"))  # 90
+print(grade_to_score("F"))  # 0
+
+
+# 使用字典簡化
+def grade_to_score_v2(grade):
+    """成績等級轉換為分數（優化版）"""
+    grades = {
+        "A": 90,
+        "B": 80,
+        "C": 70,
+        "D": 60
+    }
+    return grades.get(grade, 0)
+
+print(grade_to_score_v2("B"))  # 80
+</code></pre>
+        </div>
+
+        <div class="content">
+            <h2>4. 變數作用域（Scope）</h2>
+            
+            <h3>區域變數 vs 全域變數</h3>
+            <pre><code class="language-python"># 全域變數
+global_var = "我是全域變數"
+
+def my_function():
+    # 區域變數
+    local_var = "我是區域變數"
+    print(global_var)  # 可以讀取全域變數
+    print(local_var)
+
+my_function()
+print(global_var)  # OK
+# print(local_var)  # NameError: 區域變數在函數外無法存取
+
+
+# 變數遮蔽（Shadowing）
+x = 10  # 全域變數
+
+def test():
+    x = 20  # 區域變數（遮蔽全域變數）
+    print(f"函數內的 x: {x}")
+
+test()            # 函數內的 x: 20
+print(f"全域的 x: {x}")  # 全域的 x: 10
+</code></pre>
+
+            <h3>修改全域變數</h3>
+            <pre><code class="language-python"># 使用 global 關鍵字
+counter = 0  # 全域變數
+
+def increment():
+    global counter  # 宣告要修改全域變數
+    counter += 1
+
+increment()
+increment()
+print(counter)  # 2
+
+
+# 實用範例：計數器
+call_count = 0
+
+def tracked_function():
+    """追蹤函數被呼叫的次數"""
+    global call_count
+    call_count += 1
+    print(f"這個函數已被呼叫 {call_count} 次")
+
+tracked_function()  # 這個函數已被呼叫 1 次
+tracked_function()  # 這個函數已被呼叫 2 次
+tracked_function()  # 這個函數已被呼叫 3 次
+</code></pre>
+
+            <h3>LEGB 規則</h3>
+            <pre><code class="language-python"># LEGB: Local → Enclosed → Global → Built-in
+x = "global"  # Global
+
+def outer():
+    x = "enclosing"  # Enclosing
+    
+    def inner():
+        x = "local"  # Local
+        print(f"inner: {x}")
+    
+    inner()
+    print(f"outer: {x}")
+
+outer()
+print(f"global: {x}")
+
+# 輸出：
+# inner: local
+# enclosing: enclosing
+# global: global
+
+
+# Built-in 範例
+def my_function():
+    # 沒有定義 len，會查找 Built-in
+    result = len([1, 2, 3])
+    print(result)
+
+my_function()  # 3
+</code></pre>
+
+            <div class="warning-box">
+                <strong>全域變數使用建議：</strong>
+                <ul>
+                    <li>盡量避免使用全域變數</li>
+                    <li>如果需要共享資料，考慮使用參數傳遞</li>
+                    <li>常數可以使用全域變數（全大寫命名）</li>
+                    <li>使用類別（Class）來管理狀態更好</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="content">
+            <h2>5. Lambda 函數</h2>
+            
+            <h3>基本語法</h3>
+            <pre><code class="language-python"># 一般函數
+def square(x):
+    return x ** 2
+
+# Lambda 函數（匿名函數）
+square_lambda = lambda x: x ** 2
+
+print(square(5))         # 25
+print(square_lambda(5))  # 25
+
+
+# 多個參數
+add = lambda a, b: a + b
+print(add(3, 5))  # 8
+
+multiply = lambda a, b, c: a * b * c
+print(multiply(2, 3, 4))  # 24
+
+
+# 無參數
+greet = lambda: "Hello, World!"
+print(greet())  # Hello, World!
+</code></pre>
+
+            <h3>搭配內建函數使用</h3>
+            <pre><code class="language-python"># sorted() 搭配 lambda
+students = [
+    {"name": "Alice", "age": 25, "score": 85},
+    {"name": "Bob", "age": 22, "score": 92},
+    {"name": "Charlie", "age": 23, "score": 78}
+]
+
+# 按年齡排序
+sorted_by_age = sorted(students, key=lambda x: x["age"])
+print(sorted_by_age)
+
+# 按分數排序（降序）
+sorted_by_score = sorted(students, key=lambda x: x["score"], reverse=True)
+print(sorted_by_score)
+
+
+# map() 搭配 lambda
+numbers = [1, 2, 3, 4, 5]
+
+# 將每個數字平方
+squared = list(map(lambda x: x ** 2, numbers))
+print(squared)  # [1, 4, 9, 16, 25]
+
+# 轉換成字串
+strings = list(map(lambda x: str(x), numbers))
+print(strings)  # ['1', '2', '3', '4', '5']
+
+
+# filter() 搭配 lambda
+numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+
+# 過濾出偶數
+even_numbers = list(filter(lambda x: x % 2 == 0, numbers))
+print(even_numbers)  # [2, 4, 6, 8, 10]
+
+# 過濾出大於 5 的數字
+greater_than_5 = list(filter(lambda x: x > 5, numbers))
+print(greater_than_5)  # [6, 7, 8, 9, 10]
+
+
+# reduce() 搭配 lambda
+from functools import reduce
+
+numbers = [1, 2, 3, 4, 5]
+
+# 計算總和
+total = reduce(lambda x, y: x + y, numbers)
+print(total)  # 15
+
+# 計算乘積
+product = reduce(lambda x, y: x * y, numbers)
+print(product)  # 120
+</code></pre>
+
+            <h3>實用範例</h3>
+            <pre><code class="language-python"># 快速排序字典串列
+data = [
+    {"product": "Apple", "price": 50},
+    {"product": "Banana", "price": 30},
+    {"product": "Cherry", "price": 80}
+]
+
+# 按價格排序
+by_price = sorted(data, key=lambda x: x["price"])
+print(by_price)
+
+
+# 條件轉換
+numbers = [1, -2, 3, -4, 5, -6]
+
+# 將負數轉為 0
+result = list(map(lambda x: x if x > 0 else 0, numbers))
+print(result)  # [1, 0, 3, 0, 5, 0]
+
+
+# 字串處理
+words = ["hello", "world", "python", "programming"]
+
+# 轉大寫並過濾長度 > 5
+result = list(map(lambda x: x.upper(), filter(lambda x: len(x) > 5, words)))
+print(result)  # ['PYTHON', 'PROGRAMMING']
+</code></pre>
+
+            <div class="tip-box">
+                <strong>Lambda 使用建議：</strong>
+                <ul>
+                    <li>適合簡單的單行運算</li>
+                    <li>常用於 sorted、map、filter 等函數</li>
+                    <li>複雜邏輯應使用一般函數（更易讀）</li>
+                    <li>不適合需要文件字串的情況</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="content">
+            <h2>6. 遞迴函數</h2>
+            
+            <h3>基本概念</h3>
+            <pre><code class="language-python"># 階乘計算（遞迴）
+def factorial(n):
+    """計算 n 的階乘"""
+    # 基礎情況（終止條件）
+    if n == 0 or n == 1:
+        return 1
+    # 遞迴情況
+    else:
+        return n * factorial(n - 1)
+
+print(factorial(5))  # 120 (5 * 4 * 3 * 2 * 1)
+
+
+# 費氏數列（遞迴）
+def fibonacci(n):
+    """計算第 n 個費氏數列"""
+    if n <= 1:
+        return n
+    else:
+        return fibonacci(n - 1) + fibonacci(n - 2)
+
+print(fibonacci(6))  # 8 (0, 1, 1, 2, 3, 5, 8)
+
+
+# 倒數計時
+def countdown(n):
+    """從 n 倒數到 0"""
+    if n <= 0:
+        print("發射！")
+    else:
+        print(n)
+        countdown(n - 1)
+
+countdown(5)
+# 輸出：
+# 5
+# 4
+# 3
+# 2
+# 1
+# 發射！
+</code></pre>
+
+            <h3>實用範例</h3>
+            <pre><code class="language-python"># 計算總和
+def sum_list(numbers):
+    """遞迴計算串列總和"""
+    if not numbers:
+        return 0
+    else:
+        return numbers[0] + sum_list(numbers[1:])
+
+print(sum_list([1, 2, 3, 4, 5]))  # 15
+
+
+# 反轉字串
+def reverse_string(s):
+    """遞迴反轉字串"""
+    if len(s) <= 1:
+        return s
+    else:
+        return s[-1] + reverse_string(s[:-1])
+
+print(reverse_string("hello"))  # olleh
+
+
+# 尋找最大值
+def find_max(numbers):
+    """遞迴尋找最大值"""
+    if len(numbers) == 1:
+        return numbers[0]
+    else:
+        max_rest = find_max(numbers[1:])
+        return numbers[0] if numbers[0] > max_rest else max_rest
+
+print(find_max([3, 7, 2, 9, 1]))  # 9
+
+
+# 二元搜尋（遞迴）
+def binary_search(arr, target, left=0, right=None):
+    """二元搜尋（陣列必須已排序）"""
+    if right is None:
+        right = len(arr) - 1
+    
+    if left > right:
+        return -1  # 找不到
+    
+    mid = (left + right) // 2
+    
+    if arr[mid] == target:
+        return mid
+    elif arr[mid] < target:
+        return binary_search(arr, target, mid + 1, right)
+    else:
+        return binary_search(arr, target, left, mid - 1)
+
+numbers = [1, 3, 5, 7, 9, 11, 13, 15]
+print(binary_search(numbers, 7))   # 3
+print(binary_search(numbers, 10))  # -1
+</code></pre>
+
+            <div class="warning-box">
+                <strong>遞迴注意事項：</strong>
+                <ul>
+                    <li>必須有明確的終止條件（基礎情況）</li>
+                    <li>每次遞迴要向終止條件靠近</li>
+                    <li>過深的遞迴可能導致堆疊溢位</li>
+                    <li>某些遞迴可以用迴圈替代（效能更好）</li>
+                    <li>Python 遞迴深度限制約 1000 層</li>
+                </ul>
+            </div>
+
+            <h3>遞迴 vs 迴圈</h3>
+            <pre><code class="language-python"># 階乘 - 遞迴版本
+def factorial_recursive(n):
+    if n <= 1:
+        return 1
+    return n * factorial_recursive(n - 1)
+
+# 階乘 - 迴圈版本（更有效率）
+def factorial_iterative(n):
+    result = 1
+    for i in range(1, n + 1):
+        result *= i
+    return result
+
+print(factorial_recursive(5))  # 120
+print(factorial_iterative(5))  # 120
+</code></pre>
+        </div>
+
+        <div class="content">
+            <h2>7. 模組與套件</h2>
+            
+            <h3>什麼是模組？</h3>
+            <p>模組是包含 Python 定義和語句的檔案。檔案名稱就是模組名稱加上 .py 副檔名。</p>
+
+            <h3>匯入模組</h3>
+            <pre><code class="language-python"># 方法一：匯入整個模組
+import math
+
+print(math.pi)           # 3.141592653589793
+print(math.sqrt(16))     # 4.0
+print(math.pow(2, 3))    # 8.0
+
+
+# 方法二：匯入特定函數
+from math import pi, sqrt
+
+print(pi)        # 3.141592653589793
+print(sqrt(16))  # 4.0
+# print(pow(2, 3))  # NameError: pow 沒有被匯入
+
+
+# 方法三：匯入所有內容（不推薦）
+from math import *
+
+print(pi)
+print(sqrt(16))
+# 可能會覆蓋現有的變數名稱
+
+
+# 方法四：使用別名
+import math as m
+import numpy as np  # 常見慣例
+
+print(m.pi)
+print(m.sqrt(16))
+
+
+# 匯入特定函數並使用別名
+from math import sqrt as square_root
+
+print(square_root(16))  # 4.0
+</code></pre>
+
+            <h3>常用內建模組</h3>
+            
+            <h4>1. math - 數學函數</h4>
+            <pre><code class="language-python">import math
+
+# 常數
+print(math.pi)      # 圓周率
+print(math.e)       # 自然對數的底
+
+# 基本運算
+print(math.sqrt(25))     # 平方根: 5.0
+print(math.pow(2, 3))    # 次方: 8.0
+print(math.factorial(5)) # 階乘: 120
+
+# 三角函數
+print(math.sin(math.pi / 2))  # 1.0
+print(math.cos(0))            # 1.0
+print(math.tan(math.pi / 4))  # 約 1.0
+
+# 取整函數
+print(math.ceil(4.3))   # 無條件進位: 5
+print(math.floor(4.7))  # 無條件捨去: 4
+
+# 對數
+print(math.log(10))      # 自然對數
+print(math.log10(100))   # 以 10 為底: 2.0
+</code></pre>
+
+            <h4>2. random - 隨機數</h4>
+            <pre><code class="language-python">import random
+
+# 隨機整數
+print(random.randint(1, 10))    # 1-10 之間的隨機整數
+
+# 隨機浮點數
+print(random.random())          # 0.0-1.0 之間
+print(random.uniform(1, 10))    # 1.0-10.0 之間
+
+# 從序列中隨機選擇
+fruits = ["apple", "banana", "cherry", "date"]
+print(random.choice(fruits))    # 隨機選一個
+
+# 隨機打亂
+numbers = [1, 2, 3, 4, 5]
+random.shuffle(numbers)
+print(numbers)  # 已打亂
+
+# 隨機抽樣（不重複）
+print(random.sample(range(1, 50), 6))  # 類似樂透
+
+
+# 實用範例：擲骰子
+def roll_dice():
+    """擲一個骰子"""
+    return random.randint(1, 6)
+
+print(f"擲骰子結果: {roll_dice()}")
+
+
+# 實用範例：產生驗證碼
+def generate_code(length=6):
+    """產生隨機驗證碼"""
+    import string
+    chars = string.ascii_uppercase + string.digits
+    return ''.join(random.choice(chars) for _ in range(length))
+
+print(f"驗證碼: {generate_code()}")
+</code></pre>
+
+            <h4>3. datetime - 日期時間</h4>
+            <pre><code class="language-python">from datetime import datetime, date, time, timedelta
+
+# 取得當前日期時間
+now = datetime.now()
+print(now)  # 2025-11-23 15:30:45.123456
+
+# 取得當前日期
+today = date.today()
+print(today)  # 2025-11-23
+
+# 格式化日期時間
+print(now.strftime("%Y-%m-%d"))           # 2025-11-23
+print(now.strftime("%Y/%m/%d %H:%M:%S"))  # 2025/11/23 15:30:45
+print(now.strftime("%A, %B %d, %Y"))      # Saturday, November 23, 2025
+
+# 解析字串為日期
+date_str = "2025-11-23"
+parsed_date = datetime.strptime(date_str, "%Y-%m-%d")
+print(parsed_date)
+
+# 日期計算
+tomorrow = today + timedelta(days=1)
+print(f"明天: {tomorrow}")
+
+next_week = today + timedelta(weeks=1)
+print(f"下週: {next_week}")
+
+# 比較日期
+date1 = date(2025, 11, 23)
+date2 = date(2025, 12, 25)
+print(date1 < date2)  # True
+
+days_diff = (date2 - date1).days
+print(f"相差 {days_diff} 天")
+
+
+# 實用範例：計算年齡
+def calculate_age(birth_date):
+    """計算年齡"""
+    today = date.today()
+    age = today.year - birth_date.year
+    if today.month < birth_date.month or \
+       (today.month == birth_date.month and today.day < birth_date.day):
+        age -= 1
+    return age
+
+birthday = date(2000, 5, 15)
+print(f"年齡: {calculate_age(birthday)} 歲")
+</code></pre>
+
+            <h4>4. os - 作業系統介面</h4>
+            <pre><code class="language-python">import os
+
+# 取得當前工作目錄
+current_dir = os.getcwd()
+print(f"當前目錄: {current_dir}")
+
+# 列出目錄內容
+files = os.listdir(".")
+print(f"檔案列表: {files}")
+
+# 檢查路徑是否存在
+print(os.path.exists("myfile.txt"))
+
+# 檢查是檔案還是目錄
+print(os.path.isfile("myfile.txt"))
+print(os.path.isdir("myfolder"))
+
+# 分割路徑
+path = "/home/user/documents/file.txt"
+directory, filename = os.path.split(path)
+print(f"目錄: {directory}, 檔名: {filename}")
+
+# 取得副檔名
+name, ext = os.path.splitext(filename)
+print(f"檔名: {name}, 副檔名: {ext}")
+
+# 建立目錄
+# os.makedirs("new_folder", exist_ok=True)
+
+# 環境變數
+print(os.environ.get("PATH"))
+</code></pre>
+
+            <h4>5. json - JSON 處理</h4>
+            <pre><code class="language-python">import json
+
+# Python 字典轉 JSON 字串
+data = {
+    "name": "Alice",
+    "age": 25,
+    "city": "Taipei",
+    "hobbies": ["reading", "travel"]
+}
+
+json_string = json.dumps(data, indent=2)
+print(json_string)
+
+# JSON 字串轉 Python 字典
+json_data = '{"name": "Bob", "age": 30}'
+parsed_data = json.loads(json_data)
+print(parsed_data["name"])  # Bob
+
+
+# 寫入 JSON 檔案
+with open("data.json", "w", encoding="utf-8") as f:
+    json.dump(data, f, indent=2, ensure_ascii=False)
+
+# 讀取 JSON 檔案
+with open("data.json", "r", encoding="utf-8") as f:
+    loaded_data = json.load(f)
+    print(loaded_data)
+</code></pre>
+
+            <h3>建立自己的模組</h3>
+            <pre><code class="language-python"># 檔案: my_module.py
+"""
+這是我的自訂模組
+包含一些實用函數
+"""
+
+def greet(name):
+    """問候函數"""
+    return f"Hello, {name}!"
+
+def add(a, b):
+    """加法函數"""
+    return a + b
+
+PI = 3.14159
+
+class Calculator:
+    """簡單的計算機類別"""
+    def multiply(self, a, b):
+        return a * b
+
+
+# 在另一個檔案中使用
+# import my_module
+# 
+# print(my_module.greet("Alice"))
+# print(my_module.add(3, 5))
+# print(my_module.PI)
+# 
+# calc = my_module.Calculator()
+# print(calc.multiply(4, 5))
+</code></pre>
+        </div>
+
+        <div class="content">
+            <div class="exercise-section">
+                <h3>本週練習題</h3>
+                
+                <h4>基礎練習（必做）</h4>
+                <ol>
+                    <li>
+                        <strong>溫度轉換函數</strong><br>
+                        撰寫兩個函數：
+                        <ul>
+                            <li>celsius_to_fahrenheit(celsius)：攝氏轉華氏</li>
+                            <li>fahrenheit_to_celsius(fahrenheit)：華氏轉攝氏</li>
+                        </ul>
+                        公式：F = C × 9/5 + 32
+                    </li>
+                    
+                    <li>
+                        <strong>判斷質數</strong><br>
+                        撰寫函數 is_prime(n)，判斷 n 是否為質數。
+                    </li>
+                    
+                    <li>
+                        <strong>字串處理</strong><br>
+                        撰寫函數 count_words(text)，計算字串中的單字數量。
+                    </li>
+                </ol>
+
+                <h4>進階練習</h4>
+                <ol start="4">
+                    <li>
+                        <strong>統計函數</strong><br>
+                        撰寫函數 statistics(numbers)，返回一個字典包含：
+                        <ul>
+                            <li>總和（sum）</li>
+                            <li>平均值（average）</li>
+                            <li>最大值（max）</li>
+                            <li>最小值（min）</li>
+                        </ul>
+                    </li>
+                    
+                    <li>
+                        <strong>密碼驗證</strong><br>
+                        撰寫函數 validate_password(password)，檢查密碼是否符合：
+                        <ul>
+                            <li>長度至少 8 個字元</li>
+                            <li>包含大寫字母</li>
+                            <li>包含小寫字母</li>
+                            <li>包含數字</li>
+                        </ul>
+                    </li>
+                    
+                    <li>
+                        <strong>猜數字遊戲（函數版）</strong><br>
+                        使用函數組織猜數字遊戲的程式碼：
+                        <ul>
+                            <li>generate_number()：產生隨機數字</li>
+                            <li>get_guess()：取得使用者輸入</li>
+                            <li>check_guess(guess, answer)：檢查猜測</li>
+                            <li>play_game()：主遊戲流程</li>
+                        </ul>
+                    </li>
+                </ol>
+
+                <h4>挑戰練習</h4>
+                <ol start="7">
+                    <li>
+                        <strong>遞迴練習</strong><br>
+                        使用遞迴實作：
+                        <ul>
+                            <li>計算 GCD（最大公因數）</li>
+                            <li>河內塔問題</li>
+                            <li>計算冪次（不使用 **）</li>
+                        </ul>
+                    </li>
+                    
+                    <li>
+                        <strong>裝飾器入門</strong><br>
+                        撰寫一個計時裝飾器，測量函數執行時間：
+                        <pre><code class="language-python">import time
+
+def timer(func):
+    def wrapper(*args, **kwargs):
+        start = time.time()
+        result = func(*args, **kwargs)
+        end = time.time()
+        print(f"{func.__name__} 執行時間: {end - start:.4f} 秒")
+        return result
+    return wrapper
+
+@timer
+def slow_function():
+    time.sleep(2)
+    return "完成"
+</code></pre>
+                    </li>
+                    
+                    <li>
+                        <strong>建立實用模組</strong><br>
+                        建立 utils.py 模組，包含：
+                        <ul>
+                            <li>file_utils：檔案讀寫函數</li>
+                            <li>string_utils：字串處理函數</li>
+                            <li>math_utils：數學計算函數</li>
+                        </ul>
+                        然後在另一個程式中匯入並使用。
+                    </li>
+                </ol>
+
+                <div class="tip-box">
+                    <strong>練習提示：</strong>
+                    <ul>
+                        <li>函數名稱要有意義，描述功能</li>
+                        <li>添加文件字串（docstring）</li>
+                        <li>適當使用預設參數</li>
+                        <li>注意變數作用域</li>
+                        <li>測試各種輸入情況</li>
+                        <li>善用內建函數和模組</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="content">
+            <h2>本週總結</h2>
+            
+            <h3>重點回顧</h3>
+            <ul>
+                <li>✅ 掌握函數的定義與呼叫</li>
+                <li>✅ 理解各種參數傳遞方式</li>
+                <li>✅ 熟悉返回值與多重返回值</li>
+                <li>✅ 了解變數作用域（LEGB）</li>
+                <li>✅ 學會使用 Lambda 函數</li>
+                <li>✅ 理解遞迴的概念與應用</li>
+                <li>✅ 能夠匯入和使用模組</li>
+                <li>✅ 熟悉常用內建模組</li>
+            </ul>
+
+            <h3>下週預告</h3>
+            <div class="note-box">
+                <h4>Week 5 - 檔案處理與例外處理</h4>
+                <p>下週將學習如何處理檔案和錯誤：</p>
+                <ul>
+                    <li>檔案的開啟、讀取、寫入</li>
+                    <li>with 語句與上下文管理器</li>
+                    <li>CSV 和 JSON 檔案處理</li>
+                    <li>例外處理：try-except-finally</li>
+                    <li>自訂例外</li>
+                    <li>檔案路徑操作</li>
+                    <li>實用檔案操作範例</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="nav-buttons">
+            <a href="python-week3.html" class="btn btn-secondary">← Week 3</a>
+            <a href="python-week5.html" class="btn">Week 5：檔案與例外處理 →</a>
+        </div>
+
+        <footer style="text-align: center; padding: 30px 0; color: #7f8c8d; margin-top: 50px

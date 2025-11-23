@@ -1,0 +1,1231 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Week 3 - 資料結構基礎 | Python 程式設計</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Microsoft JhengHei', Arial, sans-serif;
+            background: linear-gradient(to bottom, #f5f7fa 0%, #c3cfe2 100%);
+            color: #2c3e50;
+            line-height: 1.7;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .nav {
+            background: white;
+            padding: 15px 25px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .nav a {
+            color: #3776ab;
+            text-decoration: none;
+            font-weight: 600;
+            padding: 8px 16px;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+
+        .nav a:hover {
+            background: #3776ab;
+            color: white;
+        }
+
+        header {
+            background: linear-gradient(135deg, #3776ab 0%, #ffd343 100%);
+            color: white;
+            padding: 50px 40px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        header .subtitle {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .content {
+            background: white;
+            border-radius: 8px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .content h2 {
+            color: #2c3e50;
+            font-size: 2em;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #3776ab;
+        }
+
+        .content h3 {
+            color: #34495e;
+            font-size: 1.5em;
+            margin: 30px 0 15px 0;
+        }
+
+        .content h4 {
+            color: #34495e;
+            font-size: 1.2em;
+            margin: 20px 0 10px 0;
+        }
+
+        pre[class*="language-"] {
+            margin: 20px 0;
+            border-radius: 8px;
+            border: 2px solid #3776ab;
+        }
+
+        code[class*="language-"] {
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            font-size: 0.95em;
+            line-height: 1.6;
+        }
+
+        .note-box {
+            background: #e8f4f8;
+            border-left: 4px solid #3776ab;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .warning-box {
+            background: #fff8e1;
+            border-left: 4px solid #ffa726;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .tip-box {
+            background: #e8f5e9;
+            border-left: 4px solid #66bb6a;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .exercise-section {
+            background: #f8f9fa;
+            border: 2px solid #3776ab;
+            padding: 30px;
+            margin: 30px 0;
+            border-radius: 8px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        table th,
+        table td {
+            padding: 12px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+
+        table th {
+            background: #3776ab;
+            color: white;
+            font-weight: 600;
+        }
+
+        table tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        ul, ol {
+            margin-left: 30px;
+            margin-top: 10px;
+        }
+
+        li {
+            margin: 8px 0;
+        }
+
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 40px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background: #3776ab;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            background: #2d5a8a;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        .btn-secondary {
+            background: #95a5a6;
+        }
+
+        .btn-secondary:hover {
+            background: #7f8c8d;
+        }
+
+        .comparison-table {
+            margin: 20px 0;
+        }
+
+        .comparison-table th {
+            background: #34495e;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="nav">
+            <a href="python-week2.html">← Week 2</a>
+            <span style="color: #7f8c8d; font-weight: 600;">Week 3 / 16</span>
+            <a href="python-week4.html">Week 4 →</a>
+        </div>
+
+        <header>
+            <h1>Week 3 - 資料結構基礎</h1>
+            <div class="subtitle">學習目標：掌握 Python 四大核心資料結構及其操作方法</div>
+        </header>
+
+        <div class="content">
+            <h2>本週學習內容</h2>
+            <ul>
+                <li>串列（List）：建立、存取、修改、方法</li>
+                <li>串列切片與進階操作</li>
+                <li>元組（Tuple）：不可變序列</li>
+                <li>字典（Dictionary）：鍵值對結構</li>
+                <li>集合（Set）：唯一值集合</li>
+                <li>資料結構比較與選擇</li>
+                <li>列表推導式（List Comprehension）</li>
+                <li>實用範例與應用</li>
+            </ul>
+        </div>
+
+        <div class="content">
+            <h2>1. 串列（List）</h2>
+            
+            <h3>建立串列</h3>
+            <pre><code class="language-python"># 空串列
+empty_list = []
+empty_list2 = list()
+
+# 包含元素的串列
+fruits = ["蘋果", "香蕉", "橘子"]
+numbers = [1, 2, 3, 4, 5]
+mixed = [1, "Hello", 3.14, True]  # 可以混合不同型態
+
+# 巢狀串列（二維陣列）
+matrix = [
+    [1, 2, 3],
+    [4, 5, 6],
+    [7, 8, 9]
+]
+
+# 使用 list() 轉換
+text_list = list("Python")  # ['P', 'y', 't', 'h', 'o', 'n']
+range_list = list(range(5))  # [0, 1, 2, 3, 4]
+</code></pre>
+
+            <h3>存取串列元素</h3>
+            <pre><code class="language-python">fruits = ["蘋果", "香蕉", "橘子", "芒果", "葡萄"]
+
+# 正向索引（從 0 開始）
+print(fruits[0])   # 蘋果
+print(fruits[2])   # 橘子
+
+# 反向索引（從 -1 開始）
+print(fruits[-1])  # 葡萄（最後一個）
+print(fruits[-2])  # 芒果（倒數第二個）
+
+# 取得串列長度
+print(len(fruits))  # 5
+
+# 檢查元素是否存在
+print("香蕉" in fruits)      # True
+print("西瓜" in fruits)      # False
+print("西瓜" not in fruits)  # True
+</code></pre>
+
+            <h3>修改串列</h3>
+            <pre><code class="language-python">fruits = ["蘋果", "香蕉", "橘子"]
+
+# 修改單一元素
+fruits[1] = "芒果"
+print(fruits)  # ['蘋果', '芒果', '橘子']
+
+# 新增元素
+fruits.append("葡萄")         # 在尾端新增
+print(fruits)  # ['蘋果', '芒果', '橘子', '葡萄']
+
+fruits.insert(1, "西瓜")      # 在指定位置插入
+print(fruits)  # ['蘋果', '西瓜', '芒果', '橘子', '葡萄']
+
+# 刪除元素
+fruits.remove("芒果")         # 刪除指定值
+print(fruits)  # ['蘋果', '西瓜', '橘子', '葡萄']
+
+deleted = fruits.pop()        # 刪除並返回最後一個元素
+print(deleted)  # 葡萄
+print(fruits)   # ['蘋果', '西瓜', '橘子']
+
+deleted = fruits.pop(1)       # 刪除指定索引的元素
+print(deleted)  # 西瓜
+print(fruits)   # ['蘋果', '橘子']
+
+del fruits[0]                 # 使用 del 刪除
+print(fruits)   # ['橘子']
+
+fruits.clear()                # 清空串列
+print(fruits)   # []
+</code></pre>
+
+            <h3>串列切片（Slicing）</h3>
+            <pre><code class="language-python">numbers = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+
+# 基本切片 [起始:結束]
+print(numbers[2:5])    # [2, 3, 4]（不包含索引 5）
+print(numbers[:4])     # [0, 1, 2, 3]（從開頭到索引 3）
+print(numbers[5:])     # [5, 6, 7, 8, 9]（從索引 5 到結尾）
+print(numbers[:])      # [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]（完整複製）
+
+# 帶步進值的切片 [起始:結束:步進]
+print(numbers[::2])    # [0, 2, 4, 6, 8]（每隔一個取一個）
+print(numbers[1::2])   # [1, 3, 5, 7, 9]（從索引 1 開始，每隔一個）
+print(numbers[::-1])   # [9, 8, 7, 6, 5, 4, 3, 2, 1, 0]（反轉）
+
+# 負數索引切片
+print(numbers[-5:-2])  # [5, 6, 7]
+print(numbers[-3:])    # [7, 8, 9]
+
+# 修改切片
+numbers[2:5] = [20, 30, 40]
+print(numbers)  # [0, 1, 20, 30, 40, 5, 6, 7, 8, 9]
+</code></pre>
+
+            <h3>串列常用方法</h3>
+            <pre><code class="language-python">numbers = [3, 1, 4, 1, 5, 9, 2, 6]
+
+# 排序
+numbers.sort()              # 原地排序（修改原串列）
+print(numbers)              # [1, 1, 2, 3, 4, 5, 6, 9]
+
+numbers.sort(reverse=True)  # 反向排序
+print(numbers)              # [9, 6, 5, 4, 3, 2, 1, 1]
+
+# sorted() 返回新串列，不修改原串列
+original = [3, 1, 4, 1, 5]
+sorted_list = sorted(original)
+print(original)      # [3, 1, 4, 1, 5]（未改變）
+print(sorted_list)   # [1, 1, 3, 4, 5]（新串列）
+
+# 反轉
+numbers = [1, 2, 3, 4, 5]
+numbers.reverse()
+print(numbers)  # [5, 4, 3, 2, 1]
+
+# 計數與搜尋
+numbers = [1, 2, 3, 2, 4, 2, 5]
+print(numbers.count(2))    # 3（數字 2 出現 3 次）
+print(numbers.index(4))    # 4（數字 4 的索引位置）
+
+# 串列合併
+list1 = [1, 2, 3]
+list2 = [4, 5, 6]
+
+# 方法一：使用 +
+list3 = list1 + list2
+print(list3)  # [1, 2, 3, 4, 5, 6]
+
+# 方法二：使用 extend()
+list1.extend(list2)
+print(list1)  # [1, 2, 3, 4, 5, 6]
+
+# 方法三：使用 * 重複
+list4 = [1, 2] * 3
+print(list4)  # [1, 2, 1, 2, 1, 2]
+
+# 複製串列
+original = [1, 2, 3]
+copy1 = original.copy()      # 方法一
+copy2 = original[:]          # 方法二
+copy3 = list(original)       # 方法三
+</code></pre>
+
+            <div class="warning-box">
+                <strong>注意淺複製與深複製：</strong>
+                <pre><code class="language-python"># 淺複製問題
+original = [[1, 2], [3, 4]]
+copy = original.copy()
+copy[0][0] = 999
+print(original)  # [[999, 2], [3, 4]]（也被改變了！）
+
+# 深複製解決方案
+import copy
+original = [[1, 2], [3, 4]]
+deep_copy = copy.deepcopy(original)
+deep_copy[0][0] = 999
+print(original)    # [[1, 2], [3, 4]]（不受影響）
+print(deep_copy)   # [[999, 2], [3, 4]]
+</code></pre>
+            </div>
+
+            <h3>串列推導式（List Comprehension）</h3>
+            <pre><code class="language-python"># 基本語法：[表達式 for 變數 in 可迭代物件]
+
+# 傳統寫法
+squares = []
+for i in range(10):
+    squares.append(i ** 2)
+print(squares)  # [0, 1, 4, 9, 16, 25, 36, 49, 64, 81]
+
+# 列表推導式（簡化）
+squares = [i ** 2 for i in range(10)]
+print(squares)  # [0, 1, 4, 9, 16, 25, 36, 49, 64, 81]
+
+
+# 帶條件的列表推導式
+# [表達式 for 變數 in 可迭代物件 if 條件]
+
+# 只取偶數的平方
+even_squares = [i ** 2 for i in range(10) if i % 2 == 0]
+print(even_squares)  # [0, 4, 16, 36, 64]
+
+# 過濾負數
+numbers = [1, -2, 3, -4, 5, -6]
+positive = [n for n in numbers if n > 0]
+print(positive)  # [1, 3, 5]
+
+
+# 字串處理
+words = ["hello", "world", "python"]
+upper_words = [word.upper() for word in words]
+print(upper_words)  # ['HELLO', 'WORLD', 'PYTHON']
+
+# 取出字串長度
+lengths = [len(word) for word in words]
+print(lengths)  # [5, 5, 6]
+
+
+# 巢狀列表推導式
+matrix = [[i * j for j in range(1, 4)] for i in range(1, 4)]
+print(matrix)
+# [[1, 2, 3],
+#  [2, 4, 6],
+#  [3, 6, 9]]
+
+
+# 實用範例：扁平化二維串列
+nested = [[1, 2], [3, 4], [5, 6]]
+flat = [num for sublist in nested for num in sublist]
+print(flat)  # [1, 2, 3, 4, 5, 6]
+</code></pre>
+        </div>
+
+        <div class="content">
+            <h2>2. 元組（Tuple）</h2>
+            
+            <h3>建立元組</h3>
+            <pre><code class="language-python"># 使用圓括號
+empty_tuple = ()
+single_item = (1,)        # 注意：單一元素需要逗號
+coordinates = (10, 20)
+colors = ("red", "green", "blue")
+
+# 不使用括號（較少見）
+point = 3, 4
+print(type(point))  # <class 'tuple'>
+
+# 使用 tuple() 轉換
+list_data = [1, 2, 3]
+tuple_data = tuple(list_data)
+print(tuple_data)  # (1, 2, 3)
+
+# 巢狀元組
+nested = ((1, 2), (3, 4), (5, 6))
+</code></pre>
+
+            <h3>元組特性</h3>
+            <pre><code class="language-python"># 元組是不可變的（immutable）
+coordinates = (10, 20)
+# coordinates[0] = 15  # TypeError: 不能修改元組
+
+# 可以存取元素
+print(coordinates[0])   # 10
+print(coordinates[-1])  # 20
+
+# 可以切片
+numbers = (0, 1, 2, 3, 4, 5)
+print(numbers[2:5])  # (2, 3, 4)
+
+# 可以遍歷
+colors = ("red", "green", "blue")
+for color in colors:
+    print(color)
+
+# 可以計數和搜尋
+numbers = (1, 2, 3, 2, 4, 2)
+print(numbers.count(2))  # 3
+print(numbers.index(3))  # 2
+
+# 可以合併
+tuple1 = (1, 2, 3)
+tuple2 = (4, 5, 6)
+tuple3 = tuple1 + tuple2
+print(tuple3)  # (1, 2, 3, 4, 5, 6)
+</code></pre>
+
+            <h3>元組解包（Unpacking）</h3>
+            <pre><code class="language-python"># 基本解包
+coordinates = (10, 20)
+x, y = coordinates
+print(f"x={x}, y={y}")  # x=10, y=20
+
+# 多變數解包
+person = ("Alice", 25, "Engineer")
+name, age, job = person
+print(f"{name} is {age} years old")  # Alice is 25 years old
+
+# 交換變數值
+a, b = 10, 20
+a, b = b, a
+print(f"a={a}, b={b}")  # a=20, b=10
+
+# 使用 * 收集剩餘元素
+numbers = (1, 2, 3, 4, 5)
+first, *rest = numbers
+print(first)  # 1
+print(rest)   # [2, 3, 4, 5]
+
+first, *middle, last = numbers
+print(first)   # 1
+print(middle)  # [2, 3, 4]
+print(last)    # 5
+
+# 忽略某些值
+data = ("Alice", 25, "Engineer", "New York")
+name, _, job, _ = data
+print(name, job)  # Alice Engineer
+</code></pre>
+
+            <h3>元組的使用場景</h3>
+            <pre><code class="language-python"># 1. 函數返回多個值
+def get_min_max(numbers):
+    return min(numbers), max(numbers)
+
+result = get_min_max([1, 5, 3, 9, 2])
+print(result)  # (1, 9)
+
+min_val, max_val = get_min_max([1, 5, 3, 9, 2])
+print(f"最小值: {min_val}, 最大值: {max_val}")
+
+
+# 2. 作為字典的鍵（串列不行）
+locations = {
+    (0, 0): "原點",
+    (1, 2): "點A",
+    (3, 4): "點B"
+}
+print(locations[(1, 2)])  # 點A
+
+
+# 3. 保護資料不被修改
+DAYS_OF_WEEK = ("Monday", "Tuesday", "Wednesday", 
+                "Thursday", "Friday", "Saturday", "Sunday")
+
+
+# 4. 座標和點
+point_2d = (10, 20)
+point_3d = (10, 20, 30)
+rgb_color = (255, 128, 0)
+</code></pre>
+
+            <div class="tip-box">
+                <strong>串列 vs 元組的選擇：</strong>
+                <ul>
+                    <li><strong>使用串列</strong>：資料需要修改、新增或刪除</li>
+                    <li><strong>使用元組</strong>：資料固定不變、作為字典的鍵、函數返回多值</li>
+                    <li>元組通常比串列占用更少記憶體，存取速度也稍快</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="content">
+            <h2>3. 字典（Dictionary）</h2>
+            
+            <h3>建立字典</h3>
+            <pre><code class="language-python"># 空字典
+empty_dict = {}
+empty_dict2 = dict()
+
+# 包含鍵值對的字典
+student = {
+    "name": "Alice",
+    "age": 20,
+    "grade": "A",
+    "courses": ["Math", "Physics", "Chemistry"]
+}
+
+# 使用 dict() 建立
+person = dict(name="Bob", age=25, city="Taipei")
+print(person)  # {'name': 'Bob', 'age': 25, 'city': 'Taipei'}
+
+# 從序列建立
+keys = ["a", "b", "c"]
+values = [1, 2, 3]
+my_dict = dict(zip(keys, values))
+print(my_dict)  # {'a': 1, 'b': 2, 'c': 3}
+
+# 使用 fromkeys() 建立
+keys = ["name", "age", "city"]
+default_dict = dict.fromkeys(keys, "Unknown")
+print(default_dict)  # {'name': 'Unknown', 'age': 'Unknown', 'city': 'Unknown'}
+</code></pre>
+
+            <h3>存取字典</h3>
+            <pre><code class="language-python">student = {
+    "name": "Alice",
+    "age": 20,
+    "grade": "A"
+}
+
+# 使用鍵存取值
+print(student["name"])  # Alice
+print(student["age"])   # 20
+
+# 使用 get() 方法（更安全）
+print(student.get("name"))      # Alice
+print(student.get("phone"))     # None（鍵不存在返回 None）
+print(student.get("phone", "未設定"))  # 未設定（可指定預設值）
+
+# 檢查鍵是否存在
+print("name" in student)    # True
+print("phone" in student)   # False
+
+# 取得所有鍵、值、鍵值對
+print(student.keys())       # dict_keys(['name', 'age', 'grade'])
+print(student.values())     # dict_values(['Alice', 20, 'A'])
+print(student.items())      # dict_items([('name', 'Alice'), ('age', 20), ('grade', 'A')])
+
+# 取得字典大小
+print(len(student))  # 3
+</code></pre>
+
+            <h3>修改字典</h3>
+            <pre><code class="language-python">student = {
+    "name": "Alice",
+    "age": 20
+}
+
+# 新增或修改鍵值對
+student["grade"] = "A"      # 新增
+student["age"] = 21         # 修改
+print(student)  # {'name': 'Alice', 'age': 21, 'grade': 'A'}
+
+# update() 批次更新
+student.update({"city": "Taipei", "phone": "0912345678"})
+print(student)
+
+# 刪除鍵值對
+del student["phone"]        # 使用 del
+print(student)
+
+grade = student.pop("grade")  # 刪除並返回值
+print(grade)    # A
+print(student)
+
+# popitem() 刪除最後一個鍵值對（Python 3.7+）
+last_item = student.popitem()
+print(last_item)  # ('city', 'Taipei')
+
+# clear() 清空字典
+student.clear()
+print(student)  # {}
+</code></pre>
+
+            <h3>遍歷字典</h3>
+            <pre><code class="language-python">student = {
+    "name": "Alice",
+    "age": 20,
+    "grade": "A",
+    "city": "Taipei"
+}
+
+# 遍歷鍵
+for key in student:
+    print(key)
+
+# 遍歷鍵（明確使用 keys()）
+for key in student.keys():
+    print(f"{key}: {student[key]}")
+
+# 遍歷值
+for value in student.values():
+    print(value)
+
+# 同時遍歷鍵和值（推薦）
+for key, value in student.items():
+    print(f"{key}: {value}")
+
+# 輸出：
+# name: Alice
+# age: 20
+# grade: A
+# city: Taipei
+</code></pre>
+
+            <h3>巢狀字典</h3>
+            <pre><code class="language-python"># 字典中的字典
+students = {
+    "S001": {
+        "name": "Alice",
+        "age": 20,
+        "grades": {"Math": 90, "English": 85}
+    },
+    "S002": {
+        "name": "Bob",
+        "age": 21,
+        "grades": {"Math": 88, "English": 92}
+    }
+}
+
+# 存取巢狀資料
+print(students["S001"]["name"])              # Alice
+print(students["S001"]["grades"]["Math"])    # 90
+
+# 遍歷巢狀字典
+for student_id, info in students.items():
+    print(f"\n學號: {student_id}")
+    print(f"姓名: {info['name']}")
+    print(f"年齡: {info['age']}")
+    print("成績:")
+    for subject, grade in info['grades'].items():
+        print(f"  {subject}: {grade}")
+</code></pre>
+
+            <h3>字典推導式</h3>
+            <pre><code class="language-python"># 基本語法：{鍵表達式: 值表達式 for 變數 in 可迭代物件}
+
+# 建立平方字典
+squares = {x: x**2 for x in range(6)}
+print(squares)  # {0: 0, 1: 1, 2: 4, 3: 9, 4: 16, 5: 25}
+
+# 帶條件的字典推導式
+even_squares = {x: x**2 for x in range(10) if x % 2 == 0}
+print(even_squares)  # {0: 0, 2: 4, 4: 16, 6: 36, 8: 64}
+
+# 轉換字典
+original = {"a": 1, "b": 2, "c": 3}
+doubled = {k: v * 2 for k, v in original.items()}
+print(doubled)  # {'a': 2, 'b': 4, 'c': 6}
+
+# 過濾字典
+scores = {"Alice": 85, "Bob": 92, "Charlie": 78, "David": 95}
+high_scores = {name: score for name, score in scores.items() if score >= 90}
+print(high_scores)  # {'Bob': 92, 'David': 95}
+
+# 反轉鍵值
+original = {"a": 1, "b": 2, "c": 3}
+reversed_dict = {v: k for k, v in original.items()}
+print(reversed_dict)  # {1: 'a', 2: 'b', 3: 'c'}
+</code></pre>
+
+            <h3>字典實用技巧</h3>
+            <pre><code class="language-python"># 1. 計數器
+text = "hello world"
+char_count = {}
+for char in text:
+    if char in char_count:
+        char_count[char] += 1
+    else:
+        char_count[char] = 1
+print(char_count)
+
+# 使用 get() 簡化
+char_count = {}
+for char in text:
+    char_count[char] = char_count.get(char, 0) + 1
+print(char_count)
+
+
+# 2. 分組
+students = [
+    {"name": "Alice", "grade": "A"},
+    {"name": "Bob", "grade": "B"},
+    {"name": "Charlie", "grade": "A"},
+    {"name": "David", "grade": "B"}
+]
+
+by_grade = {}
+for student in students:
+    grade = student["grade"]
+    if grade not in by_grade:
+        by_grade[grade] = []
+    by_grade[grade].append(student["name"])
+
+print(by_grade)
+# {'A': ['Alice', 'Charlie'], 'B': ['Bob', 'David']}
+
+
+# 3. 預設值字典（使用 collections.defaultdict）
+from collections import defaultdict
+
+word_count = defaultdict(int)
+text = "hello world hello python"
+for word in text.split():
+    word_count[word] += 1
+
+print(dict(word_count))  # {'hello': 2, 'world': 1, 'python': 1}
+</code></pre>
+        </div>
+
+        <div class="content">
+            <h2>4. 集合（Set）</h2>
+            
+            <h3>建立集合</h3>
+            <pre><code class="language-python"># 使用大括號
+numbers = {1, 2, 3, 4, 5}
+fruits = {"apple", "banana", "orange"}
+
+# 空集合必須使用 set()
+empty_set = set()  # 注意：{} 是空字典，不是空集合
+
+# 使用 set() 轉換
+list_data = [1, 2, 3, 2, 1]  # 有重複
+set_data = set(list_data)
+print(set_data)  # {1, 2, 3}（自動去重）
+
+string_set = set("hello")
+print(string_set)  # {'h', 'e', 'l', 'o'}（去重且無序）
+</code></pre>
+
+            <h3>集合特性</h3>
+            <pre><code class="language-python"># 1. 元素唯一（自動去重）
+numbers = {1, 2, 3, 2, 1}
+print(numbers)  # {1, 2, 3}
+
+# 2. 無序（不支援索引）
+fruits = {"apple", "banana", "orange"}
+# print(fruits[0])  # TypeError: 不支援索引
+
+# 3. 可變（可以新增、刪除元素）
+numbers = {1, 2, 3}
+numbers.add(4)
+print(numbers)  # {1, 2, 3, 4}
+
+# 4. 只能包含不可變元素
+# valid_set = {1, "hello", (1, 2)}       # OK
+# invalid_set = {1, [1, 2]}              # TypeError: list 不可雜湊
+</code></pre>
+
+            <h3>集合操作</h3>
+            <pre><code class="language-python">numbers = {1, 2, 3, 4, 5}
+
+# 新增元素
+numbers.add(6)
+print(numbers)  # {1, 2, 3, 4, 5, 6}
+
+# 新增多個元素
+numbers.update([7, 8, 9])
+print(numbers)  # {1, 2, 3, 4, 5, 6, 7, 8, 9}
+
+# 刪除元素
+numbers.remove(5)      # 如果元素不存在會報錯
+print(numbers)
+
+numbers.discard(10)    # 如果元素不存在不會報錯
+print(numbers)
+
+popped = numbers.pop()  # 隨機刪除並返回一個元素
+print(popped)
+
+# 清空集合
+numbers.clear()
+print(numbers)  # set()
+
+# 檢查元素
+fruits = {"apple", "banana", "orange"}
+print("apple" in fruits)      # True
+print("grape" in fruits)      # False
+print(len(fruits))            # 3
+</code></pre>
+
+            <h3>集合運算</h3>
+            <pre><code class="language-python">A = {1, 2, 3, 4, 5}
+B = {4, 5, 6, 7, 8}
+
+# 聯集（Union）- 所有元素
+print(A | B)                    # {1, 2, 3, 4, 5, 6, 7, 8}
+print(A.union(B))               # 同上
+
+# 交集（Intersection）- 共同元素
+print(A & B)                    # {4, 5}
+print(A.intersection(B))        # 同上
+
+# 差集（Difference）- A 有但 B 沒有
+print(A - B)                    # {1, 2, 3}
+print(A.difference(B))          # 同上
+
+# 對稱差集（Symmetric Difference）- 不共同的元素
+print(A ^ B)                    # {1, 2, 3, 6, 7, 8}
+print(A.symmetric_difference(B))  # 同上
+
+# 子集與超集
+C = {1, 2, 3}
+D = {1, 2, 3, 4, 5}
+
+print(C.issubset(D))      # True（C 是 D 的子集）
+print(D.issuperset(C))    # True（D 是 C 的超集）
+print(C.isdisjoint(D))    # False（有交集）
+
+E = {6, 7}
+print(C.isdisjoint(E))    # True（沒有交集）
+</code></pre>
+
+            <h3>集合推導式</h3>
+            <pre><code class="language-python"># 基本語法：{表達式 for 變數 in 可迭代物件}
+
+# 平方集合
+squares = {x**2 for x in range(10)}
+print(squares)  # {0, 1, 64, 4, 36, 9, 16, 49, 81, 25}
+
+# 帶條件
+even_squares = {x**2 for x in range(10) if x % 2 == 0}
+print(even_squares)  # {0, 64, 4, 16, 36}
+
+# 字串處理
+text = "Hello World"
+unique_chars = {char.lower() for char in text if char.isalpha()}
+print(unique_chars)  # {'h', 'e', 'l', 'o', 'w', 'r', 'd'}
+</code></pre>
+
+            <h3>集合實用範例</h3>
+            <pre><code class="language-python"># 1. 去除重複
+numbers = [1, 2, 3, 2, 4, 3, 5, 1]
+unique_numbers = list(set(numbers))
+print(unique_numbers)
+
+# 2. 找出共同元素
+list1 = [1, 2, 3, 4, 5]
+list2 = [4, 5, 6, 7, 8]
+common = list(set(list1) & set(list2))
+print(common)  # [4, 5]
+
+# 3. 找出差異
+only_in_list1 = list(set(list1) - set(list2))
+print(only_in_list1)  # [1, 2, 3]
+
+# 4. 檢查是否有重複
+def has_duplicates(lst):
+    return len(lst) != len(set(lst))
+
+print(has_duplicates([1, 2, 3, 4]))     # False
+print(has_duplicates([1, 2, 3, 2]))     # True
+
+# 5. 快速成員檢查（集合比串列快很多）
+large_list = list(range(1000000))
+large_set = set(large_list)
+
+# 在集合中查找是 O(1)，在串列中是 O(n)
+print(999999 in large_set)   # 非常快
+print(999999 in large_list)  # 較慢
+</code></pre>
+        </div>
+
+        <div class="content">
+            <h2>5. 資料結構比較</h2>
+            
+            <table class="comparison-table">
+                <tr>
+                    <th>特性</th>
+                    <th>List（串列）</th>
+                    <th>Tuple（元組）</th>
+                    <th>Dict（字典）</th>
+                    <th>Set（集合）</th>
+                </tr>
+                <tr>
+                    <td>語法</td>
+                    <td>[]</td>
+                    <td>()</td>
+                    <td>{key: value}</td>
+                    <td>{}</td>
+                </tr>
+                <tr>
+                    <td>可變性</td>
+                    <td>可變</td>
+                    <td>不可變</td>
+                    <td>可變</td>
+                    <td>可變</td>
+                </tr>
+                <tr>
+                    <td>是否有序</td>
+                    <td>有序</td>
+                    <td>有序</td>
+                    <td>有序（3.7+）</td>
+                    <td>無序</td>
+                </tr>
+                <tr>
+                    <td>索引存取</td>
+                    <td>✓</td>
+                    <td>✓</td>
+                    <td>✗（用鍵）</td>
+                    <td>✗</td>
+                </tr>
+                <tr>
+                    <td>允許重複</td>
+                    <td>✓</td>
+                    <td>✓</td>
+                    <td>鍵不可重複</td>
+                    <td>✗</td>
+                </tr>
+                <tr>
+                    <td>主要用途</td>
+                    <td>儲存序列資料</td>
+                    <td>固定資料、多值返回</td>
+                    <td>鍵值對映射</td>
+                    <td>唯一值、集合運算</td>
+                </tr>
+                <tr>
+                    <td>效能特點</td>
+                    <td>索引快、插入刪除慢</td>
+                    <td>比 list 稍快</td>
+                    <td>查找快 O(1)</td>
+                    <td>成員檢查快 O(1)</td>
+                </tr>
+            </table>
+
+            <h3>選擇指南</h3>
+            <div class="tip-box">
+                <strong>何時使用哪種資料結構？</strong>
+                <ul>
+                    <li><strong>List</strong>：需要順序、可修改、可能有重複值
+                        <br>→ 購物清單、成績列表、任務清單</li>
+                    <li><strong>Tuple</strong>：資料固定不變、作為字典鍵、函數返回多值
+                        <br>→ 座標點、RGB 顏色、日期時間</li>
+                    <li><strong>Dict</strong>：需要快速查找、鍵值對應關係
+                        <br>→ 聯絡人資料、設定檔、快取資料</li>
+                    <li><strong>Set</strong>：需要唯一值、集合運算、快速成員檢查
+                        <br>→ 標籤、去重、交集聯集運算</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="content">
+            <div class="exercise-section">
+                <h3>本週練習題</h3>
+                
+                <h4>基礎練習（必做）</h4>
+                <ol>
+                    <li>
+                        <strong>學生成績管理</strong><br>
+                        建立一個串列儲存 5 位學生的成績，完成：
+                        <ul>
+                            <li>計算平均分數</li>
+                            <li>找出最高分和最低分</li>
+                            <li>統計及格人數（≥60分）</li>
+                        </ul>
+                    </li>
+                    
+                    <li>
+                        <strong>串列操作</strong><br>
+                        給定串列 [3, 1, 4, 1, 5, 9, 2, 6]，完成：
+                        <ul>
+                            <li>反轉串列</li>
+                            <li>由小到大排序</li>
+                            <li>移除所有的 1</li>
+                            <li>在第 3 個位置插入 7</li>
+                        </ul>
+                    </li>
+                    
+                    <li>
+                        <strong>字典操作</strong><br>
+                        建立一個學生資料字典，包含姓名、年齡、科系，然後：
+                        <ul>
+                            <li>新增電話欄位</li>
+                            <li>修改年齡</li>
+                            <li>印出所有鍵值對</li>
+                        </ul>
+                    </li>
+                </ol>
+
+                <h4>進階練習</h4>
+                <ol start="4">
+                    <li>
+                        <strong>文字統計</strong><br>
+                        輸入一段文字，統計：
+                        <ul>
+                            <li>每個單字出現的次數（使用字典）</li>
+                            <li>共有多少個不重複的單字（使用集合）</li>
+                            <li>找出出現次數最多的單字</li>
+                        </ul>
+                    </li>
+                    
+                    <li>
+                        <strong>成績處理系統</strong><br>
+                        建立字典儲存多位學生的多科成績：
+                        <pre><code class="language-python">students = {
+    "Alice": {"Math": 85, "English": 90, "Science": 88},
+    "Bob": {"Math": 78, "English": 85, "Science": 92}
+}
+</code></pre>
+                        完成：計算每位學生的平均分、找出每科的最高分
+                    </li>
+                    
+                    <li>
+                        <strong>集合運算</strong><br>
+                        兩個班級的學生名單（使用集合），找出：
+                        <ul>
+                            <li>兩班都有的學生（交集）</li>
+                            <li>只在 A 班的學生（差集）</li>
+                            <li>所有學生（聯集）</li>
+                        </ul>
+                    </li>
+                    
+                    <li>
+                        <strong>購物車系統</strong><br>
+                        使用字典建立購物車，商品名稱為鍵，數量為值：
+                        <ul>
+                            <li>新增商品</li>
+                            <li>修改商品數量</li>
+                            <li>刪除商品</li>
+                            <li>計算總商品數量</li>
+                        </ul>
+                    </li>
+                </ol>
+
+                <h4>挑戰練習</h4>
+                <ol start="8">
+                    <li>
+                        <strong>電話簿系統</strong><br>
+                        建立一個完整的電話簿程式，使用字典儲存聯絡人資訊：
+                        <ul>
+                            <li>新增聯絡人（姓名、電話、email）</li>
+                            <li>搜尋聯絡人</li>
+                            <li>修改聯絡人資訊</li>
+                            <li>刪除聯絡人</li>
+                            <li>顯示所有聯絡人</li>
+                        </ul>
+                    </li>
+                    
+                    <li>
+                        <strong>撲克牌</strong><br>
+                        建立一副撲克牌（使用串列），完成：
+                        <ul>
+                            <li>產生 52 張牌（4 種花色 × 13 張牌）</li>
+                            <li>洗牌（隨機排序）</li>
+                            <li>發牌給 4 個玩家（每人 13 張）</li>
+                            <li>檢查玩家手牌中有幾張同花色的牌</li>
+                        </ul>
+                    </li>
+                    
+                    <li>
+                        <strong>圖書管理系統</strong><br>
+                        使用巢狀資料結構建立圖書館系統：
+                        <pre><code class="language-python">library = {
+    "B001": {
+        "title": "Python 程式設計",
+        "author": "作者A",
+        "available": True,
+        "borrower": None
+    }
+}
+</code></pre>
+                        實作：新增書籍、借書、還書、搜尋書籍功能
+                    </li>
+                </ol>
+
+                <div class="tip-box">
+                    <strong>練習提示：</strong>
+                    <ul>
+                        <li>選擇適當的資料結構很重要</li>
+                        <li>善用內建方法提高效率</li>
+                        <li>注意可變與不可變的差異</li>
+                        <li>使用列表推導式可以讓程式更簡潔</li>
+                        <li>先在紙上規劃資料結構</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="content">
+            <h2>本週總結</h2>
+            
+            <h3>重點回顧</h3>
+            <ul>
+                <li>✅ 掌握串列的建立、操作與切片</li>
+                <li>✅ 理解元組的不可變特性與使用時機</li>
+                <li>✅ 熟悉字典的鍵值對結構</li>
+                <li>✅ 了解集合的唯一性與集合運算</li>
+                <li>✅ 能夠選擇適當的資料結構</li>
+                <li>✅ 學會使用推導式簡化程式碼</li>
+            </ul>
+
+            <h3>下週預告</h3>
+            <div class="note-box">
+                <h4>Week 4 - 函數與模組</h4>
+                <p>下週將學習如何組織和重用程式碼：</p>
+                <ul>
+                    <li>函數定義與呼叫</li>
+                    <li>參數傳遞：位置參數、關鍵字參數、預設值</li>
+                    <li>返回值與多重返回值</li>
+                    <li>變數作用域（Scope）</li>
+                    <li>Lambda 函數</li>
+                    <li>模組的匯入與使用</li>
+                    <li>常用內建模組介紹</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="nav-buttons">
+            <a href="python-week2.html" class="btn btn-secondary">← Week 2</a>
+            <a href="python-week4.html" class="btn">Week 4：函數與模組 →</a>
+        </div>
+
+        <footer style="text-align: center; padding: 30px 0; color: #7f8c8d; margin-top: 50px; border-top: 1px solid #ddd;">
+            <p style="margin: 10px 0;">Python 程式設計 Week 3</p>
+            <p style="margin: 10px 0; font-size: 0.9em;">資料結構 · List · Tuple · Dict · Set</p>
+            <p style="margin: 10px 0; font-size: 0.85em; color: #95a5a6;">© 2025 All Rights Reserved</p>
+        </footer>
+    </div>
+</body>
+</html>
