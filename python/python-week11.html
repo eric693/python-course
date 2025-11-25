@@ -1,0 +1,1882 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Week 10 - 網頁開發入門（Flask） | Python 程式設計</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-markup.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Microsoft JhengHei', Arial, sans-serif;
+            background: linear-gradient(to bottom, #f5f7fa 0%, #c3cfe2 100%);
+            color: #2c3e50;
+            line-height: 1.7;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .nav {
+            background: white;
+            padding: 15px 25px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .nav a {
+            color: #3776ab;
+            text-decoration: none;
+            font-weight: 600;
+            padding: 8px 16px;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+
+        .nav a:hover {
+            background: #3776ab;
+            color: white;
+        }
+
+        header {
+            background: linear-gradient(135deg, #3776ab 0%, #ffd343 100%);
+            color: white;
+            padding: 50px 40px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        header .subtitle {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .content {
+            background: white;
+            border-radius: 8px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .content h2 {
+            color: #2c3e50;
+            font-size: 2em;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #3776ab;
+        }
+
+        .content h3 {
+            color: #34495e;
+            font-size: 1.5em;
+            margin: 30px 0 15px 0;
+        }
+
+        .content h4 {
+            color: #34495e;
+            font-size: 1.2em;
+            margin: 20px 0 10px 0;
+        }
+
+        pre[class*="language-"] {
+            margin: 20px 0;
+            border-radius: 8px;
+            border: 2px solid #3776ab;
+        }
+
+        code[class*="language-"] {
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            font-size: 0.95em;
+            line-height: 1.6;
+        }
+
+        .note-box {
+            background: #e8f4f8;
+            border-left: 4px solid #3776ab;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .warning-box {
+            background: #fff8e1;
+            border-left: 4px solid #ffa726;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .tip-box {
+            background: #e8f5e9;
+            border-left: 4px solid #66bb6a;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .exercise-section {
+            background: #f8f9fa;
+            border: 2px solid #3776ab;
+            padding: 30px;
+            margin: 30px 0;
+            border-radius: 8px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        table th,
+        table td {
+            padding: 12px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+
+        table th {
+            background: #3776ab;
+            color: white;
+            font-weight: 600;
+        }
+
+        table tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        ul, ol {
+            margin-left: 30px;
+            margin-top: 10px;
+        }
+
+        li {
+            margin: 8px 0;
+        }
+
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 40px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background: #3776ab;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            background: #2d5a8a;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        .btn-secondary {
+            background: #95a5a6;
+        }
+
+        .btn-secondary:hover {
+            background: #7f8c8d;
+        }
+
+        .concept-box {
+            background: #f3e5f5;
+            border-left: 4px solid #9c27b0;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .flask-box {
+            background: #e0f2f1;
+            border-left: 4px solid #009688;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="nav">
+            <a href="python-week9.html">← Week 9</a>
+            <span style="color: #7f8c8d; font-weight: 600;">Week 10 / 16</span>
+            <a href="python-week11.html">Week 11 →</a>
+        </div>
+
+        <header>
+            <h1>Week 10 - 網頁開發入門（Flask）</h1>
+            <div class="subtitle">學習目標：使用 Flask 框架建立 Web 應用，掌握路由、模板、表單處理等核心概念</div>
+        </header>
+
+        <div class="content">
+            <h2>本週學習內容</h2>
+            <ul>
+                <li>Web 開發基礎概念</li>
+                <li>Flask 框架簡介與安裝</li>
+                <li>路由（Routing）與視圖函數</li>
+                <li>模板引擎（Jinja2）</li>
+                <li>靜態檔案處理</li>
+                <li>表單處理與驗證</li>
+                <li>Session 與 Cookie</li>
+                <li>資料庫整合</li>
+                <li>RESTful API 開發</li>
+                <li>完整專案實作</li>
+            </ul>
+        </div>
+
+        <div class="content">
+            <h2>1. Web 開發基礎概念</h2>
+            
+            <h3>HTTP 協定基礎</h3>
+            <div class="concept-box">
+                <h4>HTTP 請求方法：</h4>
+                <ul>
+                    <li><strong>GET</strong>：取得資源（查詢資料）</li>
+                    <li><strong>POST</strong>：提交資料（新增資料）</li>
+                    <li><strong>PUT</strong>：更新資源（完整更新）</li>
+                    <li><strong>PATCH</strong>：部分更新資源</li>
+                    <li><strong>DELETE</strong>：刪除資源</li>
+                </ul>
+            </div>
+
+            <h3>HTTP 狀態碼</h3>
+            <table>
+                <tr>
+                    <th>狀態碼</th>
+                    <th>說明</th>
+                    <th>範例</th>
+                </tr>
+                <tr>
+                    <td>2xx</td>
+                    <td>成功</td>
+                    <td>200 OK, 201 Created</td>
+                </tr>
+                <tr>
+                    <td>3xx</td>
+                    <td>重新導向</td>
+                    <td>301 Moved Permanently, 302 Found</td>
+                </tr>
+                <tr>
+                    <td>4xx</td>
+                    <td>客戶端錯誤</td>
+                    <td>400 Bad Request, 404 Not Found</td>
+                </tr>
+                <tr>
+                    <td>5xx</td>
+                    <td>伺服器錯誤</td>
+                    <td>500 Internal Server Error</td>
+                </tr>
+            </table>
+
+            <h3>MVC 架構</h3>
+            <div class="concept-box">
+                <h4>Model-View-Controller 模式：</h4>
+                <ul>
+                    <li><strong>Model（模型）</strong>：資料與業務邏輯</li>
+                    <li><strong>View（視圖）</strong>：使用者介面（HTML 模板）</li>
+                    <li><strong>Controller（控制器）</strong>：處理請求，協調 Model 與 View</li>
+                </ul>
+            </div>
+
+            <h3>為什麼選擇 Flask？</h3>
+            <div class="flask-box">
+                <h4>Flask 的特點：</h4>
+                <ul>
+                    <li>✓ <strong>輕量級</strong>：核心簡單，容易學習</li>
+                    <li>✓ <strong>靈活</strong>：不強制特定架構</li>
+                    <li>✓ <strong>擴展性好</strong>：豐富的擴展套件</li>
+                    <li>✓ <strong>適合小型專案</strong>：快速開發原型</li>
+                    <li>✓ <strong>文件完整</strong>：社群活躍</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="content">
+            <h2>2. Flask 安裝與第一個應用</h2>
+            
+            <h3>安裝 Flask</h3>
+            <pre><code class="language-python"># 使用 pip 安裝 Flask
+pip install flask
+
+# 驗證安裝
+python -c "import flask; print(flask.__version__)"
+</code></pre>
+
+            <h3>Hello World 應用</h3>
+            <pre><code class="language-python"># app.py
+from flask import Flask
+
+# 建立 Flask 應用實例
+app = Flask(__name__)
+
+# 定義路由
+@app.route('/')
+def hello():
+    """首頁路由"""
+    return 'Hello, World!'
+
+# 執行應用
+if __name__ == '__main__':
+    app.run(debug=True)
+</code></pre>
+
+            <div class="note-box">
+                <strong>執行應用：</strong>
+                <pre><code class="language-bash"># 方法 1：直接執行
+python app.py
+
+# 方法 2：使用 flask 指令
+export FLASK_APP=app.py
+flask run
+
+# 開發模式（自動重載）
+flask run --debug
+</code></pre>
+                <p>啟動後訪問：<code>http://127.0.0.1:5000/</code></p>
+            </div>
+
+            <h3>基本專案結構</h3>
+            <pre><code class="language-plaintext">my_flask_app/
+│
+├── app.py              # 主應用程式
+├── templates/          # HTML 模板
+│   ├── base.html
+│   ├── index.html
+│   └── about.html
+├── static/            # 靜態檔案
+│   ├── css/
+│   │   └── style.css
+│   ├── js/
+│   │   └── main.js
+│   └── images/
+├── models.py          # 資料模型
+└── requirements.txt   # 套件依賴
+</code></pre>
+        </div>
+
+        <div class="content">
+            <h2>3. 路由與視圖函數</h2>
+            
+            <h3>基本路由</h3>
+            <pre><code class="language-python">from flask import Flask
+
+app = Flask(__name__)
+
+# 基本路由
+@app.route('/')
+def index():
+    return 'Home Page'
+
+@app.route('/about')
+def about():
+    return 'About Page'
+
+@app.route('/contact')
+def contact():
+    return 'Contact Page'
+
+
+if __name__ == '__main__':
+    app.run(debug=True)
+</code></pre>
+
+            <h3>動態路由（URL 參數）</h3>
+            <pre><code class="language-python">from flask import Flask
+
+app = Flask(__name__)
+
+# 字串參數（預設）
+@app.route('/user/<username>')
+def show_user(username):
+    return f'User: {username}'
+
+# 整數參數
+@app.route('/post/<int:post_id>')
+def show_post(post_id):
+    return f'Post ID: {post_id}'
+
+# 浮點數參數
+@app.route('/price/<float:price>')
+def show_price(price):
+    return f'Price: ${price:.2f}'
+
+# 路徑參數（包含斜線）
+@app.route('/path/<path:subpath>')
+def show_path(subpath):
+    return f'Subpath: {subpath}'
+
+# 多個參數
+@app.route('/user/<username>/post/<int:post_id>')
+def user_post(username, post_id):
+    return f'User: {username}, Post: {post_id}'
+
+
+if __name__ == '__main__':
+    app.run(debug=True)
+</code></pre>
+
+            <h3>HTTP 方法</h3>
+            <pre><code class="language-python">from flask import Flask, request
+
+app = Flask(__name__)
+
+# GET 方法（預設）
+@app.route('/search')
+def search():
+    query = request.args.get('q', '')
+    return f'Search query: {query}'
+
+# POST 方法
+@app.route('/login', methods=['POST'])
+def login():
+    username = request.form.get('username')
+    password = request.form.get('password')
+    return f'Login attempt: {username}'
+
+# 多種方法
+@app.route('/data', methods=['GET', 'POST'])
+def data():
+    if request.method == 'POST':
+        return 'POST request received'
+    else:
+        return 'GET request received'
+
+
+if __name__ == '__main__':
+    app.run(debug=True)
+</code></pre>
+
+            <h3>URL 建構與重新導向</h3>
+            <pre><code class="language-python">from flask import Flask, url_for, redirect
+
+app = Flask(__name__)
+
+@app.route('/')
+def index():
+    return 'Home'
+
+@app.route('/user/<username>')
+def profile(username):
+    return f'Profile: {username}'
+
+@app.route('/admin')
+def admin():
+    # 重新導向到首頁
+    return redirect(url_for('index'))
+
+@app.route('/goto/<username>')
+def goto_user(username):
+    # 重新導向到使用者頁面
+    return redirect(url_for('profile', username=username))
+
+# 測試 URL 建構
+@app.route('/test')
+def test():
+    # url_for 會產生完整的 URL
+    home_url = url_for('index')
+    user_url = url_for('profile', username='alice')
+    return f'Home: {home_url}<br>User: {user_url}'
+
+
+if __name__ == '__main__':
+    app.run(debug=True)
+</code></pre>
+
+            <h3>錯誤處理</h3>
+            <pre><code class="language-python">from flask import Flask, abort, render_template
+
+app = Flask(__name__)
+
+# 404 錯誤處理
+@app.errorhandler(404)
+def not_found(error):
+    return '404 - Page Not Found', 404
+
+# 500 錯誤處理
+@app.errorhandler(500)
+def internal_error(error):
+    return '500 - Internal Server Error', 500
+
+# 手動觸發錯誤
+@app.route('/error')
+def trigger_error():
+    abort(404)  # 手動觸發 404
+
+
+if __name__ == '__main__':
+    app.run(debug=True)
+</code></pre>
+        </div>
+
+        <div class="content">
+            <h2>4. 模板引擎（Jinja2）</h2>
+            
+            <h3>基本模板使用</h3>
+            <pre><code class="language-python"># app.py
+from flask import Flask, render_template
+
+app = Flask(__name__)
+
+@app.route('/')
+def index():
+    return render_template('index.html')
+
+@app.route('/user/<name>')
+def user(name):
+    return render_template('user.html', username=name)
+
+
+if __name__ == '__main__':
+    app.run(debug=True)
+</code></pre>
+
+            <pre><code class="language-markup">&lt;!-- templates/index.html --&gt;
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;Home Page&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;h1&gt;Welcome to Flask!&lt;/h1&gt;
+    &lt;p&gt;This is the home page.&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+
+            <pre><code class="language-markup">&lt;!-- templates/user.html --&gt;
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;User Profile&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;h1&gt;Hello, {{ username }}!&lt;/h1&gt;
+    &lt;p&gt;Welcome to your profile page.&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+
+            <h3>模板變數與表達式</h3>
+            <pre><code class="language-python"># app.py
+from flask import Flask, render_template
+
+app = Flask(__name__)
+
+@app.route('/')
+def index():
+    # 傳遞多個變數
+    data = {
+        'title': 'My Website',
+        'user': {
+            'name': 'Alice',
+            'age': 25,
+            'email': 'alice@example.com'
+        },
+        'items': ['Apple', 'Banana', 'Orange'],
+        'is_logged_in': True,
+        'score': 85
+    }
+    return render_template('index.html', **data)
+
+
+if __name__ == '__main__':
+    app.run(debug=True)
+</code></pre>
+
+            <pre><code class="language-markup">&lt;!-- templates/index.html --&gt;
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;{{ title }}&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;!-- 變數 --&gt;
+    &lt;h1&gt;{{ title }}&lt;/h1&gt;
+    
+    &lt;!-- 物件屬性 --&gt;
+    &lt;p&gt;Name: {{ user.name }}&lt;/p&gt;
+    &lt;p&gt;Age: {{ user.age }}&lt;/p&gt;
+    &lt;p&gt;Email: {{ user['email'] }}&lt;/p&gt;
+    
+    &lt;!-- 條件判斷 --&gt;
+    {% if is_logged_in %}
+        &lt;p&gt;Welcome back!&lt;/p&gt;
+    {% else %}
+        &lt;p&gt;Please log in.&lt;/p&gt;
+    {% endif %}
+    
+    &lt;!-- 條件運算 --&gt;
+    &lt;p&gt;Grade: {{ 'Pass' if score &gt;= 60 else 'Fail' }}&lt;/p&gt;
+    
+    &lt;!-- 迴圈 --&gt;
+    &lt;h2&gt;Items:&lt;/h2&gt;
+    &lt;ul&gt;
+    {% for item in items %}
+        &lt;li&gt;{{ item }}&lt;/li&gt;
+    {% endfor %}
+    &lt;/ul&gt;
+    
+    &lt;!-- 帶索引的迴圈 --&gt;
+    &lt;ol&gt;
+    {% for item in items %}
+        &lt;li&gt;{{ loop.index }}: {{ item }}&lt;/li&gt;
+    {% endfor %}
+    &lt;/ol&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+
+            <h3>模板繼承</h3>
+            <pre><code class="language-markup">&lt;!-- templates/base.html（基礎模板） --&gt;
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;title&gt;{% block title %}My Website{% endblock %}&lt;/title&gt;
+    &lt;link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}"&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;nav&gt;
+        &lt;a href="{{ url_for('index') }}"&gt;Home&lt;/a&gt;
+        &lt;a href="{{ url_for('about') }}"&gt;About&lt;/a&gt;
+        &lt;a href="{{ url_for('contact') }}"&gt;Contact&lt;/a&gt;
+    &lt;/nav&gt;
+    
+    &lt;main&gt;
+        {% block content %}
+        &lt;!-- 子模板內容會插入這裡 --&gt;
+        {% endblock %}
+    &lt;/main&gt;
+    
+    &lt;footer&gt;
+        &lt;p&gt;&copy; 2025 My Website&lt;/p&gt;
+    &lt;/footer&gt;
+    
+    {% block scripts %}
+    &lt;!-- 子模板可以添加額外的 scripts --&gt;
+    {% endblock %}
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+
+            <pre><code class="language-markup">&lt;!-- templates/index.html（繼承 base.html） --&gt;
+{% extends "base.html" %}
+
+{% block title %}Home - My Website{% endblock %}
+
+{% block content %}
+    &lt;h1&gt;Welcome to My Website&lt;/h1&gt;
+    &lt;p&gt;This is the home page.&lt;/p&gt;
+{% endblock %}
+
+{% block scripts %}
+    &lt;script src="{{ url_for('static', filename='js/home.js') }}"&gt;&lt;/script&gt;
+{% endblock %}
+</code></pre>
+
+            <pre><code class="language-markup">&lt;!-- templates/about.html（繼承 base.html） --&gt;
+{% extends "base.html" %}
+
+{% block title %}About - My Website{% endblock %}
+
+{% block content %}
+    &lt;h1&gt;About Us&lt;/h1&gt;
+    &lt;p&gt;Information about our website.&lt;/p&gt;
+{% endblock %}
+</code></pre>
+
+            <h3>模板過濾器</h3>
+            <pre><code class="language-markup">&lt;!-- Jinja2 內建過濾器 --&gt;
+
+&lt;!-- 字串轉大寫 --&gt;
+{{ name|upper }}
+
+&lt;!-- 字串轉小寫 --&gt;
+{{ name|lower }}
+
+&lt;!-- 首字母大寫 --&gt;
+{{ name|capitalize }}
+
+&lt;!-- 標題格式 --&gt;
+{{ name|title }}
+
+&lt;!-- 長度 --&gt;
+{{ items|length }}
+
+&lt;!-- 預設值 --&gt;
+{{ username|default('Guest') }}
+
+&lt;!-- 截斷文字 --&gt;
+{{ text|truncate(50) }}
+
+&lt;!-- 移除 HTML 標籤 --&gt;
+{{ html_content|striptags }}
+
+&lt;!-- 安全顯示 HTML（不跳脫） --&gt;
+{{ html_content|safe }}
+
+&lt;!-- 日期格式化 --&gt;
+{{ date|datetimeformat('%Y-%m-%d') }}
+
+&lt;!-- 串接多個過濾器 --&gt;
+{{ name|lower|capitalize }}
+</code></pre>
+
+            <h3>自訂過濾器</h3>
+            <pre><code class="language-python"># app.py
+from flask import Flask, render_template
+
+app = Flask(__name__)
+
+# 自訂過濾器
+@app.template_filter('reverse')
+def reverse_filter(s):
+    """反轉字串"""
+    return s[::-1]
+
+@app.template_filter('format_currency')
+def format_currency(amount):
+    """格式化貨幣"""
+    return f"${amount:,.2f}"
+
+
+@app.route('/')
+def index():
+    data = {
+        'name': 'Alice',
+        'price': 1234.5
+    }
+    return render_template('index.html', **data)
+
+
+if __name__ == '__main__':
+    app.run(debug=True)
+</code></pre>
+
+            <pre><code class="language-markup">&lt;!-- templates/index.html --&gt;
+&lt;p&gt;Name: {{ name }}&lt;/p&gt;
+&lt;p&gt;Reversed: {{ name|reverse }}&lt;/p&gt;
+&lt;p&gt;Price: {{ price|format_currency }}&lt;/p&gt;
+</code></pre>
+        </div>
+
+        <div class="content">
+            <h2>5. 靜態檔案處理</h2>
+            
+            <h3>靜態檔案結構</h3>
+            <pre><code class="language-plaintext">my_flask_app/
+├── app.py
+├── static/
+│   ├── css/
+│   │   └── style.css
+│   ├── js/
+│   │   └── main.js
+│   └── images/
+│       └── logo.png
+└── templates/
+    └── index.html
+</code></pre>
+
+            <h3>在模板中引用靜態檔案</h3>
+            <pre><code class="language-markup">&lt;!-- templates/index.html --&gt;
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;My Website&lt;/title&gt;
+    
+    &lt;!-- CSS --&gt;
+    &lt;link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}"&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;!-- 圖片 --&gt;
+    &lt;img src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo"&gt;
+    
+    &lt;h1&gt;Welcome!&lt;/h1&gt;
+    
+    &lt;!-- JavaScript --&gt;
+    &lt;script src="{{ url_for('static', filename='js/main.js') }}"&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+
+            <h3>CSS 範例</h3>
+            <pre><code class="language-css">/* static/css/style.css */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    padding: 20px;
+    background-color: #f4f4f4;
+}
+
+h1 {
+    color: #333;
+    margin-bottom: 20px;
+}
+
+nav {
+    background: #333;
+    padding: 10px;
+    margin-bottom: 20px;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    padding: 10px 15px;
+    margin-right: 10px;
+}
+
+nav a:hover {
+    background: #555;
+}
+</code></pre>
+
+            <h3>JavaScript 範例</h3>
+            <pre><code class="language-javascript">// static/js/main.js
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('Page loaded!');
+    
+    // 為所有按鈕添加點擊事件
+    const buttons = document.querySelectorAll('button');
+    buttons.forEach(button => {
+        button.addEventListener('click', function() {
+            alert('Button clicked!');
+        });
+    });
+});
+</code></pre>
+        </div>
+
+        <div class="content">
+            <h2>6. 表單處理</h2>
+            
+            <h3>簡單表單範例</h3>
+            <pre><code class="language-python"># app.py
+from flask import Flask, render_template, request, redirect, url_for
+
+app = Flask(__name__)
+
+@app.route('/')
+def index():
+    return render_template('form.html')
+
+@app.route('/submit', methods=['POST'])
+def submit():
+    # 取得表單資料
+    name = request.form.get('name')
+    email = request.form.get('email')
+    message = request.form.get('message')
+    
+    # 處理資料
+    print(f"Name: {name}")
+    print(f"Email: {email}")
+    print(f"Message: {message}")
+    
+    return render_template('success.html', name=name)
+
+
+if __name__ == '__main__':
+    app.run(debug=True)
+</code></pre>
+
+            <pre><code class="language-markup">&lt;!-- templates/form.html --&gt;
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;Contact Form&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;h1&gt;Contact Us&lt;/h1&gt;
+    
+    &lt;form action="{{ url_for('submit') }}" method="POST"&gt;
+        &lt;div&gt;
+            &lt;label for="name"&gt;Name:&lt;/label&gt;
+            &lt;input type="text" id="name" name="name" required&gt;
+        &lt;/div&gt;
+        
+        &lt;div&gt;
+            &lt;label for="email"&gt;Email:&lt;/label&gt;
+            &lt;input type="email" id="email" name="email" required&gt;
+        &lt;/div&gt;
+        
+        &lt;div&gt;
+            &lt;label for="message"&gt;Message:&lt;/label&gt;
+            &lt;textarea id="message" name="message" rows="5" required&gt;&lt;/textarea&gt;
+        &lt;/div&gt;
+        
+        &lt;button type="submit"&gt;Submit&lt;/button&gt;
+    &lt;/form&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+
+            <h3>表單驗證</h3>
+            <pre><code class="language-python"># app.py
+from flask import Flask, render_template, request, flash, redirect, url_for
+
+app = Flask(__name__)
+app.secret_key = 'your-secret-key-here'  # 用於 flash 訊息
+
+@app.route('/')
+def index():
+    return render_template('form.html')
+
+@app.route('/submit', methods=['POST'])
+def submit():
+    # 取得表單資料
+    name = request.form.get('name', '').strip()
+    email = request.form.get('email', '').strip()
+    age = request.form.get('age', '')
+    
+    # 驗證
+    errors = []
+    
+    if not name:
+        errors.append('姓名為必填')
+    elif len(name) < 2:
+        errors.append('姓名至少 2 個字元')
+    
+    if not email:
+        errors.append('Email 為必填')
+    elif '@' not in email:
+        errors.append('Email 格式錯誤')
+    
+    if age:
+        try:
+            age = int(age)
+            if age < 0 or age > 150:
+                errors.append('年齡必須在 0-150 之間')
+        except ValueError:
+            errors.append('年齡必須是數字')
+    
+    # 如果有錯誤，返回表單
+    if errors:
+        for error in errors:
+            flash(error, 'error')
+        return redirect(url_for('index'))
+    
+    # 驗證通過，處理資料
+    flash('表單提交成功！', 'success')
+    return render_template('success.html', name=name)
+
+
+if __name__ == '__main__':
+    app.run(debug=True)
+</code></pre>
+
+            <pre><code class="language-markup">&lt;!-- templates/form.html --&gt;
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;Contact Form&lt;/title&gt;
+    &lt;style&gt;
+        .error { color: red; }
+        .success { color: green; }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;h1&gt;Contact Form&lt;/h1&gt;
+    
+    &lt;!-- 顯示 flash 訊息 --&gt;
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                &lt;div class="{{ category }}"&gt;{{ message }}&lt;/div&gt;
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+    
+    &lt;form action="{{ url_for('submit') }}" method="POST"&gt;
+        &lt;div&gt;
+            &lt;label for="name"&gt;Name:&lt;/label&gt;
+            &lt;input type="text" id="name" name="name" 
+                   value="{{ request.form.get('name', '') }}"&gt;
+        &lt;/div&gt;
+        
+        &lt;div&gt;
+            &lt;label for="email"&gt;Email:&lt;/label&gt;
+            &lt;input type="email" id="email" name="email"
+                   value="{{ request.form.get('email', '') }}"&gt;
+        &lt;/div&gt;
+        
+        &lt;div&gt;
+            &lt;label for="age"&gt;Age:&lt;/label&gt;
+            &lt;input type="number" id="age" name="age"
+                   value="{{ request.form.get('age', '') }}"&gt;
+        &lt;/div&gt;
+        
+        &lt;button type="submit"&gt;Submit&lt;/button&gt;
+    &lt;/form&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+
+            <h3>檔案上傳</h3>
+            <pre><code class="language-python"># app.py
+from flask import Flask, render_template, request, flash, redirect, url_for
+from werkzeug.utils import secure_filename
+import os
+
+app = Flask(__name__)
+app.secret_key = 'your-secret-key'
+
+# 設定上傳資料夾
+UPLOAD_FOLDER = 'uploads'
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif', 'pdf'}
+
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 限制 16MB
+
+# 建立上傳資料夾
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+
+
+def allowed_file(filename):
+    """檢查檔案類型"""
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+
+@app.route('/')
+def index():
+    return render_template('upload.html')
+
+
+@app.route('/upload', methods=['POST'])
+def upload():
+    # 檢查是否有檔案
+    if 'file' not in request.files:
+        flash('沒有選擇檔案', 'error')
+        return redirect(url_for('index'))
+    
+    file = request.files['file']
+    
+    # 檢查檔案名稱
+    if file.filename == '':
+        flash('沒有選擇檔案', 'error')
+        return redirect(url_for('index'))
+    
+    # 檢查檔案類型並儲存
+    if file and allowed_file(file.filename):
+        filename = secure_filename(file.filename)
+        filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+        file.save(filepath)
+        
+        flash(f'檔案上傳成功：{filename}', 'success')
+        return render_template('success.html', filename=filename)
+    else:
+        flash('不允許的檔案類型', 'error')
+        return redirect(url_for('index'))
+
+
+if __name__ == '__main__':
+    app.run(debug=True)
+</code></pre>
+
+            <pre><code class="language-markup">&lt;!-- templates/upload.html --&gt;
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;File Upload&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;h1&gt;Upload File&lt;/h1&gt;
+    
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                &lt;div class="{{ category }}"&gt;{{ message }}&lt;/div&gt;
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+    
+    &lt;form action="{{ url_for('upload') }}" method="POST" enctype="multipart/form-data"&gt;
+        &lt;div&gt;
+            &lt;label for="file"&gt;Choose file:&lt;/label&gt;
+            &lt;input type="file" id="file" name="file" required&gt;
+        &lt;/div&gt;
+        
+        &lt;p&gt;Allowed types: PNG, JPG, JPEG, GIF, PDF (Max 16MB)&lt;/p&gt;
+        
+        &lt;button type="submit"&gt;Upload&lt;/button&gt;
+    &lt;/form&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+        </div>
+
+        <div class="content">
+            <h2>7. Session 與 Cookie</h2>
+            
+            <h3>Session 基本使用</h3>
+            <pre><code class="language-python"># app.py
+from flask import Flask, render_template, request, session, redirect, url_for
+
+app = Flask(__name__)
+app.secret_key = 'your-secret-key-here'  # Session 需要 secret_key
+
+
+@app.route('/')
+def index():
+    # 取得 session 中的資料
+    username = session.get('username')
+    return render_template('index.html', username=username)
+
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        username = request.form.get('username')
+        password = request.form.get('password')
+        
+        # 簡單驗證（實際應用應該檢查資料庫）
+        if username == 'admin' and password == 'password':
+            # 儲存到 session
+            session['username'] = username
+            session['logged_in'] = True
+            return redirect(url_for('dashboard'))
+        else:
+            return render_template('login.html', error='Invalid credentials')
+    
+    return render_template('login.html')
+
+
+@app.route('/dashboard')
+def dashboard():
+    # 檢查是否登入
+    if not session.get('logged_in'):
+        return redirect(url_for('login'))
+    
+    return render_template('dashboard.html', username=session.get('username'))
+
+
+@app.route('/logout')
+def logout():
+    # 清除 session
+    session.clear()
+    return redirect(url_for('index'))
+
+
+if __name__ == '__main__':
+    app.run(debug=True)
+</code></pre>
+
+            <h3>Cookie 操作</h3>
+            <pre><code class="language-python"># app.py
+from flask import Flask, request, make_response, render_template
+from datetime import datetime, timedelta
+
+app = Flask(__name__)
+
+
+@app.route('/')
+def index():
+    # 讀取 Cookie
+    visits = request.cookies.get('visits', 0)
+    visits = int(visits) + 1
+    
+    # 建立 response 並設定 Cookie
+    response = make_response(render_template('index.html', visits=visits))
+    
+    # 設定 Cookie（過期時間：30 天）
+    expires = datetime.now() + timedelta(days=30)
+    response.set_cookie('visits', str(visits), expires=expires)
+    
+    return response
+
+
+@app.route('/preferences', methods=['GET', 'POST'])
+def preferences():
+    if request.method == 'POST':
+        theme = request.form.get('theme', 'light')
+        language = request.form.get('language', 'en')
+        
+        response = make_response(redirect(url_for('index')))
+        response.set_cookie('theme', theme, max_age=60*60*24*365)  # 1 年
+        response.set_cookie('language', language, max_age=60*60*24*365)
+        
+        return response
+    
+    # 讀取當前偏好
+    theme = request.cookies.get('theme', 'light')
+    language = request.cookies.get('language', 'en')
+    
+    return render_template('preferences.html', theme=theme, language=language)
+
+
+@app.route('/clear-cookies')
+def clear_cookies():
+    """清除所有 Cookies"""
+    response = make_response(redirect(url_for('index')))
+    
+    # 刪除 Cookie（設定過期時間為過去）
+    response.set_cookie('visits', '', expires=0)
+    response.set_cookie('theme', '', expires=0)
+    response.set_cookie('language', '', expires=0)
+    
+    return response
+
+
+if __name__ == '__main__':
+    app.run(debug=True)
+</code></pre>
+
+            <h3>購物車範例（使用 Session）</h3>
+            <pre><code class="language-python"># app.py
+from flask import Flask, render_template, request, session, redirect, url_for, flash
+
+app = Flask(__name__)
+app.secret_key = 'your-secret-key'
+
+# 模擬商品資料
+PRODUCTS = {
+    1: {'name': 'Python Book', 'price': 500},
+    2: {'name': 'Flask Book', 'price': 450},
+    3: {'name': 'Django Book', 'price': 480},
+}
+
+
+@app.route('/')
+def index():
+    return render_template('products.html', products=PRODUCTS)
+
+
+@app.route('/add-to-cart/<int:product_id>')
+def add_to_cart(product_id):
+    """加入購物車"""
+    if product_id not in PRODUCTS:
+        flash('商品不存在', 'error')
+        return redirect(url_for('index'))
+    
+    # 初始化購物車
+    if 'cart' not in session:
+        session['cart'] = {}
+    
+    # 加入購物車
+    cart = session['cart']
+    product_id_str = str(product_id)
+    
+    if product_id_str in cart:
+        cart[product_id_str] += 1
+    else:
+        cart[product_id_str] = 1
+    
+    session['cart'] = cart  # 更新 session
+    session.modified = True  # 標記 session 已修改
+    
+    flash('已加入購物車', 'success')
+    return redirect(url_for('index'))
+
+
+@app.route('/cart')
+def cart():
+    """檢視購物車"""
+    cart = session.get('cart', {})
+    
+    # 計算總價
+    items = []
+    total = 0
+    
+    for product_id_str, quantity in cart.items():
+        product_id = int(product_id_str)
+        if product_id in PRODUCTS:
+            product = PRODUCTS[product_id]
+            subtotal = product['price'] * quantity
+            total += subtotal
+            
+            items.append({
+                'id': product_id,
+                'name': product['name'],
+                'price': product['price'],
+                'quantity': quantity,
+                'subtotal': subtotal
+            })
+    
+    return render_template('cart.html', items=items, total=total)
+
+
+@app.route('/remove-from-cart/<int:product_id>')
+def remove_from_cart(product_id):
+    """從購物車移除"""
+    cart = session.get('cart', {})
+    product_id_str = str(product_id)
+    
+    if product_id_str in cart:
+        del cart[product_id_str]
+        session['cart'] = cart
+        session.modified = True
+        flash('已從購物車移除', 'success')
+    
+    return redirect(url_for('cart'))
+
+
+@app.route('/clear-cart')
+def clear_cart():
+    """清空購物車"""
+    session.pop('cart', None)
+    flash('購物車已清空', 'success')
+    return redirect(url_for('cart'))
+
+
+if __name__ == '__main__':
+    app.run(debug=True)
+</code></pre>
+        </div>
+
+        <div class="content">
+            <h2>8. 資料庫整合</h2>
+            
+            <h3>使用 SQLite</h3>
+            <pre><code class="language-python"># app.py
+from flask import Flask, render_template, request, redirect, url_for, flash
+import sqlite3
+
+app = Flask(__name__)
+app.secret_key = 'your-secret-key'
+
+DATABASE = 'blog.db'
+
+
+def get_db():
+    """取得資料庫連線"""
+    conn = sqlite3.connect(DATABASE)
+    conn.row_factory = sqlite3.Row  # 讓查詢結果可以用字典方式存取
+    return conn
+
+
+def init_db():
+    """初始化資料庫"""
+    conn = get_db()
+    cursor = conn.cursor()
+    
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS posts (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            title TEXT NOT NULL,
+            content TEXT NOT NULL,
+            author TEXT NOT NULL,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        )
+    ''')
+    
+    conn.commit()
+    conn.close()
+
+
+# 在應用啟動時初始化資料庫
+with app.app_context():
+    init_db()
+
+
+@app.route('/')
+def index():
+    """顯示所有文章"""
+    conn = get_db()
+    cursor = conn.cursor()
+    
+    cursor.execute('SELECT * FROM posts ORDER BY created_at DESC')
+    posts = cursor.fetchall()
+    
+    conn.close()
+    
+    return render_template('posts.html', posts=posts)
+
+
+@app.route('/post/<int:post_id>')
+def post_detail(post_id):
+    """顯示文章詳情"""
+    conn = get_db()
+    cursor = conn.cursor()
+    
+    cursor.execute('SELECT * FROM posts WHERE id = ?', (post_id,))
+    post = cursor.fetchone()
+    
+    conn.close()
+    
+    if not post:
+        flash('文章不存在', 'error')
+        return redirect(url_for('index'))
+    
+    return render_template('post_detail.html', post=post)
+
+
+@app.route('/new', methods=['GET', 'POST'])
+def new_post():
+    """新增文章"""
+    if request.method == 'POST':
+        title = request.form.get('title', '').strip()
+        content = request.form.get('content', '').strip()
+        author = request.form.get('author', '').strip()
+        
+        # 驗證
+        if not title or not content or not author:
+            flash('所有欄位都是必填的', 'error')
+            return render_template('new_post.html')
+        
+        # 儲存到資料庫
+        conn = get_db()
+        cursor = conn.cursor()
+        
+        cursor.execute(
+            'INSERT INTO posts (title, content, author) VALUES (?, ?, ?)',
+            (title, content, author)
+        )
+        
+        conn.commit()
+        post_id = cursor.lastrowid
+        conn.close()
+        
+        flash('文章發布成功', 'success')
+        return redirect(url_for('post_detail', post_id=post_id))
+    
+    return render_template('new_post.html')
+
+
+@app.route('/edit/<int:post_id>', methods=['GET', 'POST'])
+def edit_post(post_id):
+    """編輯文章"""
+    conn = get_db()
+    cursor = conn.cursor()
+    
+    if request.method == 'POST':
+        title = request.form.get('title', '').strip()
+        content = request.form.get('content', '').strip()
+        
+        if not title or not content:
+            flash('標題和內容不能為空', 'error')
+            return redirect(url_for('edit_post', post_id=post_id))
+        
+        cursor.execute(
+            'UPDATE posts SET title = ?, content = ? WHERE id = ?',
+            (title, content, post_id)
+        )
+        
+        conn.commit()
+        conn.close()
+        
+        flash('文章更新成功', 'success')
+        return redirect(url_for('post_detail', post_id=post_id))
+    
+    # GET：顯示編輯表單
+    cursor.execute('SELECT * FROM posts WHERE id = ?', (post_id,))
+    post = cursor.fetchone()
+    conn.close()
+    
+    if not post:
+        flash('文章不存在', 'error')
+        return redirect(url_for('index'))
+    
+    return render_template('edit_post.html', post=post)
+
+
+@app.route('/delete/<int:post_id>')
+def delete_post(post_id):
+    """刪除文章"""
+    conn = get_db()
+    cursor = conn.cursor()
+    
+    cursor.execute('DELETE FROM posts WHERE id = ?', (post_id,))
+    
+    conn.commit()
+    conn.close()
+    
+    flash('文章已刪除', 'success')
+    return redirect(url_for('index'))
+
+
+if __name__ == '__main__':
+    app.run(debug=True)
+</code></pre>
+        </div>
+
+        <div class="content">
+            <h2>9. RESTful API 開發</h2>
+            
+            <h3>基本 REST API</h3>
+            <pre><code class="language-python"># api.py
+from flask import Flask, jsonify, request
+
+app = Flask(__name__)
+
+# 模擬資料庫
+users = [
+    {'id': 1, 'name': 'Alice', 'email': 'alice@example.com'},
+    {'id': 2, 'name': 'Bob', 'email': 'bob@example.com'},
+]
+
+next_id = 3
+
+
+# GET /api/users - 取得所有使用者
+@app.route('/api/users', methods=['GET'])
+def get_users():
+    return jsonify({'users': users})
+
+
+# GET /api/users/<id> - 取得單一使用者
+@app.route('/api/users/<int:user_id>', methods=['GET'])
+def get_user(user_id):
+    user = next((u for u in users if u['id'] == user_id), None)
+    
+    if user:
+        return jsonify(user)
+    else:
+        return jsonify({'error': 'User not found'}), 404
+
+
+# POST /api/users - 新增使用者
+@app.route('/api/users', methods=['POST'])
+def create_user():
+    global next_id
+    
+    data = request.get_json()
+    
+    # 驗證
+    if not data or 'name' not in data or 'email' not in data:
+        return jsonify({'error': 'Missing required fields'}), 400
+    
+    # 新增使用者
+    user = {
+        'id': next_id,
+        'name': data['name'],
+        'email': data['email']
+    }
+    
+    users.append(user)
+    next_id += 1
+    
+    return jsonify(user), 201
+
+
+# PUT /api/users/<id> - 更新使用者
+@app.route('/api/users/<int:user_id>', methods=['PUT'])
+def update_user(user_id):
+    user = next((u for u in users if u['id'] == user_id), None)
+    
+    if not user:
+        return jsonify({'error': 'User not found'}), 404
+    
+    data = request.get_json()
+    
+    # 更新欄位
+    if 'name' in data:
+        user['name'] = data['name']
+    if 'email' in data:
+        user['email'] = data['email']
+    
+    return jsonify(user)
+
+
+# DELETE /api/users/<id> - 刪除使用者
+@app.route('/api/users/<int:user_id>', methods=['DELETE'])
+def delete_user(user_id):
+    global users
+    
+    user = next((u for u in users if u['id'] == user_id), None)
+    
+    if not user:
+        return jsonify({'error': 'User not found'}), 404
+    
+    users = [u for u in users if u['id'] != user_id]
+    
+    return jsonify({'message': 'User deleted'}), 200
+
+
+if __name__ == '__main__':
+    app.run(debug=True)
+</code></pre>
+
+            <h3>測試 API（使用 curl 或 Postman）</h3>
+            <pre><code class="language-bash"># GET - 取得所有使用者
+curl http://127.0.0.1:5000/api/users
+
+# GET - 取得單一使用者
+curl http://127.0.0.1:5000/api/users/1
+
+# POST - 新增使用者
+curl -X POST http://127.0.0.1:5000/api/users \
+  -H "Content-Type: application/json" \
+  -d '{"name":"Charlie","email":"charlie@example.com"}'
+
+# PUT - 更新使用者
+curl -X PUT http://127.0.0.1:5000/api/users/1 \
+  -H "Content-Type: application/json" \
+  -d '{"name":"Alice Updated"}'
+
+# DELETE - 刪除使用者
+curl -X DELETE http://127.0.0.1:5000/api/users/1
+</code></pre>
+
+            <h3>錯誤處理與狀態碼</h3>
+            <pre><code class="language-python"># api.py
+from flask import Flask, jsonify, request
+
+app = Flask(__name__)
+
+
+# 自訂錯誤處理
+@app.errorhandler(404)
+def not_found(error):
+    return jsonify({'error': 'Not found'}), 404
+
+
+@app.errorhandler(400)
+def bad_request(error):
+    return jsonify({'error': 'Bad request'}), 400
+
+
+@app.errorhandler(500)
+def internal_error(error):
+    return jsonify({'error': 'Internal server error'}), 500
+
+
+# API 端點
+@app.route('/api/data', methods=['GET'])
+def get_data():
+    # 200 OK
+    return jsonify({'message': 'Success', 'data': [1, 2, 3]}), 200
+
+
+@app.route('/api/data', methods=['POST'])
+def create_data():
+    data = request.get_json()
+    
+    if not data:
+        # 400 Bad Request
+        return jsonify({'error': 'No data provided'}), 400
+    
+    # 201 Created
+    return jsonify({'message': 'Created', 'data': data}), 201
+
+
+if __name__ == '__main__':
+    app.run(debug=True)
+</code></pre>
+        </div>
+
+        <div class="content">
+            <div class="exercise-section">
+                <h3>本週練習題</h3>
+                
+                <h4>基礎練習（必做）</h4>
+                <ol>
+                    <li>
+                        <strong>個人網站</strong><br>
+                        建立簡單的個人網站：
+                        <ul>
+                            <li>首頁、關於、聯絡頁面</li>
+                            <li>使用模板繼承</li>
+                            <li>添加導航選單</li>
+                            <li>套用 CSS 樣式</li>
+                        </ul>
+                    </li>
+                    
+                    <li>
+                        <strong>留言板</strong><br>
+                        簡單的留言板應用：
+                        <ul>
+                            <li>顯示所有留言</li>
+                            <li>新增留言表單</li>
+                            <li>使用 SQLite 儲存</li>
+                            <li>顯示發布時間</li>
+                        </ul>
+                    </li>
+                    
+                    <li>
+                        <strong>待辦事項 Web 版</strong><br>
+                        Todo List 網頁應用：
+                        <ul>
+                            <li>列出所有待辦事項</li>
+                            <li>新增/刪除事項</li>
+                            <li>標記完成/未完成</li>
+                            <li>資料持久化</li>
+                        </ul>
+                    </li>
+                </ol>
+
+                <h4>進階練習</h4>
+                <ol start="4">
+                    <li>
+                        <strong>部落格系統</strong><br>
+                        完整的部落格：
+                        <ul>
+                            <li>文章 CRUD 功能</li>
+                            <li>文章分類</li>
+                            <li>標籤系統</li>
+                            <li>搜尋功能</li>
+                            <li>分頁顯示</li>
+                            <li>使用者登入</li>
+                        </ul>
+                    </li>
+                    
+                    <li>
+                        <strong>線上書店</strong><br>
+                        電商網站：
+                        <ul>
+                            <li>商品展示</li>
+                            <li>購物車功能（Session）</li>
+                            <li>訂單管理</li>
+                            <li>會員系統</li>
+                            <li>搜尋與篩選</li>
+                        </ul>
+                    </li>
+                    
+                    <li>
+                        <strong>問卷調查系統</strong><br>
+                        線上問卷：
+                        <ul>
+                            <li>建立問卷</li>
+                            <li>多種題型（單選、多選、文字）</li>
+                            <li>填寫問卷</li>
+                            <li>查看統計結果</li>
+                            <li>匯出報表</li>
+                        </ul>
+                    </li>
+                </ol>
+
+                <h4>挑戰練習</h4>
+                <ol start="7">
+                    <li>
+                        <strong>社群平台</strong><br>
+                        簡單的社群網站：
+                        <ul>
+                            <li>使用者註冊/登入</li>
+                            <li>個人檔案</li>
+                            <li>發布貼文</li>
+                            <li>按讚/留言</li>
+                            <li>追蹤功能</li>
+                            <li>動態時報</li>
+                        </ul>
+                    </li>
+                    
+                    <li>
+                        <strong>專案管理系統</strong><br>
+                        團隊協作工具：
+                        <ul>
+                            <li>專案管理</li>
+                            <li>任務分配</li>
+                            <li>進度追蹤</li>
+                            <li>檔案上傳</li>
+                            <li>團隊成員管理</li>
+                            <li>看板視圖</li>
+                        </ul>
+                    </li>
+                    
+                    <li>
+                        <strong>RESTful API + 前端</strong><br>
+                        前後端分離：
+                        <ul>
+                            <li>完整的 REST API（CRUD）</li>
+                            <li>使用 JavaScript 呼叫 API</li>
+                            <li>動態更新頁面</li>
+                            <li>身份驗證（JWT）</li>
+                            <li>API 文件</li>
+                        </ul>
+                    </li>
+                </ol>
+
+                <div class="tip-box">
+                    <strong>練習提示：</strong>
+                    <ul>
+                        <li>先規劃路由結構</li>
+                        <li>使用模板繼承減少重複</li>
+                        <li>適當使用 Session 管理狀態</li>
+                        <li>添加表單驗證</li>
+                        <li>處理錯誤情況</li>
+                        <li>注意安全性（SQL Injection、XSS）</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="content">
+            <h2>本週總結</h2>
+            
+            <h3>重點回顧</h3>
+            <ul>
+                <li>✅ 理解 Web 開發基礎概念</li>
+                <li>✅ 掌握 Flask 框架基本用法</li>
+                <li>✅ 學會路由與視圖函數</li>
+                <li>✅ 熟悉 Jinja2 模板引擎</li>
+                <li>✅ 能夠處理表單與驗證</li>
+                <li>✅ 理解 Session 與 Cookie</li>
+                <li>✅ 整合資料庫操作</li>
+                <li>✅ 開發 RESTful API</li>
+                <li>✅ 能夠建立完整的 Web 應用</li>
+            </ul>
+
+            <h3>Flask 速查表</h3>
+            <div class="flask-box">
+                <strong>常用指令：</strong><br><br>
+                <strong>路由：</strong><code>@app.route('/path')</code><br>
+                <strong>渲染模板：</strong><code>render_template('template.html', **data)</code><br>
+                <strong>重新導向：</strong><code>redirect(url_for('function_name'))</code><br>
+                <strong>取得表單：</strong><code>request.form.get('field_name')</code><br>
+                <strong>JSON 回應：</strong><code>jsonify({'key': 'value'})</code><br>
+                <strong>Session：</strong><code>session['key'] = value</code><br>
+                <strong>Flash 訊息：</strong><code>flash('message', 'category')</code>
+            </div>
+
+            <h3>下週預告</h3>
+            <div class="note-box">
+                <h4>Week 11 - 資料視覺化（Matplotlib & Pandas）</h4>
+                <p>下週將學習資料分析與視覺化：</p>
+                <ul>
+                    <li>Pandas 資料處理</li>
+                    <li>DataFrame 操作</li>
+                    <li>資料清理與轉換</li>
+                    <li>Matplotlib 繪圖基礎</li>
+                    <li>常見圖表類型</li>
+                    <li>資料分析實戰</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="nav-buttons">
+            <a href="python-week9.html" class="btn btn-secondary">← Week 9</a>
+            <a href="python-week11.html" class="btn">Week 11：資料視覺化 →</a>
+        </div>
+
+        <footer style="text-align: center; padding: 30px 0; color: #7f8c8d; margin-top: 50px; border-top: 1px solid #ddd;">
+            <p style="margin: 10px 0;">Python 程式設計 Week 10</p>
+            <p style="margin: 10px 0; font-size: 0.9em;">Flask · 網頁開發 · 模板 · REST API</p>
+            <p style="margin: 10px 0; font-size: 0.85em; color: #95a5a6;">© 2025 All Rights Reserved</p>
+        </footer>
+    </div>
+</body>
+</html>
