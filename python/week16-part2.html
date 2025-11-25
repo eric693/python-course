@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Week 16 Part 2 - StudentManager 類別 | Python 程式設計</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Microsoft JhengHei', Arial, sans-serif;
+            background: linear-gradient(to bottom, #f5f7fa 0%, #c3cfe2 100%);
+            color: #2c3e50;
+            line-height: 1.7;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .nav {
+            background: white;
+            padding: 15px 25px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .nav a {
+            color: #3776ab;
+            text-decoration: none;
+            font-weight: 600;
+            padding: 8px 16px;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+
+        .nav a:hover {
+            background: #3776ab;
+            color: white;
+        }
+
+        header {
+            background: linear-gradient(135deg, #3776ab 0%, #ffd343 100%);
+            color: white;
+            padding: 50px 40px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        header .subtitle {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .content {
+            background: white;
+            border-radius: 8px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .content h2 {
+            color: #2c3e50;
+            font-size: 2em;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #3776ab;
+        }
+
+        .content h3 {
+            color: #34495e;
+            font-size: 1.5em;
+            margin: 30px 0 15px 0;
+        }
+
+        .content h4 {
+            color: #34495e;
+            font-size: 1.2em;
+            margin: 20px 0 10px 0;
+        }
+
+        .code-block {
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 20px;
+            border-radius: 4px;
+            font-family: 'Consolas', 'Courier New', monospace;
+            font-size: 0.95em;
+            overflow-x: auto;
+            margin: 20px 0;
+            line-height: 1.8;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .note-box {
+            background: #e8f4f8;
+            border-left: 4px solid #3776ab;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .warning-box {
+            background: #fff8e1;
+            border-left: 4px solid #ffa726;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .tip-box {
+            background: #e8f5e9;
+            border-left: 4px solid #66bb6a;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        table th,
+        table td {
+            padding: 12px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+
+        table th {
+            background: #3776ab;
+            color: white;
+            font-weight: 600;
+        }
+
+        table tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        ul, ol {
+            margin-left: 30px;
+            margin-top: 10px;
+        }
+
+        li {
+            margin: 8px 0;
+        }
+
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 40px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background: #3776ab;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            background: #2d5a8a;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        .btn-secondary {
+            background: #95a5a6;
+        }
+
+        .btn-secondary:hover {
+            background: #7f8c8d;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="nav">
+            <a href="week16-part1.html">← Part 1</a>
+            <span style="color: #7f8c8d; font-weight: 600;">Week 16 Part 2 / 4</span>
+            <a href="week16-part3.html">Part 3 →</a>
+        </div>
+
+        <header>
+            <h1>Week 16 Part 2 - StudentManager 類別設計</h1>
+            <div class="subtitle">學習目標：實作資料管理、檔案處理、統計分析功能</div>
+        </header>
+
+        <div class="content">
+            <h2>StudentManager 類別設計</h2>
+            
+            <h3>類別概述</h3>
+            <p>StudentManager 是學生管理系統的核心類別，負責所有學生資料的管理操作，包括 CRUD（新增、讀取、修改、刪除）、資料持久化、統計分析、報表生成等功能。</p>
+
+            <h3>核心功能</h3>
+            <table>
+                <tr>
+                    <th>功能類別</th>
+                    <th>方法名稱</th>
+                    <th>說明</th>
+                </tr>
+                <tr>
+                    <td rowspan="4">基本 CRUD</td>
+                    <td>add_student()</td>
+                    <td>新增學生資料</td>
+                </tr>
+                <tr>
+                    <td>remove_student()</td>
+                    <td>刪除學生資料</td>
+                </tr>
+                <tr>
+                    <td>find_student()</td>
+                    <td>查詢學生資料</td>
+                </tr>
+                <tr>
+                    <td>update_student()</td>
+                    <td>更新學生資料</td>
+                </tr>
+                <tr>
+                    <td rowspan="3">資料持久化</td>
+                    <td>save_data()</td>
+                    <td>儲存資料到 JSON 檔案</td>
+                </tr>
+                <tr>
+                    <td>load_data()</td>
+                    <td>從 JSON 檔案讀取資料</td>
+                </tr>
+                <tr>
+                    <td>backup_data()</td>
+                    <td>備份資料檔案</td>
+                </tr>
+                <tr>
+                    <td rowspan="4">統計分析</td>
+                    <td>get_statistics()</td>
+                    <td>取得統計資料</td>
+                </tr>
+                <tr>
+                    <td>get_top_students()</td>
+                    <td>取得成績前幾名學生</td>
+                </tr>
+                <tr>
+                    <td>search_by_name()</td>
+                    <td>根據姓名搜尋學生</td>
+                </tr>
+                <tr>
+                    <td>list_all_students()</td>
+                    <td>列出所有學生</td>
+                </tr>
+                <tr>
+                    <td rowspan="2">報表功能</td>
+                    <td>export_to_csv()</td>
+                    <td>匯出成績為 CSV 檔案</td>
+                </tr>
+                <tr>
+                    <td>generate_report()</td>
+                    <td>生成文字統計報表</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="content">
+            <h2>完整程式碼：student_manager.py</h2>
+
+            <div class="code-block">"""
+學生管理系統類別
+負責學生資料的 CRUD 操作、統計分析、檔案處理等功能
+"""
+
+import json
+import os
+from datetime import datetime
+import csv
+from student import Student
+
+
+class StudentManager:
+    """學生管理系統類別"""
+    
+    def __init__(self, data_file="data/students.json"):
+        """
+        初始化學生管理系統
+        
+        Args:
+            data_file (str): 資料檔案路徑
+        """
+        self.data_file = data_file
+        self.students = {}  # 使用字典儲存學生，key 為學號
+        self._ensure_directories()
+        self.load_data()
+    
+    def _ensure_directories(self):
+        """確保必要的目錄存在"""
+        directories = ['data', 'data/backup', 'reports']
+        for directory in directories:
+            os.makedirs(directory, exist_ok=True)
+    
+    # ==================== CRUD 操作 ====================
+    
+    def add_student(self, student):
+        """
+        新增學生
+        
+        Args:
+            student (Student): 學生物件
+        
+        Returns:
+            bool: 新增成功返回 True，學號已存在返回 False
+        """
+        if student.student_id in self.students:
+            return False
+        self.students[student.student_id] = student
+        return True
+    
+    def remove_student(self, student_id):
+        """
+        刪除學生
+        
+        Args:
+            student_id (str): 學號
+        
+        Returns:
+            bool: 刪除成功返回 True，學號不存在返回 False
+        """
+        if student_id in self.students:
+            del self.students[student_id]
+            return True
+        return False
+    
+    def find_student(self, student_id):
+        """
+        查詢學生
+        
+        Args:
+            student_id (str): 學號
+        
+        Returns:
+            Student: 學生物件，若不存在返回 None
+        """
+        return self.students.get(student_id)
+    
+    def update_student(self, student_id, **kwargs):
+        """
+        更新學生資料
+        
+        Args:
+            student_id (str): 學號
+            **kwargs: 要更新的屬性（name, chinese, english, math）
+        
+        Returns:
+            bool: 更新成功返回 True，學號不存在返回 False
+        """
+        student = self.find_student(student_id)
+        if not student:
+            return False
+        
+        # 更新屬性
+        for key, value in kwargs.items():
+            if hasattr(student, key):
+                setattr(student, key, value)
+        
+        return True
+    
+    # ==================== 資料持久化 ====================
+    
+    def save_data(self):
+        """
+        儲存資料到 JSON 檔案
+        
+        Returns:
+            bool: 儲存成功返回 True，失敗返回 False
+        """
+        try:
+            data = {
+                student_id: student.to_dict()
+                for student_id, student in self.students.items()
+            }
+            
+            with open(self.data_file, 'w', encoding='utf-8') as f:
+                json.dump(data, f, ensure_ascii=False, indent=4)
+            
+            return True
+        except Exception as e:
+            print(f"儲存資料時發生錯誤: {e}")
+            return False
+    
+    def load_data(self):
+        """
+        從 JSON 檔案讀取資料
+        
+        Returns:
+            bool: 讀取成功返回 True，失敗返回 False
+        """
+        try:
+            if not os.path.exists(self.data_file):
+                return True  # 檔案不存在是正常情況
+            
+            with open(self.data_file, 'r', encoding='utf-8') as f:
+                data = json.load(f)
+            
+            self.students = {
+                student_id: Student.from_dict(student_data)
+                for student_id, student_data in data.items()
+            }
+            
+            return True
+        except Exception as e:
+            print(f"讀取資料時發生錯誤: {e}")
+            return False
+    
+    def backup_data(self):
+        """
+        備份資料檔案
+        
+        Returns:
+            str: 備份檔案路徑，失敗返回 None
+        """
+        try:
+            if not os.path.exists(self.data_file):
+                return None
+            
+            timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+            backup_file = f"data/backup/students_{timestamp}.json"
+            
+            with open(self.data_file, 'r', encoding='utf-8') as f:
+                data = f.read()
+            
+            with open(backup_file, 'w', encoding='utf-8') as f:
+                f.write(data)
+            
+            return backup_file
+        except Exception as e:
+            print(f"備份資料時發生錯誤: {e}")
+            return None
+    
+    # ==================== 查詢功能 ====================
+    
+    def list_all_students(self):
+        """
+        列出所有學生
+        
+        Returns:
+            list: 學生物件列表
+        """
+        return list(self.students.values())
+    
+    def search_by_name(self, name):
+        """
+        根據姓名搜尋學生（支援部分匹配）
+        
+        Args:
+            name (str): 要搜尋的姓名
+        
+        Returns:
+            list: 符合條件的學生列表
+        """
+        return [
+            student for student in self.students.values()
+            if name.lower() in student.name.lower()
+        ]
+    
+    def get_top_students(self, n=10):
+        """
+        取得成績前 n 名的學生
+        
+        Args:
+            n (int): 要取得的學生數量
+        
+        Returns:
+            list: 排序後的學生列表
+        """
+        students_list = list(self.students.values())
+        students_list.sort(key=lambda s: s.get_average_score(), reverse=True)
+        return students_list[:n]
+    
+    # ==================== 統計分析 ====================
+    
+    def get_statistics(self):
+        """
+        取得統計資料
+        
+        Returns:
+            dict: 包含各項統計數據的字典
+        """
+        if not self.students:
+            return {
+                'total': 0,
+                'pass_count': 0,
+                'pass_rate': 0.0,
+                'avg_chinese': 0.0,
+                'avg_english': 0.0,
+                'avg_math': 0.0,
+                'avg_total': 0.0
+            }
+        
+        total = len(self.students)
+        pass_count = sum(1 for s in self.students.values() if s.is_pass())
+        
+        chinese_scores = [s.chinese for s in self.students.values()]
+        english_scores = [s.english for s in self.students.values()]
+        math_scores = [s.math for s in self.students.values()]
+        
+        return {
+            'total': total,
+            'pass_count': pass_count,
+            'pass_rate': round(pass_count / total * 100, 2),
+            'avg_chinese': round(sum(chinese_scores) / total, 2),
+            'avg_english': round(sum(english_scores) / total, 2),
+            'avg_math': round(sum(math_scores) / total, 2),
+            'avg_total': round(
+                sum(s.get_average_score() for s in self.students.values()) / total, 
+                2
+            )
+        }
+    
+    # ==================== 報表功能 ====================
+    
+    def export_to_csv(self, filename="reports/scores.csv"):
+        """
+        匯出成績到 CSV 檔案
+        
+        Args:
+            filename (str): 輸出檔案路徑
+        
+        Returns:
+            bool: 匯出成功返回 True，失敗返回 False
+        """
+        try:
+            with open(filename, 'w', newline='', encoding='utf-8-sig') as f:
+                writer = csv.writer(f)
+                
+                # 寫入標題列
+                writer.writerow(['學號', '姓名', '國文', '英文', '數學', '總分', '平均', '等級'])
+                
+                # 寫入資料
+                for student in self.students.values():
+                    writer.writerow([
+                        student.student_id,
+                        student.name,
+                        student.chinese,
+                        student.english,
+                        student.math,
+                        student.get_total_score(),
+                        student.get_average_score(),
+                        student.get_grade()
+                    ])
+            
+            return True
+        except Exception as e:
+            print(f"匯出 CSV 時發生錯誤: {e}")
+            return False
+    
+    def generate_report(self, filename="reports/statistics.txt"):
+        """
+        生成統計報表
+        
+        Args:
+            filename (str): 輸出檔案路徑
+        
+        Returns:
+            bool: 生成成功返回 True，失敗返回 False
+        """
+        try:
+            stats = self.get_statistics()
+            top_students = self.get_top_students(5)
+            
+            with open(filename, 'w', encoding='utf-8') as f:
+                f.write("=" * 60 + "\n")
+                f.write("學生成績統計報表\n")
+                f.write("=" * 60 + "\n\n")
+                
+                f.write(f"報表生成時間: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n\n")
+                
+                f.write("【基本統計】\n")
+                f.write(f"學生總數: {stats['total']} 人\n")
+                f.write(f"及格人數: {stats['pass_count']} 人\n")
+                f.write(f"及格率: {stats['pass_rate']}%\n\n")
+                
+                f.write("【平均成績】\n")
+                f.write(f"國文平均: {stats['avg_chinese']} 分\n")
+                f.write(f"英文平均: {stats['avg_english']} 分\n")
+                f.write(f"數學平均: {stats['avg_math']} 分\n")
+                f.write(f"總平均: {stats['avg_total']} 分\n\n")
+                
+                f.write("【前五名學生】\n")
+                for i, student in enumerate(top_students, 1):
+                    f.write(f"{i}. {student.name} ({student.student_id}) - "
+                            f"平均: {student.get_average_score()} 分\n")
+                
+                f.write("\n" + "=" * 60 + "\n")
+            
+            return True
+        except Exception as e:
+            print(f"生成報表時發生錯誤: {e}")
+            return False
+
+
+# 測試程式碼
+if __name__ == "__main__":
+    # 建立管理系統
+    manager = StudentManager()
+    
+    # 新增測試資料
+    students_data = [
+        ("S001", "王小明", 85, 90, 88),
+        ("S002", "李小華", 75, 68, 82),
+        ("S003", "張大同", 92, 95, 89),
+        ("S004", "陳美美", 78, 85, 80),
+        ("S005", "林志明", 65, 70, 72)
+    ]
+    
+    for data in students_data:
+        student = Student(*data)
+        manager.add_student(student)
+    
+    # 測試各種功能
+    print("=== 所有學生 ===")
+    for student in manager.list_all_students():
+        print(student)
+    
+    print("\n=== 統計資料 ===")
+    stats = manager.get_statistics()
+    for key, value in stats.items():
+        print(f"{key}: {value}")
+    
+    print("\n=== 前三名 ===")
+    for i, student in enumerate(manager.get_top_students(3), 1):
+        print(f"{i}. {student.name} - {student.get_average_score()}")
+    
+    # 儲存資料
+    manager.save_data()
+    print("\n資料已儲存")
+    
+    # 備份資料
+    backup_file = manager.backup_data()
+    if backup_file:
+        print(f"備份檔案: {backup_file}")
+    
+    # 匯出 CSV
+    manager.export_to_csv()
+    print("CSV 已匯出")
+    
+    # 生成報表
+    manager.generate_report()
+    print("報表已生成")</div>
+        </div>
+
+        <div class="content">
+            <h2>程式碼詳解</h2>
+
+            <h3>1. 初始化與目錄管理</h3>
+            <div class="code-block">def __init__(self, data_file="data/students.json"):
+    self.data_file = data_file
+    self.students = {}
+    self._ensure_directories()
+    self.load_data()
+
+def _ensure_directories(self):
+    directories = ['data', 'data/backup', 'reports']
+    for directory in directories:
+        os.makedirs(directory, exist_ok=True)</div>
+
+            <div class="note-box">
+                <strong>設計要點：</strong>
+                <ul>
+                    <li>使用字典儲存學生資料，以學號為 key，查詢效率 O(1)</li>
+                    <li>自動確保必要目錄存在，避免檔案操作錯誤</li>
+                    <li>初始化時自動載入現有資料</li>
+                </ul>
+            </div>
+
+            <h3>2. CRUD 操作實作</h3>
+            <div class="code-block">def add_student(self, student):
+    if student.student_id in self.students:
+        return False
+    self.students[student.student_id] = student
+    return True
+
+def remove_student(self, student_id):
+    if student_id in self.students:
+        del self.students[student_id]
+        return True
+    return False
+
+def update_student(self, student_id, **kwargs):
+    student = self.find_student(student_id)
+    if not student:
+        return False
+    
+    for key, value in kwargs.items():
+        if hasattr(student, key):
+            setattr(student, key, value)
+    
+    return True</div>
+
+            <div class="tip-box">
+                <strong>CRUD 設計技巧：</strong>
+                <ul>
+                    <li>所有操作都有返回值，便於判斷是否成功</li>
+                    <li>新增前檢查學號是否已存在，避免重複</li>
+                    <li>更新使用 **kwargs 參數，可彈性更新任意屬性</li>
+                    <li>使用 hasattr() 確保屬性存在才更新</li>
+                </ul>
+            </div>
+
+            <h3>3. 資料持久化</h3>
+            <div class="code-block">def save_data(self):
+    try:
+        data = {
+            student_id: student.to_dict()
+            for student_id, student in self.students.items()
+        }
+        
+        with open(self.data_file, 'w', encoding='utf-8') as f:
+            json.dump(data, f, ensure_ascii=False, indent=4)
+        
+        return True
+    except Exception as e:
+        print(f"儲存資料時發生錯誤: {e}")
+        return False
+
+def load_data(self):
+    try:
+        if not os.path.exists(self.data_file):
+            return True
+        
+        with open(self.data_file, 'r', encoding='utf-8') as f:
+            data = json.load(f)
+        
+        self.students = {
+            student_id: Student.from_dict(student_data)
+            for student_id, student_data in data.items()
+        }
+        
+        return True
+    except Exception as e:
+        print(f"讀取資料時發生錯誤: {e}")
+        return False</div>
+
+            <div class="note-box">
+                <strong>JSON 處理重點：</strong>
+                <ul>
+                    <li>使用 ensure_ascii=False 確保中文正確顯示</li>
+                    <li>使用 indent=4 讓 JSON 檔案格式化，易於閱讀</li>
+                    <li>利用字典推導式簡化轉換過程</li>
+                    <li>完整的異常處理機制</li>
+                </ul>
+            </div>
+
+            <h3>4. 統計分析功能</h3>
+            <div class="code-block">def get_statistics(self):
+    if not self.students:
+        return {
+            'total': 0,
+            'pass_count': 0,
+            'pass_rate': 0.0,
+            'avg_chinese': 0.0,
+            'avg_english': 0.0,
+            'avg_math': 0.0,
+            'avg_total': 0.0
+        }
+    
+    total = len(self.students)
+    pass_count = sum(1 for s in self.students.values() if s.is_pass())
+    
+    chinese_scores = [s.chinese for s in self.students.values()]
+    english_scores = [s.english for s in self.students.values()]
+    math_scores = [s.math for s in self.students.values()]
+    
+    return {
+        'total': total,
+        'pass_count': pass_count,
+        'pass_rate': round(pass_count / total * 100, 2),
+        'avg_chinese': round(sum(chinese_scores) / total, 2),
+        'avg_english': round(sum(english_scores) / total, 2),
+        'avg_math': round(sum(math_scores) / total, 2),
+        'avg_total': round(
+            sum(s.get_average_score() for s in self.students.values()) / total, 
+            2
+        )
+    }</div>
+
+            <div class="tip-box">
+                <strong>統計分析技巧：</strong>
+                <ul>
+                    <li>先處理空資料情況，避免除以零錯誤</li>
+                    <li>使用列表推導式簡化資料處理</li>
+                    <li>使用 round() 限制小數位數</li>
+                    <li>返回結構化的字典，方便後續使用</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="content">
+            <h2>重點回顧</h2>
+
+            <div class="note-box">
+                <strong>本節學習重點：</strong>
+                <ul>
+                    <li>實作完整的 CRUD 操作</li>
+                    <li>使用 JSON 進行資料持久化</li>
+                    <li>實作資料備份機制</li>
+                    <li>設計統計分析功能</li>
+                    <li>實作 CSV 匯出功能</li>
+                    <li>生成文字報表</li>
+                    <li>完整的異常處理</li>
+                </ul>
+            </div>
+
+            <div class="tip-box">
+                <strong>下一步：</strong>
+                <p>接下來我們將學習如何設計主程式 (main.py)，整合 Student 和 StudentManager 類別，建立使用者介面，完成整個系統。</p>
+            </div>
+        </div>
+
+        <div class="nav-buttons">
+            <a href="week16-part1.html" class="btn btn-secondary">← Part 1</a>
+            <a href="week16-part3.html" class="btn">Part 3：主程式設計 →</a>
+        </div>
+
+        <footer style="text-align: center; padding: 30px 0; color: #7f8c8d; margin-top: 50px; border-top: 1px solid #ddd;">
+            <p style="margin: 10px 0;">Python 程式設計 Week 16 Part 2</p>
+            <p style="margin: 10px 0; font-size: 0.9em;">StudentManager 類別 · 資料管理 · 統計分析</p>
+            <p style="margin: 10px 0; font-size: 0.85em; color: #95a5a6;">© 2025 All Rights Reserved</p>
+        </footer>
+    </div>
+</body>
+</html>

@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Week 16 Part 3 - 主程式設計 | Python 程式設計</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Microsoft JhengHei', Arial, sans-serif;
+            background: linear-gradient(to bottom, #f5f7fa 0%, #c3cfe2 100%);
+            color: #2c3e50;
+            line-height: 1.7;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .nav {
+            background: white;
+            padding: 15px 25px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .nav a {
+            color: #3776ab;
+            text-decoration: none;
+            font-weight: 600;
+            padding: 8px 16px;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+
+        .nav a:hover {
+            background: #3776ab;
+            color: white;
+        }
+
+        header {
+            background: linear-gradient(135deg, #3776ab 0%, #ffd343 100%);
+            color: white;
+            padding: 50px 40px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        header .subtitle {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .content {
+            background: white;
+            border-radius: 8px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .content h2 {
+            color: #2c3e50;
+            font-size: 2em;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #3776ab;
+        }
+
+        .content h3 {
+            color: #34495e;
+            font-size: 1.5em;
+            margin: 30px 0 15px 0;
+        }
+
+        .content h4 {
+            color: #34495e;
+            font-size: 1.2em;
+            margin: 20px 0 10px 0;
+        }
+
+        .code-block {
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 20px;
+            border-radius: 4px;
+            font-family: 'Consolas', 'Courier New', monospace;
+            font-size: 0.95em;
+            overflow-x: auto;
+            margin: 20px 0;
+            line-height: 1.8;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .note-box {
+            background: #e8f4f8;
+            border-left: 4px solid #3776ab;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .warning-box {
+            background: #fff8e1;
+            border-left: 4px solid #ffa726;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .tip-box {
+            background: #e8f5e9;
+            border-left: 4px solid #66bb6a;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        ul, ol {
+            margin-left: 30px;
+            margin-top: 10px;
+        }
+
+        li {
+            margin: 8px 0;
+        }
+
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 40px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background: #3776ab;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            background: #2d5a8a;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        .btn-secondary {
+            background: #95a5a6;
+        }
+
+        .btn-secondary:hover {
+            background: #7f8c8d;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="nav">
+            <a href="week16-part2.html">← Part 2</a>
+            <span style="color: #7f8c8d; font-weight: 600;">Week 16 Part 3 / 4</span>
+            <a href="week16-part4.html">Part 4 →</a>
+        </div>
+
+        <header>
+            <h1>Week 16 Part 3 - 主程式設計</h1>
+            <div class="subtitle">學習目標：設計使用者介面，整合所有功能模組</div>
+        </header>
+
+        <div class="content">
+            <h2>主程式設計概述</h2>
+            
+            <h3>功能規劃</h3>
+            <p>主程式 (main.py) 負責提供使用者互動介面，整合 Student 和 StudentManager 類別，實現完整的學生管理系統功能。</p>
+
+            <h3>選單功能</h3>
+            <ol>
+                <li>新增學生資料</li>
+                <li>查詢學生資料</li>
+                <li>修改學生資料</li>
+                <li>刪除學生資料</li>
+                <li>顯示所有學生</li>
+                <li>顯示統計資料</li>
+                <li>顯示成績排名</li>
+                <li>搜尋學生（依姓名）</li>
+                <li>匯出成績（CSV）</li>
+                <li>生成統計報表</li>
+                <li>備份資料</li>
+                <li>離開系統</li>
+            </ol>
+        </div>
+
+        <div class="content">
+            <h2>完整程式碼：main.py</h2>
+
+            <div class="code-block">"""
+學生成績管理系統 - 主程式
+提供命令列介面進行學生資料管理
+"""
+
+from student import Student
+from student_manager import StudentManager
+
+
+def print_menu():
+    """顯示主選單"""
+    print("\n" + "=" * 60)
+    print("學生成績管理系統")
+    print("=" * 60)
+    print("1. 新增學生資料")
+    print("2. 查詢學生資料")
+    print("3. 修改學生資料")
+    print("4. 刪除學生資料")
+    print("5. 顯示所有學生")
+    print("6. 顯示統計資料")
+    print("7. 顯示成績排名")
+    print("8. 搜尋學生（依姓名）")
+    print("9. 匯出成績（CSV）")
+    print("10. 生成統計報表")
+    print("11. 備份資料")
+    print("12. 離開系統")
+    print("=" * 60)
+
+
+def input_student_data():
+    """輸入學生資料（使用異常處理）"""
+    try:
+        student_id = input("請輸入學號: ").strip()
+        if not student_id:
+            print("學號不能為空！")
+            return None
+        
+        name = input("請輸入姓名: ").strip()
+        if not name:
+            print("姓名不能為空！")
+            return None
+        
+        chinese = int(input("請輸入國文成績 (0-100): "))
+        english = int(input("請輸入英文成績 (0-100): "))
+        math = int(input("請輸入數學成績 (0-100): "))
+        
+        # 驗證成績範圍
+        for score, subject in [(chinese, "國文"), (english, "英文"), (math, "數學")]:
+            if not 0 <= score <= 100:
+                print(f"{subject}成績必須在 0-100 之間！")
+                return None
+        
+        return Student(student_id, name, chinese, english, math)
+    
+    except ValueError:
+        print("成績必須是整數！")
+        return None
+    except Exception as e:
+        print(f"輸入錯誤: {e}")
+        return None
+
+
+def add_student(manager):
+    """新增學生"""
+    print("\n【新增學生資料】")
+    student = input_student_data()
+    
+    if student:
+        if manager.add_student(student):
+            manager.save_data()
+            print(f"✓ 成功新增學生: {student.name} ({student.student_id})")
+        else:
+            print(f"✗ 學號 {student.student_id} 已存在！")
+
+
+def find_student(manager):
+    """查詢學生"""
+    print("\n【查詢學生資料】")
+    student_id = input("請輸入學號: ").strip()
+    
+    student = manager.find_student(student_id)
+    if student:
+        print("\n" + "-" * 60)
+        print(student)
+        print("-" * 60)
+    else:
+        print(f"✗ 找不到學號 {student_id} 的學生！")
+
+
+def update_student(manager):
+    """修改學生資料"""
+    print("\n【修改學生資料】")
+    student_id = input("請輸入要修改的學號: ").strip()
+    
+    student = manager.find_student(student_id)
+    if not student:
+        print(f"✗ 找不到學號 {student_id} 的學生！")
+        return
+    
+    print(f"\n目前資料: {student}")
+    print("\n請輸入新資料（直接按 Enter 保持原值）:")
+    
+    try:
+        # 輸入新資料
+        name = input(f"姓名 [{student.name}]: ").strip()
+        chinese_str = input(f"國文 [{student.chinese}]: ").strip()
+        english_str = input(f"英文 [{student.english}]: ").strip()
+        math_str = input(f"數學 [{student.math}]: ").strip()
+        
+        # 準備更新資料
+        update_data = {}
+        if name:
+            update_data['name'] = name
+        if chinese_str:
+            update_data['chinese'] = int(chinese_str)
+        if english_str:
+            update_data['english'] = int(english_str)
+        if math_str:
+            update_data['math'] = int(math_str)
+        
+        if update_data:
+            manager.update_student(student_id, **update_data)
+            manager.save_data()
+            print(f"✓ 成功修改學生資料！")
+            print(f"新資料: {manager.find_student(student_id)}")
+        else:
+            print("沒有修改任何資料")
+    
+    except ValueError:
+        print("✗ 成績必須是整數！")
+
+
+def delete_student(manager):
+    """刪除學生"""
+    print("\n【刪除學生資料】")
+    student_id = input("請輸入要刪除的學號: ").strip()
+    
+    student = manager.find_student(student_id)
+    if not student:
+        print(f"✗ 找不到學號 {student_id} 的學生！")
+        return
+    
+    print(f"\n確定要刪除以下學生資料嗎？")
+    print(student)
+    confirm = input("\n請輸入 yes 確認刪除: ").strip().lower()
+    
+    if confirm == 'yes':
+        manager.remove_student(student_id)
+        manager.save_data()
+        print(f"✓ 已刪除學生: {student.name} ({student_id})")
+    else:
+        print("已取消刪除")
+
+
+def list_all_students(manager):
+    """顯示所有學生"""
+    print("\n【所有學生資料】")
+    students = manager.list_all_students()
+    
+    if not students:
+        print("目前沒有任何學生資料")
+        return
+    
+    print(f"\n共有 {len(students)} 位學生:\n")
+    print("-" * 120)
+    for i, student in enumerate(students, 1):
+        print(f"{i:2d}. {student}")
+    print("-" * 120)
+
+
+def show_statistics(manager):
+    """顯示統計資料"""
+    print("\n【統計資料】")
+    stats = manager.get_statistics()
+    
+    print("\n" + "=" * 60)
+    print(f"學生總數: {stats['total']} 人")
+    print(f"及格人數: {stats['pass_count']} 人")
+    print(f"及格率: {stats['pass_rate']}%")
+    print("-" * 60)
+    print(f"國文平均: {stats['avg_chinese']} 分")
+    print(f"英文平均: {stats['avg_english']} 分")
+    print(f"數學平均: {stats['avg_math']} 分")
+    print(f"總平均: {stats['avg_total']} 分")
+    print("=" * 60)
+
+
+def show_ranking(manager):
+    """顯示成績排名"""
+    print("\n【成績排名】")
+    
+    try:
+        n = int(input("請輸入要顯示的名次數量 (預設 10): ") or "10")
+        students = manager.get_top_students(n)
+        
+        if not students:
+            print("目前沒有任何學生資料")
+            return
+        
+        print(f"\n前 {len(students)} 名:\n")
+        print("-" * 80)
+        for i, student in enumerate(students, 1):
+            print(f"{i:2d}. {student.name:6s} ({student.student_id}) - "
+                  f"平均: {student.get_average_score():5.2f} 分 | "
+                  f"等級: {student.get_grade()}")
+        print("-" * 80)
+    
+    except ValueError:
+        print("✗ 請輸入有效的數字！")
+
+
+def search_students(manager):
+    """搜尋學生"""
+    print("\n【搜尋學生】")
+    name = input("請輸入要搜尋的姓名（支援部分匹配）: ").strip()
+    
+    students = manager.search_by_name(name)
+    
+    if not students:
+        print(f"✗ 找不到包含 '{name}' 的學生")
+        return
+    
+    print(f"\n找到 {len(students)} 位學生:\n")
+    print("-" * 120)
+    for i, student in enumerate(students, 1):
+        print(f"{i}. {student}")
+    print("-" * 120)
+
+
+def export_csv(manager):
+    """匯出 CSV"""
+    print("\n【匯出成績】")
+    filename = input("請輸入檔案名稱 (預設: reports/scores.csv): ").strip()
+    if not filename:
+        filename = "reports/scores.csv"
+    
+    if manager.export_to_csv(filename):
+        print(f"✓ 成功匯出到 {filename}")
+    else:
+        print("✗ 匯出失敗")
+
+
+def generate_report(manager):
+    """生成報表"""
+    print("\n【生成統計報表】")
+    filename = input("請輸入檔案名稱 (預設: reports/statistics.txt): ").strip()
+    if not filename:
+        filename = "reports/statistics.txt"
+    
+    if manager.generate_report(filename):
+        print(f"✓ 成功生成報表: {filename}")
+    else:
+        print("✗ 生成報表失敗")
+
+
+def backup_data(manager):
+    """備份資料"""
+    print("\n【備份資料】")
+    backup_file = manager.backup_data()
+    
+    if backup_file:
+        print(f"✓ 成功備份到: {backup_file}")
+    else:
+        print("✗ 備份失敗或沒有資料可備份")
+
+
+def main():
+    """主程式"""
+    print("正在啟動學生成績管理系統...")
+    manager = StudentManager()
+    print(f"已載入 {len(manager.list_all_students())} 筆學生資料")
+    
+    while True:
+        print_menu()
+        
+        try:
+            choice = input("\n請選擇功能 (1-12): ").strip()
+            
+            if choice == '1':
+                add_student(manager)
+            elif choice == '2':
+                find_student(manager)
+            elif choice == '3':
+                update_student(manager)
+            elif choice == '4':
+                delete_student(manager)
+            elif choice == '5':
+                list_all_students(manager)
+            elif choice == '6':
+                show_statistics(manager)
+            elif choice == '7':
+                show_ranking(manager)
+            elif choice == '8':
+                search_students(manager)
+            elif choice == '9':
+                export_csv(manager)
+            elif choice == '10':
+                generate_report(manager)
+            elif choice == '11':
+                backup_data(manager)
+            elif choice == '12':
+                print("\n感謝使用學生成績管理系統！")
+                manager.save_data()
+                break
+            else:
+                print("✗ 無效的選擇，請輸入 1-12")
+        
+        except KeyboardInterrupt:
+            print("\n\n系統已中斷")
+            manager.save_data()
+            break
+        except Exception as e:
+            print(f"\n✗ 發生錯誤: {e}")
+
+
+if __name__ == "__main__":
+    main()</div>
+        </div>
+
+        <div class="content">
+            <h2>程式碼詳解</h2>
+
+            <h3>1. 選單設計</h3>
+            <div class="code-block">def print_menu():
+    print("\n" + "=" * 60)
+    print("學生成績管理系統")
+    print("=" * 60)
+    print("1. 新增學生資料")
+    # ... 其他選項
+    print("=" * 60)</div>
+
+            <div class="note-box">
+                <strong>使用者介面設計：</strong>
+                <ul>
+                    <li>清晰的分隔線讓選單更易閱讀</li>
+                    <li>功能分組：基本操作、統計查詢、資料管理</li>
+                    <li>使用數字選擇，操作簡單直覺</li>
+                </ul>
+            </div>
+
+            <h3>2. 輸入驗證</h3>
+            <div class="code-block">def input_student_data():
+    try:
+        student_id = input("請輸入學號: ").strip()
+        if not student_id:
+            print("學號不能為空！")
+            return None
+        
+        chinese = int(input("請輸入國文成績 (0-100): "))
+        
+        # 驗證成績範圍
+        if not 0 <= chinese <= 100:
+            print("國文成績必須在 0-100 之間！")
+            return None
+        
+        return Student(student_id, name, chinese, english, math)
+    
+    except ValueError:
+        print("成績必須是整數！")
+        return None</div>
+
+            <div class="tip-box">
+                <strong>輸入驗證重點：</strong>
+                <ul>
+                    <li>使用 strip() 移除前後空白</li>
+                    <li>檢查必填欄位是否為空</li>
+                    <li>驗證數值範圍是否合理</li>
+                    <li>使用 try-except 處理型態轉換錯誤</li>
+                    <li>提供清楚的錯誤訊息</li>
+                </ul>
+            </div>
+
+            <h3>3. 修改功能設計</h3>
+            <div class="code-block">def update_student(manager):
+    # 顯示目前資料
+    print(f"\n目前資料: {student}")
+    print("\n請輸入新資料（直接按 Enter 保持原值）:")
+    
+    # 允許選擇性更新
+    name = input(f"姓名 [{student.name}]: ").strip()
+    
+    update_data = {}
+    if name:
+        update_data['name'] = name
+    
+    if update_data:
+        manager.update_student(student_id, **update_data)</div>
+
+            <div class="note-box">
+                <strong>友善的更新設計：</strong>
+                <ul>
+                    <li>顯示目前值供參考</li>
+                    <li>允許選擇性更新（按 Enter 跳過）</li>
+                    <li>只更新有輸入的欄位</li>
+                    <li>更新後顯示新資料確認</li>
+                </ul>
+            </div>
+
+            <h3>4. 刪除確認</h3>
+            <div class="code-block">def delete_student(manager):
+    print(f"\n確定要刪除以下學生資料嗎？")
+    print(student)
+    confirm = input("\n請輸入 yes 確認刪除: ").strip().lower()
+    
+    if confirm == 'yes':
+        manager.remove_student(student_id)
+        print(f"✓ 已刪除學生")
+    else:
+        print("已取消刪除")</div>
+
+            <div class="warning-box">
+                <strong>安全性考量：</strong>
+                <ul>
+                    <li>刪除前顯示完整資訊</li>
+                    <li>要求明確確認（輸入 yes）</li>
+                    <li>使用 lower() 不區分大小寫</li>
+                    <li>提供取消選項</li>
+                </ul>
+            </div>
+
+            <h3>5. 主迴圈設計</h3>
+            <div class="code-block">def main():
+    manager = StudentManager()
+    
+    while True:
+        print_menu()
+        choice = input("\n請選擇功能: ").strip()
+        
+        if choice == '1':
+            add_student(manager)
+        # ... 其他選項
+        elif choice == '12':
+            manager.save_data()
+            break
+        
+        except KeyboardInterrupt:
+            manager.save_data()
+            break</div>
+
+            <div class="tip-box">
+                <strong>主迴圈設計要點：</strong>
+                <ul>
+                    <li>使用無窮迴圈持續運行</li>
+                    <li>每個功能分離成獨立函數</li>
+                    <li>離開前自動儲存資料</li>
+                    <li>處理 Ctrl+C 中斷信號</li>
+                    <li>完整的異常處理</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="content">
+            <h2>系統執行示範</h2>
+
+            <h3>啟動系統</h3>
+            <div class="code-block">$ python main.py
+
+正在啟動學生成績管理系統...
+已載入 0 筆學生資料
+
+============================================================
+學生成績管理系統
+============================================================
+1. 新增學生資料
+2. 查詢學生資料
+...
+12. 離開系統
+============================================================
+
+請選擇功能 (1-12):</div>
+
+            <h3>新增學生範例</h3>
+            <div class="code-block">請選擇功能 (1-12): 1
+
+【新增學生資料】
+請輸入學號: S001
+請輸入姓名: 王小明
+請輸入國文成績 (0-100): 85
+請輸入英文成績 (0-100): 90
+請輸入數學成績 (0-100): 88
+✓ 成功新增學生: 王小明 (S001)</div>
+
+            <h3>查詢學生範例</h3>
+            <div class="code-block">請選擇功能 (1-12): 2
+
+【查詢學生資料】
+請輸入學號: S001
+
+------------------------------------------------------------
+學號: S001 | 姓名: 王小明 | 國文: 85 | 英文: 90 | 數學: 88 | 
+總分: 263 | 平均: 87.67 | 等級: B
+------------------------------------------------------------</div>
+
+            <h3>顯示統計範例</h3>
+            <div class="code-block">請選擇功能 (1-12): 6
+
+【統計資料】
+
+============================================================
+學生總數: 5 人
+及格人數: 5 人
+及格率: 100.0%
+------------------------------------------------------------
+國文平均: 79.0 分
+英文平均: 81.6 分
+數學平均: 82.2 分
+總平均: 80.93 分
+============================================================</div>
+        </div>
+
+        <div class="content">
+            <h2>重點回顧</h2>
+
+            <div class="note-box">
+                <strong>本節學習重點：</strong>
+                <ul>
+                    <li>設計清晰的命令列介面</li>
+                    <li>實作完整的輸入驗證機制</li>
+                    <li>設計友善的使用者互動流程</li>
+                    <li>實作安全的刪除確認機制</li>
+                    <li>完整的異常處理與錯誤訊息</li>
+                    <li>模組化函數設計</li>
+                    <li>使用者體驗優化</li>
+                </ul>
+            </div>
+
+            <div class="tip-box">
+                <strong>下一步：</strong>
+                <p>最後一部分將提供練習題、專案延伸建議，以及完整的學習總結。</p>
+            </div>
+        </div>
+
+        <div class="nav-buttons">
+            <a href="week16-part2.html" class="btn btn-secondary">← Part 2</a>
+            <a href="week16-part4.html" class="btn">Part 4：練習與總結 →</a>
+        </div>
+
+        <footer style="text-align: center; padding: 30px 0; color: #7f8c8d; margin-top: 50px; border-top: 1px solid #ddd;">
+            <p style="margin: 10px 0;">Python 程式設計 Week 16 Part 3</p>
+            <p style="margin: 10px 0; font-size: 0.9em;">主程式設計 · 使用者介面 · 系統整合</p>
+            <p style="margin: 10px 0; font-size: 0.85em; color: #95a5a6;">© 2025 All Rights Reserved</p>
+        </footer>
+    </div>
+</body>
+</html>

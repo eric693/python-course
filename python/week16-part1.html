@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Week 16 Part 1 - Student 類別 | Python 程式設計</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Microsoft JhengHei', Arial, sans-serif;
+            background: linear-gradient(to bottom, #f5f7fa 0%, #c3cfe2 100%);
+            color: #2c3e50;
+            line-height: 1.7;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .nav {
+            background: white;
+            padding: 15px 25px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .nav a {
+            color: #3776ab;
+            text-decoration: none;
+            font-weight: 600;
+            padding: 8px 16px;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+
+        .nav a:hover {
+            background: #3776ab;
+            color: white;
+        }
+
+        header {
+            background: linear-gradient(135deg, #3776ab 0%, #ffd343 100%);
+            color: white;
+            padding: 50px 40px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        header .subtitle {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .content {
+            background: white;
+            border-radius: 8px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .content h2 {
+            color: #2c3e50;
+            font-size: 2em;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #3776ab;
+        }
+
+        .content h3 {
+            color: #34495e;
+            font-size: 1.5em;
+            margin: 30px 0 15px 0;
+        }
+
+        .content h4 {
+            color: #34495e;
+            font-size: 1.2em;
+            margin: 20px 0 10px 0;
+        }
+
+        .code-block {
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 20px;
+            border-radius: 4px;
+            font-family: 'Consolas', 'Courier New', monospace;
+            font-size: 0.95em;
+            overflow-x: auto;
+            margin: 20px 0;
+            line-height: 1.8;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .code-block .comment {
+            color: #95a5a6;
+        }
+
+        .code-block .keyword {
+            color: #3498db;
+            font-weight: bold;
+        }
+
+        .code-block .string {
+            color: #2ecc71;
+        }
+
+        .code-block .function {
+            color: #f39c12;
+        }
+
+        .code-block .number {
+            color: #e74c3c;
+        }
+
+        .note-box {
+            background: #e8f4f8;
+            border-left: 4px solid #3776ab;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .note-box strong {
+            color: #2c3e50;
+        }
+
+        .warning-box {
+            background: #fff8e1;
+            border-left: 4px solid #ffa726;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .tip-box {
+            background: #e8f5e9;
+            border-left: 4px solid #66bb6a;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        table th,
+        table td {
+            padding: 12px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+
+        table th {
+            background: #3776ab;
+            color: white;
+            font-weight: 600;
+        }
+
+        table tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        ul, ol {
+            margin-left: 30px;
+            margin-top: 10px;
+        }
+
+        li {
+            margin: 8px 0;
+        }
+
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 40px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background: #3776ab;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            background: #2d5a8a;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        .btn-secondary {
+            background: #95a5a6;
+        }
+
+        .btn-secondary:hover {
+            background: #7f8c8d;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="nav">
+            <a href="week16-index.html">← Week 16 主頁</a>
+            <span style="color: #7f8c8d; font-weight: 600;">Week 16 Part 1 / 4</span>
+            <a href="week16-part2.html">Part 2 →</a>
+        </div>
+
+        <header>
+            <h1>Week 16 Part 1 - Student 類別設計</h1>
+            <div class="subtitle">學習目標：設計學生類別，實作物件導向基本概念</div>
+        </header>
+
+        <div class="content">
+            <h2>Student 類別設計</h2>
+            
+            <h3>類別概述</h3>
+            <p>Student 類別是整個學生管理系統的基礎，負責定義學生的基本屬性和方法。這個類別展示了物件導向程式設計的核心概念：封裝、方法設計、特殊方法實作等。</p>
+
+            <h3>類別屬性</h3>
+            <table>
+                <tr>
+                    <th>屬性名稱</th>
+                    <th>資料型態</th>
+                    <th>說明</th>
+                </tr>
+                <tr>
+                    <td>student_id</td>
+                    <td>str</td>
+                    <td>學號（唯一識別碼）</td>
+                </tr>
+                <tr>
+                    <td>name</td>
+                    <td>str</td>
+                    <td>學生姓名</td>
+                </tr>
+                <tr>
+                    <td>chinese</td>
+                    <td>int</td>
+                    <td>國文成績（0-100）</td>
+                </tr>
+                <tr>
+                    <td>english</td>
+                    <td>int</td>
+                    <td>英文成績（0-100）</td>
+                </tr>
+                <tr>
+                    <td>math</td>
+                    <td>int</td>
+                    <td>數學成績（0-100）</td>
+                </tr>
+            </table>
+
+            <h3>類別方法</h3>
+            <table>
+                <tr>
+                    <th>方法名稱</th>
+                    <th>說明</th>
+                    <th>返回值</th>
+                </tr>
+                <tr>
+                    <td>get_total_score()</td>
+                    <td>計算三科總分</td>
+                    <td>int</td>
+                </tr>
+                <tr>
+                    <td>get_average_score()</td>
+                    <td>計算三科平均分數</td>
+                    <td>float</td>
+                </tr>
+                <tr>
+                    <td>is_pass()</td>
+                    <td>判斷是否所有科目及格</td>
+                    <td>bool</td>
+                </tr>
+                <tr>
+                    <td>get_grade()</td>
+                    <td>根據平均分數取得等級</td>
+                    <td>str (A/B/C/D/F)</td>
+                </tr>
+                <tr>
+                    <td>to_dict()</td>
+                    <td>轉換為字典格式</td>
+                    <td>dict</td>
+                </tr>
+                <tr>
+                    <td>from_dict()</td>
+                    <td>從字典建立物件（類別方法）</td>
+                    <td>Student</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="content">
+            <h2>完整程式碼：student.py</h2>
+
+            <div class="code-block">"""
+學生類別定義模組
+定義學生的基本屬性和成績計算方法
+"""
+
+
+class Student:
+    """學生類別"""
+    
+    def __init__(self, student_id, name, chinese=0, english=0, math=0):
+        """
+        初始化學生物件
+        
+        Args:
+            student_id (str): 學號
+            name (str): 姓名
+            chinese (int): 國文成績，預設為 0
+            english (int): 英文成績，預設為 0
+            math (int): 數學成績，預設為 0
+        """
+        self.student_id = student_id
+        self.name = name
+        self.chinese = chinese
+        self.english = english
+        self.math = math
+    
+    def get_total_score(self):
+        """
+        計算總分
+        
+        Returns:
+            int: 三科總分
+        """
+        return self.chinese + self.english + self.math
+    
+    def get_average_score(self):
+        """
+        計算平均分數
+        
+        Returns:
+            float: 三科平均分數（保留兩位小數）
+        """
+        return round(self.get_total_score() / 3, 2)
+    
+    def is_pass(self, passing_score=60):
+        """
+        判斷是否及格（所有科目都要達到及格標準）
+        
+        Args:
+            passing_score (int): 及格分數，預設為 60
+        
+        Returns:
+            bool: True 表示及格，False 表示不及格
+        """
+        return (self.chinese >= passing_score and 
+                self.english >= passing_score and 
+                self.math >= passing_score)
+    
+    def get_grade(self):
+        """
+        根據平均分數取得等級
+        
+        Returns:
+            str: 成績等級（A, B, C, D, F）
+        """
+        avg = self.get_average_score()
+        if avg >= 90:
+            return 'A'
+        elif avg >= 80:
+            return 'B'
+        elif avg >= 70:
+            return 'C'
+        elif avg >= 60:
+            return 'D'
+        else:
+            return 'F'
+    
+    def to_dict(self):
+        """
+        將學生物件轉換為字典格式（用於 JSON 儲存）
+        
+        Returns:
+            dict: 包含學生所有資訊的字典
+        """
+        return {
+            'student_id': self.student_id,
+            'name': self.name,
+            'chinese': self.chinese,
+            'english': self.english,
+            'math': self.math
+        }
+    
+    @classmethod
+    def from_dict(cls, data):
+        """
+        從字典建立學生物件（用於從 JSON 讀取）
+        
+        Args:
+            data (dict): 包含學生資訊的字典
+        
+        Returns:
+            Student: 學生物件
+        """
+        return cls(
+            data['student_id'],
+            data['name'],
+            data.get('chinese', 0),
+            data.get('english', 0),
+            data.get('math', 0)
+        )
+    
+    def __str__(self):
+        """
+        定義物件的字串表示（用於 print）
+        
+        Returns:
+            str: 學生資訊的格式化字串
+        """
+        return (f"學號: {self.student_id} | 姓名: {self.name} | "
+                f"國文: {self.chinese} | 英文: {self.english} | 數學: {self.math} | "
+                f"總分: {self.get_total_score()} | 平均: {self.get_average_score()} | "
+                f"等級: {self.get_grade()}")
+    
+    def __repr__(self):
+        """
+        定義物件的正式字串表示（用於除錯）
+        
+        Returns:
+            str: 學生物件的表示字串
+        """
+        return (f"Student('{self.student_id}', '{self.name}', "
+                f"{self.chinese}, {self.english}, {self.math})")
+
+
+# 測試程式碼（當直接執行此檔案時才會執行）
+if __name__ == "__main__":
+    # 建立學生物件
+    student1 = Student("S001", "王小明", 85, 90, 88)
+    student2 = Student("S002", "李小華", 75, 68, 82)
+    
+    # 測試各種方法
+    print("=== 學生資訊測試 ===")
+    print(student1)
+    print(student2)
+    
+    print("\n=== 成績計算測試 ===")
+    print(f"王小明總分: {student1.get_total_score()}")
+    print(f"王小明平均: {student1.get_average_score()}")
+    print(f"王小明等級: {student1.get_grade()}")
+    print(f"王小明是否及格: {student1.is_pass()}")
+    
+    print("\n=== 資料轉換測試 ===")
+    data = student1.to_dict()
+    print(f"轉換為字典: {data}")
+    student3 = Student.from_dict(data)
+    print(f"從字典建立: {student3}")</div>
+        </div>
+
+        <div class="content">
+            <h2>程式碼詳解</h2>
+
+            <h3>1. __init__ 方法（建構函數）</h3>
+            <p>建構函數負責初始化物件的屬性。使用預設參數讓成績可以選擇性輸入。</p>
+            <div class="code-block">def __init__(self, student_id, name, chinese=0, english=0, math=0):
+    self.student_id = student_id
+    self.name = name
+    self.chinese = chinese
+    self.english = english
+    self.math = math</div>
+
+            <div class="note-box">
+                <strong>設計要點：</strong>
+                <ul>
+                    <li>student_id 和 name 是必要參數</li>
+                    <li>三科成績提供預設值 0，可以之後再設定</li>
+                    <li>使用 self 來存取物件的屬性</li>
+                </ul>
+            </div>
+
+            <h3>2. 成績計算方法</h3>
+            <p>提供總分和平均分數的計算功能。</p>
+            <div class="code-block">def get_total_score(self):
+    return self.chinese + self.english + self.math
+
+def get_average_score(self):
+    return round(self.get_total_score() / 3, 2)</div>
+
+            <div class="tip-box">
+                <strong>設計技巧：</strong>
+                <ul>
+                    <li>get_average_score() 重用 get_total_score() 避免重複計算</li>
+                    <li>使用 round() 將平均分數保留兩位小數</li>
+                    <li>方法簡潔易懂，便於維護</li>
+                </ul>
+            </div>
+
+            <h3>3. 成績判定方法</h3>
+            <p>判斷學生是否及格和取得等級。</p>
+            <div class="code-block">def is_pass(self, passing_score=60):
+    return (self.chinese >= passing_score and 
+            self.english >= passing_score and 
+            self.math >= passing_score)
+
+def get_grade(self):
+    avg = self.get_average_score()
+    if avg >= 90:
+        return 'A'
+    elif avg >= 80:
+        return 'B'
+    elif avg >= 70:
+        return 'C'
+    elif avg >= 60:
+        return 'D'
+    else:
+        return 'F'</div>
+
+            <div class="note-box">
+                <strong>判定標準：</strong>
+                <ul>
+                    <li>及格：所有科目都要達到及格分數（預設 60 分）</li>
+                    <li>等級 A：平均 90 分以上</li>
+                    <li>等級 B：平均 80-89 分</li>
+                    <li>等級 C：平均 70-79 分</li>
+                    <li>等級 D：平均 60-69 分</li>
+                    <li>等級 F：平均 60 分以下</li>
+                </ul>
+            </div>
+
+            <h3>4. 資料轉換方法</h3>
+            <p>實作與 JSON 檔案的資料轉換功能。</p>
+            <div class="code-block">def to_dict(self):
+    return {
+        'student_id': self.student_id,
+        'name': self.name,
+        'chinese': self.chinese,
+        'english': self.english,
+        'math': self.math
+    }
+
+@classmethod
+def from_dict(cls, data):
+    return cls(
+        data['student_id'],
+        data['name'],
+        data.get('chinese', 0),
+        data.get('english', 0),
+        data.get('math', 0)
+    )</div>
+
+            <div class="note-box">
+                <strong>資料持久化：</strong>
+                <ul>
+                    <li>to_dict()：將物件轉換為字典，方便 JSON 序列化</li>
+                    <li>from_dict()：從字典建立物件，用於從 JSON 反序列化</li>
+                    <li>使用 @classmethod 裝飾器，可直接用類別名稱呼叫</li>
+                    <li>使用 data.get() 提供預設值，增加容錯性</li>
+                </ul>
+            </div>
+
+            <h3>5. 特殊方法</h3>
+            <p>Python 的特殊方法（Magic Methods）讓物件更易於使用。</p>
+            <div class="code-block">def __str__(self):
+    return (f"學號: {self.student_id} | 姓名: {self.name} | "
+            f"國文: {self.chinese} | 英文: {self.english} | 數學: {self.math} | "
+            f"總分: {self.get_total_score()} | 平均: {self.get_average_score()} | "
+            f"等級: {self.get_grade()}")
+
+def __repr__(self):
+    return (f"Student('{self.student_id}', '{self.name}', "
+            f"{self.chinese}, {self.english}, {self.math})")</div>
+
+            <div class="tip-box">
+                <strong>特殊方法說明：</strong>
+                <ul>
+                    <li>__str__()：定義 print() 時的輸出格式，給使用者看的</li>
+                    <li>__repr__()：定義物件的正式表示，給開發者除錯用的</li>
+                    <li>使用 f-string 格式化字串，語法簡潔清晰</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="content">
+            <h2>測試範例</h2>
+
+            <h3>執行測試</h3>
+            <div class="code-block"># 執行 student.py 進行測試
+python student.py</div>
+
+            <h3>預期輸出</h3>
+            <div class="code-block">=== 學生資訊測試 ===
+學號: S001 | 姓名: 王小明 | 國文: 85 | 英文: 90 | 數學: 88 | 總分: 263 | 平均: 87.67 | 等級: B
+學號: S002 | 姓名: 李小華 | 國文: 75 | 英文: 68 | 數學: 82 | 總分: 225 | 平均: 75.0 | 等級: C
+
+=== 成績計算測試 ===
+王小明總分: 263
+王小明平均: 87.67
+王小明等級: B
+王小明是否及格: True
+
+=== 資料轉換測試 ===
+轉換為字典: {'student_id': 'S001', 'name': '王小明', 'chinese': 85, 'english': 90, 'math': 88}
+從字典建立: 學號: S001 | 姓名: 王小明 | 國文: 85 | 英文: 90 | 數學: 88 | 總分: 263 | 平均: 87.67 | 等級: B</div>
+        </div>
+
+        <div class="content">
+            <h2>重點回顧</h2>
+
+            <div class="note-box">
+                <strong>本節學習重點：</strong>
+                <ul>
+                    <li>掌握 Python 類別的定義與使用</li>
+                    <li>理解建構函數 __init__ 的作用</li>
+                    <li>實作實例方法進行資料處理</li>
+                    <li>使用類別方法 @classmethod 進行工廠模式</li>
+                    <li>實作特殊方法 __str__ 和 __repr__</li>
+                    <li>設計資料轉換方法支援 JSON 序列化</li>
+                    <li>撰寫測試程式碼驗證功能</li>
+                </ul>
+            </div>
+
+            <div class="tip-box">
+                <strong>下一步：</strong>
+                <p>接下來我們將學習 StudentManager 類別，它將負責管理所有學生資料，包括新增、刪除、修改、查詢等 CRUD 操作，以及資料的持久化儲存。</p>
+            </div>
+        </div>
+
+        <div class="nav-buttons">
+            <a href="../index.html" class="btn btn-secondary">← 回首頁</a>
+            <a href="week16-part2.html" class="btn">Part 2：StudentManager 類別 →</a>
+        </div>
+
+        <footer style="text-align: center; padding: 30px 0; color: #7f8c8d; margin-top: 50px; border-top: 1px solid #ddd;">
+            <p style="margin: 10px 0;">Python 程式設計 Week 16 Part 1</p>
+            <p style="margin: 10px 0; font-size: 0.9em;">Student 類別設計 · 物件導向基礎 · 資料封裝</p>
+            <p style="margin: 10px 0; font-size: 0.85em; color: #95a5a6;">© 2025 All Rights Reserved</p>
+        </footer>
+    </div>
+</body>
+</html>
